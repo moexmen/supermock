@@ -1,0 +1,24 @@
+.x-logo {
+  color: black;
+}
+
+.x-logo-inverse {
+  color: white;
+}
+
+.x-word {
+  font-size: 0.8em;
+}
+
+.x-logo .x-word {
+  color: #EED202;
+}
+
+.x-logo-inverse .x-word {
+  color: yellow;
+}
+
+html.turbolinks-progress-bar::before {
+  background-color: yellow !important;
+  height: 3px !important;
+}

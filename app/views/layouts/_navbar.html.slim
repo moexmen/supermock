@@ -1,0 +1,14 @@
+nav.navbar.navbar-inverse.navbar-fixed-top
+  .container-fluid
+    .navbar-header
+      a.navbar-brand [href='/']
+        span.x-logo-inverse
+          | {
+          span.x-word X
+          | }
+          span< SuperMock
+
+    ul.nav.navbar-nav.navbar-right
+      - if user_signed_in?
+        li
+          = link_to 'Logout', destroy_user_session_path, method: :delete
