@@ -2,11 +2,17 @@ h1 Projects
 
 .container-fluid
   .project-card
-    a [data-toggle='modal' data-target='#project_modal']
+    a [data-project=@project.to_json(only: [:id, :name, :platform, :card_colour]) ]
       div New Project
 
   - @projects.each do |project|
     == render 'card', project: project
+
+ul#project_dropdown_menu.dropdown-menu [role='menu' aria-labelledby='project_dropdown_menu']
+  li [role='presentation']
+    a [role='menuitem' tabindex='-1'] Edit Details
+  li [role='presentation']
+    a [role='menuitem' tabindex='-1'] Delete
 
 #project_modal.modal.fade [tabindex='-1' role='dialog' aria-hidden='true']
   .modal-dialog
@@ -16,9 +22,36 @@ h1 Projects
           span [aria-hidden='true'] &times;
         h4 New Project
       .modal-body
-        = simple_form_for(@project) do |f|
+        = form_tag('', method: 'post')
+          input [type='hidden' name='_method']
           .form-group
-            = f.input :name
+            label [for='project_name'] Project name
+            input#project_name.form-control [type='text' name='project[name]']
+          .form-group
+            label Platform
+            div
+              - Project.platforms.each do |k,v|
+                label.radio-inline
+                  input [type='radio' name='project[platform]' id="project_platform_#{k}" value=k checked=(@project.platform == k) ] = k.capitalize
       .modal-footer
-        button.btn.btn-default type='button' data-dismiss='modal' Close
-        button.btn.btn-primary type='button' Create
+        button.btn.btn-default type='button' data-dismiss='modal' Cancel
+        button.btn.btn-primary type='button'
+
+
+#delete_modal.modal.fade [tabindex='-1' role='dialog' aria-hidden='true']
+  .modal-dialog
+    .modal-content
+      .modal-header
+        button.close [type='button' data-dismiss='modal' aria-label='Close']
+          span [aria-hidden='true'] &times;
+        h4 Confirm delete?
+      .modal-body
+        = form_tag('', method: 'post')
+          input [type='hidden' name='_method' value='delete']
+          p
+            | Are you sure you want to delete project "
+            span
+            |"? This is irreversible.
+      .modal-footer
+        button.btn.btn-default type='button' data-dismiss='modal' Cancel
+        button.btn.btn-danger type='button' Delete

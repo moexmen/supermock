@@ -1,4 +1,4 @@
 
 .project-card [style="background-color:#{project.card_colour}"]
-  a [href=project_path(project)]
+  a [href=project_path(project) data-project=project.to_json(only: [:id, :name, :platform, :card_colour]) data-toggle='dropdown' ]
     div = project.name

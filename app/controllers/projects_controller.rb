@@ -19,15 +19,11 @@ class ProjectsController < ApplicationController
   def create
     @project = Project.new(project_params)
     @project.user = current_user
-    @project.card_colour = random_card_colour
 
     if @project.save
       redirect_to @project, notice: 'Project was successfully created.'
     else
-      if @project.errors.any?
-        flash[:error] = @project.errors.full_messages
-      end
-
+      flash[:error] = @project.errors.full_messages if @project.errors.any?
       redirect_to projects_path
     end
   end
@@ -35,16 +31,18 @@ class ProjectsController < ApplicationController
   # PATCH/PUT /projects/1
   def update
     if @project.update(project_params)
-      redirect_to @project, notice: 'Project was successfully updated.'
+      flash[:notice] = 'Project was successfully updated.'
     else
-      render :edit
+      flash[:error] = @project.errors.full_messages if @project.errors.any?
     end
+
+    redirect_to projects_path
   end
 
   # DELETE /projects/1
   def destroy
     @project.destroy
-    redirect_to projects_url, notice: 'Project was successfully destroyed.'
+    redirect_to projects_url, notice: 'Project was successfully deleted.'
   end
 
   private
@@ -53,11 +51,6 @@ class ProjectsController < ApplicationController
     end
 
     def project_params
-      params[:project].permit(:name, :card_colour)
-    end
-
-    def random_card_colour
-      colours = %W(#F2C249 #E6772E #4DB3B3 #E64A45 #E64A45)
-      colours.sample
+      params[:project].permit(:name, :platform, :card_colour)
     end
 end
