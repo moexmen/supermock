@@ -1,5 +1,6 @@
 class ProjectsController < ApplicationController
   before_action :set_project, only: [:show, :edit, :update, :destroy]
+  before_action :check_ownership, only: [:show, :edit, :update, :destroy]
 
   # GET /projects
   def index
@@ -47,10 +48,20 @@ class ProjectsController < ApplicationController
 
   private
     def set_project
-      @project = Project.find(params[:id])
+      unless @project = Project.where(id: params[:id]).first
+        flash[:error] = 'Project does not exist'
+        redirect_to projects_path
+      end
+    end
+
+    def check_ownership
+      unless @project.user == current_user
+        flash[:error] = 'You do not have permissions to access the project'
+        redirect_to projects_path
+      end
     end
 
     def project_params
-      params[:project].permit(:name, :platform, :card_colour)
+      params.require(:project).permit(:name, :platform, :card_colour)
     end
 end
