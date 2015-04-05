@@ -21,36 +21,21 @@ Supermock.projects.index.init_new_project = function() {
 }
 
 Supermock.projects.index.init_context_menus = function() {
-    $.each($(".project-card a[data-toggle='dropdown']"), function(idx, value) {
-        $(value).on('contextmenu', function(e) {
-            var project = $(this).data('project');
-            $('#project_dropdown_menu').data('project', project)
-                .css({ 'left': e.clientX +  + $(window).scrollLeft(), 'top': e.clientY +  + $(window).scrollTop() })
-                .dropdown('toggle').show();
-            return false;
-        }.bind(value));
+    $.each($(".project-card a[data-toggle='context']"), function(idx, value) {
+        $(value).contextmenu({
+            target: '#project_dropdown_menu',
+            before: function(e, context) {
+                return true;
+            },
+            onItem: function(context, e) {
+                var project = $(context).data('project');
+                var menu_item = $(e.target).text();
+
+                if(menu_item === 'Edit Details') Supermock.projects.index.show_project_modal(project);
+                else if(menu_item === 'Delete') Supermock.projects.index.show_delete_modal(project);
+            }
+        });
     });
-
-    // Edit Details
-    $('#project_dropdown_menu a:eq(0)').click(function(e) {
-        var project = $(e.target).closest('ul').data('project');
-        this.close_context_menu();
-        this.show_project_modal(project);
-    }.bind(this));
-
-    // Delete
-    $('#project_dropdown_menu a:eq(1)').click(function(e) {
-        var project = $(e.target).closest('ul').data('project');
-        this.close_context_menu();
-        this.show_delete_modal(project);
-    }.bind(this));
-
-    // Close when clicked anywhere else
-    $(document).click(function () { this.close_context_menu(); }.bind(this));
-}
-
-Supermock.projects.index.close_context_menu = function() {
-    $('#project_dropdown_menu').hide();
 }
 
 Supermock.projects.index.init_project_modal = function() {
