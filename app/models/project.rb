@@ -6,7 +6,7 @@ class Project < ActiveRecord::Base
 
   validates :name, uniqueness: { scope: :user_id }, presence: true
   validates :platform, inclusion: { in: Project.platforms.keys }, presence: true
-  validates :card_colour, presence: true
+  validates :card_colour, inclusion: { in: Project::CARD_COLOURS }, presence: true
 
   after_initialize :set_defaults
 

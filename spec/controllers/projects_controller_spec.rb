@@ -27,20 +27,30 @@ describe ProjectsController do
       expect(flash[:error]).to be_present
       expect(response).to redirect_to(projects_path)
     end
+
+    it 'should not assign project (not owner)' do
+      another_user = FactoryGirl.create(:user)
+      another_project = FactoryGirl.create(:project, :platform_desktop, user: another_user)
+
+      get :show, id: another_project.id
+
+      expect(flash[:error]).to be_present
+      expect(response).to redirect_to(projects_path)
+    end
   end
 
   describe 'POST create' do
     it 'should create new project' do
       expect {
-        post :create, project: { name: Faker::Name.name, platform: Project.platforms.keys.first }
+        post :create, project: new_project_hash
       }.to change(Project, :count).by(1)
 
       expect(response).to redirect_to(project_path(Project.order('created_at').last))
     end
 
-    it 'should not create new project (missing params)' do
+    it 'should not create new project (missing name)' do
       expect {
-        post :create, project: { name: '', platform: '' }
+        post :create, project: new_project_hash(name: '')
       }.to change(Project, :count).by(0)
 
       expect(flash[:error]).to be_present
@@ -49,7 +59,7 @@ describe ProjectsController do
 
     it 'should not create new project (duplicated name)' do
       expect {
-        post :create, project: { name: project.name, platform: Project.platforms.keys.first }
+        post :create, project: new_project_hash(name: project.name)
       }.to change(Project, :count).by(0)
 
       expect(flash[:error]).to be_present
@@ -61,17 +71,17 @@ describe ProjectsController do
     it 'should update project' do
       new_name = Faker::Name.name
 
-      put :update, id: project.id, project: { name: new_name, platform: Project.platforms.keys.first }
+      put :update, id: project.id, project: new_project_hash(name: new_name)
       project.reload
 
       expect(project.name).to eq new_name
       expect(response).to redirect_to(projects_path)
     end
 
-    it 'should not update project (missing params)' do
+    it 'should not update project (missing name)' do
       existing_name = project.name
 
-      put :update, id: project.id, project: { name: '', platform: '' }
+      put :update, id: project.id, project: new_project_hash(name: '')
       project.reload
 
       expect(project.name).to eq existing_name
@@ -83,7 +93,7 @@ describe ProjectsController do
       another_project = FactoryGirl.create(:project, :platform_desktop, user: user)
       existing_name = project.name
 
-      put :update, id: project.id, project: { name: another_project.name, platform: Project.platforms.keys.first }
+      put :update, id: project.id, project: new_project_hash(name: another_project.name)
       project.reload
 
       expect(project.name).to eq existing_name
@@ -96,7 +106,7 @@ describe ProjectsController do
       another_project = FactoryGirl.create(:project, :platform_desktop, user: another_user)
       existing_name = another_project.name
 
-      put :update, id: another_project.id, project: { name: Faker::Name.name, platform: Project.platforms.keys.first }
+      put :update, id: another_project.id, project: new_project_hash
       another_project.reload
 
       expect(another_project.name).to eq existing_name
