@@ -25,7 +25,7 @@ Supermock.projects.index.init_context_menus = function() {
         $(value).on('contextmenu', function(e) {
             var project = $(this).data('project');
             $('#project_dropdown_menu').data('project', project)
-                .css({ 'left': e.clientX, 'top': e.clientY })
+                .css({ 'left': e.clientX +  + $(window).scrollLeft(), 'top': e.clientY +  + $(window).scrollTop() })
                 .dropdown('toggle').show();
             return false;
         }.bind(value));
