@@ -1,4 +1,4 @@
-require 'ui_elements/page'
+require 'elements/page'
 
 class Project < ActiveRecord::Base
   CARD_COLOURS = %W(#F2C249 #E6772E #4DB3B3 #E64A45 #E64A45)
@@ -16,6 +16,9 @@ class Project < ActiveRecord::Base
   def set_defaults
     self.platform ||= Project.platforms[:desktop]
     self.card_colour ||= CARD_COLOURS.sample
-    self.pages ||= [ Page.new(name: 'Homepage').to_json ]
+    page = Page.new(name: 'Homepage')
+    page.add_subpage(Page.new(name: 'Subpage'))
+    self.pages ||= [ page.to_json ]
+    # self.pages ||= [ Page.new(name: 'Homepage').to_json ]
   end
 end
