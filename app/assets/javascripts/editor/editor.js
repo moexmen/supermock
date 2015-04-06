@@ -6,26 +6,22 @@ Editor.init = function() {
 }
 
 Editor.load_project = function() {
-    this.project = new UiElements.Project();
+    var project_model = $('#editor').data('project');
+    this.project = new Elements.Project(project_model);
 
-    var raw_project = $('#editor').data('project');
-    $.each($.parseJSON(raw_project.pages), function(idx, page) {
-        var page = new UiElements.Page($.parseJSON(page).name);
-        Editor.add_page_list_item(page);
-    });
-
+    $.each(this.project.pages, function(idx, page) { Editor.add_page_list_item(page, false); });
     Editor.select_first_page_list_item();
 }
 
 Editor.init_buttons = function() {
     $('#new_page_btn').click(function() {
-        var page = new UiElements.Page('Page ' + Editor.project.pages.length);
-        Editor.add_page_list_item(page);
+        var page = new Elements.Page('Page ' + Editor.project.pages.length, [], []);
+        Editor.add_page_list_item(page, true);
     });
 }
 
-Editor.add_page_list_item = function(page) {
-    Editor.project.add_page(page);
+Editor.add_page_list_item = function(page, add_to_project) {
+    if(add_to_project) Editor.project.add_page(page);
 
     var page_item = this.clone_template('#page_list_item_template');
     page_item.data('page', page).find('div').text(page.name);
