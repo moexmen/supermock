@@ -1,7 +1,8 @@
 
 var Supermock = Supermock || {};
-Supermock.projects = {};
+Supermock.projects = Supermock.projects || {};
 Supermock.projects.index = {};
+Supermock.projects.show = {};
 
 Supermock.projects.init = function() {
 }
@@ -13,6 +14,10 @@ Supermock.projects.init_index = function() {
     this.index.init_delete_modal();
 }
 
+Supermock.projects.init_show = function() {
+    Editor.init();
+}
+
 Supermock.projects.index.init_new_project = function() {
     $('.project-card:eq(0)').click(function(e) {
         var project = $('.project-card:eq(0) a').data('project');
@@ -21,12 +26,9 @@ Supermock.projects.index.init_new_project = function() {
 }
 
 Supermock.projects.index.init_context_menus = function() {
-    $.each($(".project-card a[data-toggle='context']"), function(idx, value) {
-        $(value).contextmenu({
+    $.each($(".project-card a[data-toggle='context']"), function(idx, project_card) {
+        $(project_card).contextmenu({
             target: '#project_dropdown_menu',
-            before: function(e, context) {
-                return true;
-            },
             onItem: function(context, e) {
                 var project = $(context).data('project');
                 var menu_item = $(e.target).text();

@@ -1,73 +1,36 @@
 - provide(:no_body, true)
 
-body#editor
+body#editor [data-project=@project.to_json ]
   #canvas
 
   #sidebar
     div
       div
         .btn-group [role='group']
-          button#exit_button.btn [type="button"]
+          button#exit_btn.btn [type="button"]
             div.glyphicon.glyphicon-log-out
             div Exit
-          button#save_button.btn [type="button"]
+          button#save_btn.btn [type="button"]
             div.glyphicon.glyphicon-floppy-disk
             div Save
-          button#preview_button.btn [type="button"]
+          button#preview_btn.btn [type="button"]
             div.glyphicon.glyphicon-triangle-right
             div View
 
         div
-          div Pages
           div
+            span Pages
+            span.pull-right
+              a#new_page_btn add
+          #page_list
             ul
-              li
-                div Cras justo odio
-              li
-                div Cras justo odio
-              li
-                ul
-                  li
-                    div Cras justo odio
-                  li
-                    div Cras justo odio
-                  li
-                    div Cras justo odio
-                  li
-                    div Cras justo odio
-                  li
-                    div Cras justo odio
-                  li
-                    div Cras justo odio
-                  li
-                    div Cras justo odio
-                  li
-                    div Cras justo odio
-                  li
-                    div Cras justo odio
-                  li
-                    div Cras justo odio
-                  li
-                    div Cras justo odio
-                  li
-                    div Cras justo odio
-                  li
-                    div Cras justo odio
-                  li
-                    div Cras justo odio
-                  li
-                    div Cras justo odio
-                  li
-                    div Cras justo odio
-                  li
-                    div Cras justo odio
-                  li
-                    div Cras justo odio
-                  li
-                    div Cras justo odio
-                  li
-                    div Cras justo odio
-                  li
-                    div Cras justo odio
-                  li
-                    div Cras justo odio
+
+  #page_list_item_context_menu
+    ul.dropdown-menu [role='menu']
+      li [role='presentation']
+        a [role='menuitem' tabindex='-1'] New Sub Page
+      li [role='presentation']
+        a [role='menuitem' tabindex='-1'] Delete
+
+  li#page_list_item_template.hidden [ data-toggle="context" ]
+    div
