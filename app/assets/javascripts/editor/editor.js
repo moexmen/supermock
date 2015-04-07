@@ -6,7 +6,7 @@ Editor.init = function() {
 }
 
 Editor.load_project = function() {
-    var project_model = $('#editor').data('project');
+    var project_model = $('#data').data('project');
     this.project = new Elements.Project(project_model);
 
     Editor.recursive_init_page_list(this.project.pages, null);

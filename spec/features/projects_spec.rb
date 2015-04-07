@@ -103,4 +103,8 @@ feature 'Projects' do
       end
     end
   end
+
+  describe 'show page' do
+
+  end
 end

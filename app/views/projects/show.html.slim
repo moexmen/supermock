@@ -1,6 +1,7 @@
 - provide(:no_body, true)
 
-body#editor [data-project=@project.to_json ]
+body#editor
+  #data [data-project=@project.to_json ]
   #canvas
 
   #sidebar
@@ -24,11 +25,6 @@ body#editor [data-project=@project.to_json ]
               a#new_page_btn add
           #page_list
             ul
-              /li
-              /  div test
-              /  ul
-              /    li
-              /      div asd
 
   #page_list_item_context_menu
     ul.dropdown-menu [role='menu']
