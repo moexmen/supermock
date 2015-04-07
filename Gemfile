@@ -52,12 +52,14 @@ group :development, :test do
   gem 'faker'
   # For UI testing
   gem 'capybara'
-  # For Javascript testing
+  # For launching browser for test that rely on javascript
   gem 'selenium-webdriver'
   # For testing using chrome
   gem 'chromedriver-helper'
   # Bullet gem is designed to help you increase your application's performance by reducing the number of queries it makes
   gem 'bullet'
+  # For front-end javascript testing
+  gem 'jasmine-rails'
 end
 
 ## Custom
