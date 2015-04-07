@@ -24,13 +24,19 @@ body#editor [data-project=@project.to_json ]
               a#new_page_btn add
           #page_list
             ul
+              /li
+              /  div test
+              /  ul
+              /    li
+              /      div asd
 
   #page_list_item_context_menu
     ul.dropdown-menu [role='menu']
       li [role='presentation']
-        a [role='menuitem' tabindex='-1'] New Sub Page
+        a [role='menuitem' tabindex='-1'] New Child Page
       li [role='presentation']
         a [role='menuitem' tabindex='-1'] Delete
 
-  li#page_list_item_template.hidden [ data-toggle="context" ]
-    div
+  li#page_list_item_template.hidden
+    div [ data-toggle="context" ]
+    ul

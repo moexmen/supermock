@@ -8,7 +8,7 @@ Elements.Element.parse_json = function(json) {
 
     switch(model.type) {
         case 'Page':
-            return new Elements.Page(model.name, model.elements, model.subpages);
+            return new Elements.Page(model.name, model.elements, null, model.child_pages);
         default:
             return null;
     }

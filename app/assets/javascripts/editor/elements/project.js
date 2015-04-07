@@ -10,9 +10,11 @@ Elements.Project = function(project_model) {
 }
 
 Elements.Project.prototype.add_page = function(page) {
+    page.parent_page = null;
     this.pages.push(page);
 }
 
 Elements.Project.prototype.remove_page = function(page) {
+    page.parent_page = null;
     this.pages.remove(page);
 }
