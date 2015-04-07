@@ -16,9 +16,6 @@ class Project < ActiveRecord::Base
   def set_defaults
     self.platform ||= Project.platforms[:desktop]
     self.card_colour ||= CARD_COLOURS.sample
-    page = Page.new(name: 'Homepage')
-    page.add_child_page(Page.new(name: 'Subpage'))
-    self.pages ||= [ page.to_json ]
-    # self.pages ||= [ Page.new(name: 'Homepage').to_json ]
+    self.pages ||= [ Page.new(name: 'Homepage').to_json ]
   end
 end
