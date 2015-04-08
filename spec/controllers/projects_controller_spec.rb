@@ -37,15 +37,6 @@ describe ProjectsController do
       expect(flash[:error]).to be_present
       expect(response).to redirect_to(projects_path)
     end
-
-    describe 'js specs' do
-      render_views
-
-      it 'should save fixture for js specs' do
-        get :show, id: project.id
-        save_fixture 'projects/show.html', response.body
-      end
-    end
   end
 
   describe 'POST create' do
