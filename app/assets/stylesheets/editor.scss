@@ -95,4 +95,55 @@
       }
     }
   }
+
+  #type_to_add {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    margin-top: -200px;
+    margin-left: -400px;
+    display: none;
+
+    > div:first-child {
+      background-color: #565656;
+      border-radius: 50px;
+      width: 800px;
+      display: flex;
+      justify-content: center;
+
+      #type_to_add_input {
+        margin: 20px 0px;
+        width: 720px;
+      }
+    }
+
+    #type_to_add_list {
+      left: 40px;
+      top: -15px;
+      width: 720px;
+      max-height: 400px;
+      overflow-y: auto;
+      position: relative;
+      background-color: white;
+      padding: 5px;
+      border: 1px solid gray;
+      border-radius: 4px;
+
+      div {
+        background-color: #dedede;
+        border-radius: 4px;
+        padding: 10px;
+        margin: 5px;
+        cursor: pointer;
+      }
+
+      em {
+        display: block;
+        padding: 10px;
+        margin: 5px;
+        color: #666666;
+      }
+    }
+  }
 }
+

@@ -26,6 +26,14 @@ body#editor
           #page_list
             ul
 
+  #type_to_add
+    div
+      input#type_to_add_input.form-control [type='text' placeholder='type to add']
+    div#type_to_add_list
+      em#type_to_add_no_item No such elements found.
+
+
+
   #page_list_item_context_menu
     ul.dropdown-menu [role='menu']
       li [role='presentation']
@@ -36,3 +44,5 @@ body#editor
   li#page_list_item_template.hidden
     div [ data-toggle="context" ]
     ul
+
+  div#type_to_add_list_item_template
