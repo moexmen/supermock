@@ -23,7 +23,7 @@ Editor.init_page_list = function() {
 
 Editor.init_type_to_add = function() {
     var element_list = [
-        { labels: ['Button', 'Btn'], create_callback: function() { Editor.add_element(Elements.Element.create_default(Elements.Page)) } },
+        { labels: ['Button', 'Btn'], create_callback: function() { Editor.add_element(Elements.Element.create_default(Elements.Button)) } },
         { labels: ['Text'], create_callback: null },
         { labels: ['Textfield', 'Input'], create_callback: null },
         { labels: ['Textarea'], create_callback: null },
@@ -50,6 +50,11 @@ Editor.handle_key_events = function() {
     });
 }
 
+Editor.render_page = function(page) {
+    $('#canvas').empty().append(page.render());
+}
+
 Editor.add_element = function(element) {
-    $('#canvas').append(element.render());
+    PageList.curr_item.page.add_element(element);
+    Editor.render_page(PageList.curr_item.page);
 }
