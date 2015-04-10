@@ -1,7 +1,7 @@
 var Elements = Elements || {};
 
 Elements.Page = function(name, element_models, parent_model, child_page_models) {
-    this.id = null;
+    this.html = null;
     this.name = name;
     this.elements = [];
     this.parent_page = null;
@@ -13,23 +13,31 @@ Elements.Page = function(name, element_models, parent_model, child_page_models) 
     }.bind(this));
 }
 
-Elements.Page.prototype = new Elements.Element();
-
 Elements.Page.prototype.render = function() {
-    $('#canvas').append($('<div> ' + this.name + '</div>'));
-}
+    if(this.html === null) {
+        this.html = Util.clone_template('#element_page_template');
+    }
 
-Elements.Page.prototype.is_top_level_page = function() {
-    return this.parent_page === null;
+    $.each(this.elements, function(idx, element) {
+        this.html.append(element.render());
+    }.bind(this));
+
+    return this.html;
 }
 
 Elements.Page.prototype.add_element = function(element) {
     this.elements.push(element);
 }
 
+Elements.Page.prototype.has_child_page = function(page) {
+    return this.child_pages.indexOf(page) != -1;
+}
+
 Elements.Page.prototype.add_child_page = function(page) {
-    page.parent_page = this;
-    this.child_pages.push(page);
+    if(this.has_child_page(page) === false) {
+        page.parent_page = this;
+        this.child_pages.push(page);
+    }
 }
 
 Elements.Page.prototype.remove_child_page = function(page) {

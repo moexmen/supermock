@@ -12,14 +12,14 @@ TypeToAdd.init_items = function(element_list) {
     $.each(element_list, function(idx, element) {
         var item = new TypeToAdd.Item(element.labels, element.create_callback);
         TypeToAdd.item_list.push(item);
-        $('#type_to_add_list').append(item.render());
+        TypeToAdd.list().append(item.render());
     });
 
-    $('#type_to_add_no_item').hide();
+    this.no_such_item_msg().hide();
 }
 
 TypeToAdd.init_input = function() {
-    $('#type_to_add_input').keyup(function(e) {
+    this.input().keyup(function(e) {
         switch(e.which) {
             case 13: // enter
                 this.parse_input();
@@ -34,14 +34,18 @@ TypeToAdd.init_input = function() {
     }.bind(this));
 }
 
+TypeToAdd.visible = function() {
+    return this.render().is(':visible');
+}
+
 TypeToAdd.show = function() {
-    $('#type_to_add').show();
-    $('#type_to_add_input').val('').focus();
+    this.render().show();
+    this.input().val('').focus();
     this.update_items();
 }
 
 TypeToAdd.hide = function() {
-    $('#type_to_add').hide();
+    this.render().hide();
 }
 
 TypeToAdd.parse_input = function() {
@@ -60,7 +64,7 @@ TypeToAdd.parse_input = function() {
 }
 
 TypeToAdd.update_items = function() {
-    var new_input = $('#type_to_add_input').val();
+    var new_input = this.input().val().trim();
     var matched = false;
 
     $.each(TypeToAdd.item_list, function(idx, item) {
@@ -68,7 +72,23 @@ TypeToAdd.update_items = function() {
         matched = item.matched() || matched;
     });
 
-    $('#type_to_add_no_item').toggle(!matched);
+    this.no_such_item_msg().toggle(!matched);
+}
+
+TypeToAdd.render = function() {
+    return $('#type_to_add');
+}
+
+TypeToAdd.input = function() {
+    return $('#type_to_add_input');
+}
+
+TypeToAdd.list = function() {
+    return $('#type_to_add_list');
+}
+
+TypeToAdd.no_such_item_msg = function() {
+    return $('#type_to_add_no_item');
 }
 
 /* Item */
@@ -80,7 +100,7 @@ TypeToAdd.Item = function(labels, create_callback) {
 }
 
 TypeToAdd.Item.prototype.input_changed = function(input) {
-    if(input.trim().length == 0) {
+    if(input.length == 0) {
         this.html.show();
     }
     else {
@@ -106,9 +126,12 @@ TypeToAdd.Item.prototype.call_create_callback = function() {
 }
 
 TypeToAdd.Item.prototype.render = function() {
-    this.html = Util.clone_template('#type_to_add_list_item_template')
-        .text(this.labels.join(' / '))
-        .click(this.call_create_callback.bind(this));
+    if(this.html === null) {
+        this.html = Util.clone_template('#type_to_add_list_item_template')
+            .text(this.labels.join(' / '))
+            .click(this.call_create_callback.bind(this));
+    }
+
     return this.html;
 }
 

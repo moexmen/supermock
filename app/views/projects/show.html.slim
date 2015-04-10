@@ -8,13 +8,13 @@ body#editor
     div
       div
         .btn-group [role='group']
-          button#exit_btn.btn [type="button"]
+          button#exit_btn.btn [type='button']
             div.glyphicon.glyphicon-log-out
             div Exit
-          button#save_btn.btn [type="button"]
+          button#save_btn.btn [type='button']
             div.glyphicon.glyphicon-floppy-disk
             div Save
-          button#preview_btn.btn [type="button"]
+          button#preview_btn.btn [type='button']
             div.glyphicon.glyphicon-triangle-right
             div View
 
@@ -32,8 +32,6 @@ body#editor
     div#type_to_add_list
       em#type_to_add_no_item No such elements found.
 
-
-
   #page_list_item_context_menu
     ul.dropdown-menu [role='menu']
       li [role='presentation']
@@ -41,8 +39,13 @@ body#editor
       li [role='presentation']
         a [role='menuitem' tabindex='-1'] Delete
 
+
+
   li#page_list_item_template.hidden
     div [ data-toggle="context" ]
     ul
 
   div#type_to_add_list_item_template
+
+  #element_page_template.element-page.hidden
+  button#element_button_template.btn.btn-default.hidden [type='button']

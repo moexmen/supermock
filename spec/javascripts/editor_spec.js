@@ -9,88 +9,139 @@ describe('projects/show.js', function() {
 
     describe('pages', function() {
         beforeEach(function() {
-            this.page_list = $('#page_list').children('ul');
         });
 
         it('should add top level pages', function () {
             expect(Editor.project.pages.length).toBe(1);
             expect(Editor.project.pages[0].name).toBe('Homepage');
-            expect(this.page_list.children('li').size()).toBe(1);
-            expect($(this.page_list.children('li')[0]).children('div').text()).toBe('Homepage');
+            expect(PageList.root_item.render().children('li').size()).toBe(1);
+            expect(PageList.root_item.child_items[0].render().children('div').text()).toBe('Homepage');
 
-            $('#new_page_btn').click();
+            PageList.new_page_btn().click();
             expect(Editor.project.pages.length).toBe(2);
             expect(Editor.project.pages[1].name).toBe('Page 2');
-            expect(this.page_list.children('li').size()).toBe(2);
-            expect($(this.page_list.children('li')[1]).children('div').text()).toBe('Page 2');
+            expect(PageList.root_item.render().children('li').size()).toBe(2);
+            expect(PageList.root_item.child_items[1].render().children('div').text()).toBe('Page 2');
         });
 
         it('should show context menu on right click', function() {
-            expect($('#page_list_item_context_menu').hasClass('open')).toBe(false);
+            expect(PageList.ContextMenu.visible()).toBe(false);
 
-            open_context_menu($(this.page_list.children('li')[0]).children('div'));
-            expect($('#page_list_item_context_menu').hasClass('open')).toBe(true);
+            PageList.ContextMenu.show(PageList.root_item.child_items[0]);
+            expect(PageList.ContextMenu.visible()).toBe(true);
         });
 
         it('should add child pages', function () {
             expect(Editor.project.pages[0].child_pages.length).toBe(0);
-            var first_page_item = $(this.page_list.children('li')[0]).children('ul');
 
-            open_context_menu($(this.page_list.children('li')[0]).children('div'));
-            click_context_menu_new_child_page();
+            PageList.ContextMenu.show(PageList.root_item.child_items[0]);
+            PageList.ContextMenu.new_child_page_menu_item().click();
             expect(Editor.project.pages[0].child_pages.length).toBe(1);
-            expect($(first_page_item.children('li')[0]).children('div').text()).toBe('Homepage > 1');
+            expect(PageList.root_item.child_items[0].child_items[0].render().children('div').text()).toBe('Homepage > 1');
 
-            var child_page_item = $(first_page_item.children('li')[0]).children('ul');
-            open_context_menu($(first_page_item.children('li')[0]).children('div'));
-            click_context_menu_new_child_page();
+            PageList.ContextMenu.show(PageList.root_item.child_items[0].child_items[0]);
+            PageList.ContextMenu.new_child_page_menu_item().click();
             expect(Editor.project.pages[0].child_pages[0].child_pages.length).toBe(1);
-            expect($(child_page_item.children('li')[0]).children('div').text()).toBe('Homepage > 1 > 1');
+            expect(PageList.root_item.child_items[0].child_items[0].child_items[0].render().children('div').text()).toBe('Homepage > 1 > 1');
         });
 
         it('should not remove the only top level page', function () {
-            open_context_menu($(this.page_list.children('li')[0]).children('div'));
-            expect($('#page_list_item_context_menu').find('li').hasClass('disabled')).toBe(true);
+            PageList.ContextMenu.show(PageList.root_item.child_items[0]);
+            expect(PageList.ContextMenu.delete_menu_item().hasClass('disabled')).toBe(true);
 
-            click_context_menu_delete();
+            PageList.ContextMenu.delete_menu_item().click();
             expect(Editor.project.pages.length).toBe(1);
-            expect(this.page_list.children('li').size()).toBe(1);
+            expect(PageList.root_item.render().children('li').size()).toBe(1);
         });
 
         it('should remove pages', function () {
-            var first_page_item = $(this.page_list.children('li')[0]).children('ul');
-            open_context_menu($(this.page_list.children('li')[0]).children('div'));
-            click_context_menu_new_child_page();
+            PageList.ContextMenu.show(PageList.root_item.child_items[0]);
+            PageList.ContextMenu.new_child_page_menu_item().click();
 
-            var child_page_item = $(first_page_item.children('li')[0]).children('ul');
-            open_context_menu($(first_page_item.children('li')[0]).children('div'));
-            click_context_menu_new_child_page();
+            PageList.ContextMenu.show(PageList.root_item.child_items[0].child_items[0]);
+            PageList.ContextMenu.new_child_page_menu_item().click();
 
-            $('#new_page_btn').click();
+            PageList.new_page_btn().click();
 
             expect(Editor.project.pages.length).toBe(2);
-            open_context_menu($(this.page_list.children('li')[1]).children('div'));
-            click_context_menu_delete();
+            PageList.ContextMenu.show(PageList.root_item.child_items[1]);
+            PageList.ContextMenu.delete_menu_item().click();
             expect(Editor.project.pages.length).toBe(1);
 
             expect(Editor.project.pages[0].child_pages.length).toBe(1);
             expect(Editor.project.pages[0].child_pages[0].child_pages.length).toBe(1);
-            var first_page_item = $(this.page_list.children('li')[0]).children('ul');
-            open_context_menu($(first_page_item.children('li')[0]).children('div'));
-            click_context_menu_delete();
+            PageList.ContextMenu.show(PageList.root_item.child_items[0].child_items[0]);
+            PageList.ContextMenu.delete_menu_item().click();
             expect(Editor.project.pages[0].child_pages.length).toBe(0);
         });
+    });
 
-        function open_context_menu(target) {
-            target.contextmenu().trigger('contextmenu');
+    describe('type to add', function() {
+        beforeEach(function () {
+        });
+
+        it('should show up on spacebar', function () {
+            show_type_to_add();
+
+            expect(TypeToAdd.visible()).toBe(true);
+            expect(TypeToAdd.no_such_item_msg().is(':visible')).toBe(false);
+            $.each(TypeToAdd.list().children(), function(idx, item) {
+                if(idx > 0) expect($(item).is(':visible')).toBe(true);
+            });
+        });
+
+        it('should close on global escape', function () {
+            show_type_to_add();
+            hide_type_to_add();
+
+            expect(TypeToAdd.visible()).toBe(false);
+        });
+
+        it('should close on input escape', function () {
+            show_type_to_add();
+            type_to_add_trigger_escape();
+
+            expect(TypeToAdd.visible()).toBe(false);
+        });
+
+        it('should add element', function () {
+            show_type_to_add();
+            TypeToAdd.input().val('Btn').keyup();
+
+            expect(TypeToAdd.visible()).toBe(true);
+            expect(TypeToAdd.no_such_item_msg().is(':visible')).toBe(false);
+            $.each(TypeToAdd.list().children(), function(idx, item) {
+                expect($(item).is(':visible')).toBe(($(item).text() === 'Button / Btn'));
+            });
+
+            type_to_add_trigger_enter();
+            expect(TypeToAdd.visible()).toBe(false);
+            expect($($($('#canvas').children('.element-page')[0]).children()[0]).text()).toBe('Button');
+
+        });
+
+        function show_type_to_add() {
+            var e = $.Event('keyup');
+            e.which = 32; // space
+            $('body').trigger(e);
         }
 
-        function click_context_menu_new_child_page() {
-            $($('#page_list_item_context_menu').find('li')[0]).trigger('click');
+        function hide_type_to_add() {
+            var e = $.Event('keyup');
+            e.which = 27; // escape
+            $('body').trigger(e);
         }
 
-        function click_context_menu_delete() {
-            $($('#page_list_item_context_menu').find('li')[1]).trigger('click');
+        function type_to_add_trigger_enter() {
+            var e = $.Event('keyup');
+            e.which = 13; // enter
+            TypeToAdd.input().trigger(e);
+        }
+
+        function type_to_add_trigger_escape() {
+            var e = $.Event('keyup');
+            e.which = 27; // escape
+            TypeToAdd.input().trigger(e);
         }
     });
 });
