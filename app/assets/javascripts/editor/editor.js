@@ -4,6 +4,7 @@ Editor.init = function() {
     Editor.load_project();
     Editor.init_buttons();
     Editor.init_page_list();
+    Editor.init_selector();
     Editor.init_type_to_add();
     Editor.handle_key_events();
 }
@@ -21,17 +22,21 @@ Editor.init_page_list = function() {
     PageList.select_first_item();
 }
 
+Editor.init_selector = function() {
+    Selector.init();
+}
+
 Editor.init_type_to_add = function() {
     var element_list = [
-        { labels: ['Button', 'Btn'], create_callback: function() { Editor.add_element(Elements.Element.create_default(Elements.Button)) } },
-        { labels: ['Text'], create_callback: null },
-        { labels: ['Textfield', 'Input'], create_callback: null },
-        { labels: ['Textarea'], create_callback: null },
-        { labels: ['Checkbox', 'Chk'], create_callback: null },
-        { labels: ['Radiobutton', 'Rdo'], create_callback: null },
-        { labels: ['Box'], create_callback: null },
-        { labels: ['Table', 'Tbl'], create_callback: null },
-        { labels: ['Tabs'], create_callback: null },
+        { labels: ['Button', 'Btn'], type: Elements.Button },
+        { labels: ['Text'], type: null },
+        { labels: ['Textfield', 'Input'], type: null },
+        { labels: ['Textarea'], type: null },
+        { labels: ['Checkbox', 'Chk'], type: null },
+        { labels: ['Radiobutton', 'Rdo'], type: null },
+        { labels: ['Box'], type: null },
+        { labels: ['Table', 'Tbl'], type: null },
+        { labels: ['Tabs'], type: null },
     ]
 
     TypeToAdd.init(element_list);
@@ -50,11 +55,25 @@ Editor.handle_key_events = function() {
     });
 }
 
-Editor.render_page = function(page) {
-    $('#canvas').empty().append(page.render());
+Editor.render_page = function() {
+    Editor.canvas().children().detach();
+    PageList.curr_page().render(Editor.canvas());
+    Selector.unselect_all();
 }
 
 Editor.add_element = function(element) {
-    PageList.curr_item.page.add_element(element);
-    Editor.render_page(PageList.curr_item.page);
+    PageList.curr_page().add_element(element);
+    element.set_position(100, 100);
+    Selector.select(element);
+}
+
+Editor.select_element = function(element) {
+    if(element instanceof Elements.Page)
+        Selector.unselect_all();
+    else
+        Selector.select(element);
+}
+
+Editor.canvas = function() {
+    return $('#canvas');
 }

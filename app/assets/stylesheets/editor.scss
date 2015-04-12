@@ -3,12 +3,94 @@
   height: 100%;
   padding-top: 0px;
 
-  #canvas {
+  #stage {
     width: 960px;
     height: 100%;
     background-color: white;
     margin-left: auto;
     margin-right: auto;
+    position: relative;
+
+    #canvas {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+    }
+
+    #selector {
+      display: none;
+      position: absolute;
+      left: 0px;
+      top: 0px;
+      border: 1px solid #489cff;
+      width: 300px;
+      height: 40px;
+      overflow: visible;
+      cursor: move;
+
+      .handle {
+        position: absolute;
+      }
+
+      #handle_north {
+        top: -6px;
+        width: 100%;
+        height: 10px;
+        cursor: n-resize;
+      }
+
+      #handle_south {
+        bottom: -4px;
+        width: 100%;
+        height: 10px;
+        cursor: s-resize;
+      }
+
+      #handle_east {
+        right: -6px;
+        width: 10px;
+        height: 100%;
+        cursor: e-resize;
+      }
+
+      #handle_west {
+        left: -6px;
+        width: 10px;
+        height: 100%;
+        cursor: w-resize;
+      }
+
+      .handle-diagonal {
+        background-color: white;
+        border: 1px solid black;
+        width: 10px;
+        height: 10px;
+      }
+
+      #handle_north_west {
+        top: -6px;
+        left: -6px;
+        cursor: nw-resize;
+      }
+
+      #handle_north_east {
+        top: -6px;
+        right: -6px;
+        cursor: ne-resize;
+      }
+
+      #handle_south_east {
+        bottom: -6px;
+        right: -6px;
+        cursor: se-resize;
+      }
+
+      #handle_south_west {
+        bottom: -6px;
+        left: -6px;
+        cursor: sw-resize;
+      }
+    }
   }
 
   #sidebar {
@@ -150,6 +232,22 @@
   .element-page {
     width: 100%;
     height: 100%;
+    position: absolute;
+    left: 0px;
+    top: 0px;
+  }
+
+  .element-hitarea {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+  }
+
+  .element-button {
+    position: absolute;
   }
 }
 
