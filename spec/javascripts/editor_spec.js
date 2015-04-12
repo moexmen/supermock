@@ -7,8 +7,22 @@ describe('projects/show.js', function() {
         loadFixtures('generated/projects/show.html');
     });
 
-    describe('pages', function() {
+    describe('page list', function() {
         beforeEach(function() {
+        });
+
+        it('should render current selected page', function () {
+            expect($(Editor.canvas().children()[0]).is(PageList.curr_page().render())).toBe(true);
+        });
+
+        it('should render current selected child page', function () {
+            PageList.ContextMenu.show(PageList.root_item.child_items[0]);
+            PageList.ContextMenu.new_child_page_menu_item().click();
+            PageList.select_item(PageList.root_item.child_items[0].child_items[0])
+
+            expect(Editor.canvas().children().length).toBe(2);
+            expect($(Editor.canvas().children()[0]).is(PageList.root_item.child_items[0].page.render())).toBe(true);
+            expect($(Editor.canvas().children()[1]).is(PageList.curr_page().render())).toBe(true);
         });
 
         it('should add top level pages', function () {
@@ -76,10 +90,34 @@ describe('projects/show.js', function() {
         });
     });
 
-    describe('type to add', function() {
+    describe('selector', function() {
         beforeEach(function () {
+            expect(Selector.visible()).toBe(false);
+
+            TypeToAdd.show();
+            TypeToAdd.input().val('Btn');
+            TypeToAdd.parse_input();
         });
 
+        it('should show when adding element', function () {
+            expect(Selector.visible()).toBe(true);
+        });
+
+        it('should hide when selecting page', function () {
+            expect(Selector.visible()).toBe(true);
+            PageList.curr_page().render().mousedown();
+            expect(Selector.visible()).toBe(false);
+        });
+
+        it('should hide when selecting element', function () {
+            PageList.curr_page().render().mousedown();
+            expect(Selector.visible()).toBe(false);
+            PageList.curr_page().elements[0].hitarea.mousedown();
+            expect(Selector.visible()).toBe(true);
+        });
+    });
+
+    describe('type to add', function() {
         it('should show up on spacebar', function () {
             show_type_to_add();
 
@@ -116,8 +154,7 @@ describe('projects/show.js', function() {
 
             type_to_add_trigger_enter();
             expect(TypeToAdd.visible()).toBe(false);
-            expect($($($('#canvas').children('.element-page')[0]).children()[0]).text()).toBe('Button');
-
+            expect($(Editor.canvas().children()[0]).children('.element-button').length).toBe(1);
         });
 
         function show_type_to_add() {
