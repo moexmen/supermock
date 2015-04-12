@@ -92,6 +92,10 @@ describe('projects/show.js', function() {
 
     describe('selector', function() {
         beforeEach(function () {
+            $('#stage').css('position', 'relative');
+            Editor.canvas().css('position', 'absolute');
+            Selector.render().css('position', 'absolute');
+            console.log($('#stage').css('position') + ' . ' + Editor.canvas().css('position') + ' . ' + Selector.render().css('position'));
             expect(Selector.visible()).toBe(false);
 
             TypeToAdd.show();
@@ -105,15 +109,56 @@ describe('projects/show.js', function() {
 
         it('should hide when selecting page', function () {
             expect(Selector.visible()).toBe(true);
-            PageList.curr_page().render().mousedown();
+            PageList.curr_page().render().mouseup();
             expect(Selector.visible()).toBe(false);
         });
 
-        it('should hide when selecting element', function () {
-            PageList.curr_page().render().mousedown();
+        it('should show when selecting element', function () {
+            PageList.curr_page().render().mouseup();
             expect(Selector.visible()).toBe(false);
             PageList.curr_page().elements[0].hitarea.mousedown();
             expect(Selector.visible()).toBe(true);
+        });
+
+        describe('shift select', function() {
+            beforeEach(function () {
+                TypeToAdd.show();
+                TypeToAdd.input().val('Btn');
+                TypeToAdd.parse_input();
+            });
+
+            it('should add selected element by shift', function () {
+                PageList.curr_page().render().mouseup();
+                PageList.curr_page().elements[0].hitarea.mousedown();
+
+                expect(Selector.selected_elements.length).toBe(1);
+                shift_mousedown_on(PageList.curr_page().elements[1].hitarea);
+                expect(Selector.selected_elements.length).toBe(2);
+            });
+
+            it('should remove selected element by shift', function () {
+
+                console.log($('#stage').position().left + '-' + $('#stage').position().top);
+                console.log(Editor.canvas().position().left + ',' + Editor.canvas().position().top);
+                console.log(PageList.curr_page().elements[0].hitarea.offset().left + ' ' + PageList.curr_page().elements[0].hitarea.offset().top);
+                console.log(Selector.render().offset().left + ' ' + Selector.render().offset().top);
+                PageList.curr_page().render().mouseup();
+                PageList.curr_page().elements[0].hitarea.mousedown();
+                shift_mousedown_on(PageList.curr_page().elements[1].hitarea);
+
+                expect(Selector.selected_elements.length).toBe(2);
+
+                shift_mousedown_on(Selector.render());
+                expect(Selector.selected_elements.length).toBe(1);
+            });
+
+            function shift_mousedown_on(element) {
+                var e = $.Event('mousedown');
+                e.shiftKey = true;
+                e.pageX = element.offset().left + 10;
+                e.pageY = element.offset().top + 10;
+                element.trigger(e);
+            }
         });
     });
 
