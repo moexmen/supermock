@@ -6,14 +6,20 @@ Elements.Element = function() {
 Elements.Element.prototype.destroy = function() {
 }
 
+Elements.Element.prototype.select = function() {
+    this.hitarea.css('opacity', 0.2);
+}
+
+Elements.Element.prototype.unselect = function() {
+    this.hitarea.css('opacity', 0.0);
+}
+
 Elements.Element.prototype.set_position = function(left, top) {
     this.render().css({ left: left, top: top });
-    return this;
 }
 
 Elements.Element.prototype.get_position = function() {
-    var position = this.render().position();
-    return { left: position.left, top: position.top};
+    return this.render().position();
 }
 
 Elements.Element.prototype.get_size = function() {
@@ -22,7 +28,6 @@ Elements.Element.prototype.get_size = function() {
 
 Elements.Element.prototype.render = function() {
 }
-
 
 Elements.Element.create_default = function(element_type) {
     switch(element_type) {

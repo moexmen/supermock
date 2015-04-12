@@ -25,7 +25,8 @@ Elements.Button.prototype.render = function() {
         this.btn = $(this.html.children('button')[0]).text(this.text);
 
         this.hitarea = $(this.html.children('.element-hitarea')[0])
-            .mousedown(function() { Editor.select_element(this); return false; }.bind(this));
+            .mousedown(function(e) { Editor.mousedown_element(this, e); return false; }.bind(this))
+            .mouseup(function(e) { Editor.mouseup_element(this, e); return false; }.bind(this));
 
         this.set_position(this.x, this.y);
     }

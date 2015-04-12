@@ -64,14 +64,19 @@ Editor.render_page = function() {
 Editor.add_element = function(element) {
     PageList.curr_page().add_element(element);
     element.set_position(100, 100);
+    Selector.unselect_all();
     Selector.select(element);
 }
 
-Editor.select_element = function(element) {
+Editor.mousedown_element = function(element, event) {
+    Selector.mousedown_element(element, event);
+}
+
+Editor.mouseup_element = function(element, event) {
     if(element instanceof Elements.Page)
         Selector.unselect_all();
     else
-        Selector.select(element);
+        Selector.mouseup_element(element, event);
 }
 
 Editor.canvas = function() {

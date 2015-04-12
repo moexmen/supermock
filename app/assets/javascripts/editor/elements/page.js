@@ -57,7 +57,7 @@ Elements.Page.prototype.render = function(canvas) {
 
     if(this.html === null) {
         this.html = Util.clone_template('#element_page_template')
-            .mousedown(function() { Editor.select_element(this); return false; }.bind(this));
+            .mouseup(function(e) { Editor.mouseup_element(this, e); return false; }.bind(this));
 
         $.each(this.elements, function(idx, element) {
             this.html.append(element.render());
