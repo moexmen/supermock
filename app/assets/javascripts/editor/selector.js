@@ -3,9 +3,58 @@ var Selector = Selector || {};
 Selector.init = function() {
     Selector.selected_elements = [];
 
-    Selector.drag_hitarea().mouseup(Selector.stop_drag);
-    Selector.render().mousedown(Selector.mousedown).mouseup(Selector.mouseup);
+    Selector.render().resizable({
+        handles: {
+            'ne': Selector.handle_north_east(),
+            'se': Selector.handle_south_east(),
+            'sw': Selector.handle_south_west(),
+            'nw': Selector.handle_north_west(),
+            'n': Selector.handle_north(),
+            'e': Selector.handle_east(),
+            's': Selector.handle_south(),
+            'w': Selector.handle_west()
+        },
+        start: function(e,ui) { return Selector.OnStartResize(e,ui); },
+        resize: Selector.OnResize,
+        //stop: function(e,ui) { self.OnStopResize(e,ui); }
+    });
+
+    //Selector.handle_south_east().mousedown(function(e) {e.stopPropagation(); });
+
+    //Selector.drag_hitarea().mouseup(Selector.stop_drag);
+    //Selector.render().mousedown(Selector.mousedown).mouseup(Selector.mouseup);
     Selector.hide();
+}
+
+Selector.OnStartResize = function(e,ui) {
+    Selector.originalResizes=[];
+    $.each(Selector.selected_elements, function(idx, element) {
+        var size=element.get_size();
+        var pos=element.get_position();
+        Selector.originalResizes.push({ width:size.width, height:size.height, left:pos.left, top:pos.top });
+    });
+
+    //$(this.resizerId).css({ opacity:0 });
+    console.log('resize start');
+    return false;
+}
+Selector.OnResize = function(e,ui) {
+    var resizeWidthRatio=ui.size.width/ui.originalSize.width;
+    var resizeHeightRatio=ui.size.height/ui.originalSize.height;
+
+    //update ctrls
+    $.each(Selector.selected_elements, function(idx, element) {
+        var resize=Selector.originalResizes[idx];
+
+        //-1,+1 to compensate for border
+        var left=Math.round((resizeWidthRatio*(resize.left-ui.originalPosition.left)) + ui.position.left);
+        var top=Math.round((resizeHeightRatio*(resize.top-ui.originalPosition.top)) + ui.position.top);
+        element.set_position(left, top);
+
+        var width=Math.round(resize.width*resizeWidthRatio);
+        var height=Math.round(resize.height*resizeHeightRatio);
+        element.set_size(width, height);
+    });
 }
 
 Selector.is_selected = function(element) {
@@ -42,10 +91,8 @@ Selector.mousedown = function(e) {
     if(e.shiftKey == true) { // shift select
         var left = e.pageX - Editor.canvas().offset().left;
         var top = e.pageY - Editor.canvas().offset().top;
-        console.log(Editor.canvas().position().left + '-' + Editor.canvas().position().top);
-        console.log(left + '-' + top);
         var element_behind = Selector.element_behind(left, top);
-        console.log(element_behind);
+
         if(element_behind != null) { // unselect already added element
             Selector.unselect(element_behind);
         }
@@ -113,8 +160,8 @@ Selector.drag = function(e) {
         element.set_position(position.left, position.top);
     });
 
-    Selector.drag_hitarea().show();
-    Selector.hide();
+    //Selector.drag_hitarea().show();
+    //Selector.hide();
 }
 
 Selector.stop_drag = function() {
@@ -157,4 +204,36 @@ Selector.render = function() {
 
 Selector.drag_hitarea = function() {
     return $('#selector_drag_hitarea');
+}
+
+Selector.handle_north = function() {
+    return $('#handle_north');
+}
+
+Selector.handle_east = function() {
+    return $('#handle_east');
+}
+
+Selector.handle_south = function() {
+    return $('#handle_south');
+}
+
+Selector.handle_west = function() {
+    return $('#handle_west');
+}
+
+Selector.handle_north_west = function() {
+    return $('#handle_north_west');
+}
+
+Selector.handle_north_east = function() {
+    return $('#handle_north_east');
+}
+
+Selector.handle_south_west = function() {
+    return $('#handle_south_west');
+}
+
+Selector.handle_south_east = function() {
+    return $('#handle_south_east');
 }

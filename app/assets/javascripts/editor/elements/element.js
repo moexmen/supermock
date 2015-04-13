@@ -26,6 +26,10 @@ Elements.Element.prototype.get_size = function() {
     return { width: this.render().width(), height: this.render().height() };
 }
 
+Elements.Element.prototype.set_size = function(width, height) {
+    this.render().css({ width: width, height: height });
+}
+
 Elements.Element.prototype.render = function() {
 }
 
