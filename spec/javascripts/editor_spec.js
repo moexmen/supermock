@@ -1,10 +1,13 @@
 jasmine.getFixtures().fixturesPath="../../spec/javascripts/fixtures"
+//jasmine.getStyleFixtures().fixturesPath = '../../spec/javascripts/fixtures';
 
 describe('projects/show.js', function() {
     'use strict';
 
     beforeEach(function() {
         loadFixtures('generated/projects/show.html');
+        // NOTE: Loading style fixtures doesnt seem to have any effect on CSS
+        //loadStyleFixtures('generated/css/editor.css');
     });
 
     describe('page list', function() {
@@ -92,12 +95,6 @@ describe('projects/show.js', function() {
 
     describe('selector', function() {
         beforeEach(function () {
-            $('#stage').css('position', 'relative');
-            Editor.canvas().css('position', 'absolute');
-            Selector.render().css('position', 'absolute');
-            console.log($('#stage').css('position') + ' . ' + Editor.canvas().css('position') + ' . ' + Selector.render().css('position'));
-            expect(Selector.visible()).toBe(false);
-
             TypeToAdd.show();
             TypeToAdd.input().val('Btn');
             TypeToAdd.parse_input();
@@ -137,11 +134,13 @@ describe('projects/show.js', function() {
             });
 
             it('should remove selected element by shift', function () {
+                console.log($('#selector').css('cursor') + ' . ' + Editor.canvas().css('position') + ' . ' + Selector.render().css('position'));
+                $('#stage').css('position', 'relative');
+                Editor.canvas().css('position', 'absolute');
+                Selector.render().css('position', 'absolute');
+                console.log($('#stage').css('position') + ' . ' + Editor.canvas().css('position') + ' . ' + Selector.render().css('position'));
 
-                console.log($('#stage').position().left + '-' + $('#stage').position().top);
-                console.log(Editor.canvas().position().left + ',' + Editor.canvas().position().top);
-                console.log(PageList.curr_page().elements[0].hitarea.offset().left + ' ' + PageList.curr_page().elements[0].hitarea.offset().top);
-                console.log(Selector.render().offset().left + ' ' + Selector.render().offset().top);
+
                 PageList.curr_page().render().mouseup();
                 PageList.curr_page().elements[0].hitarea.mousedown();
                 shift_mousedown_on(PageList.curr_page().elements[1].hitarea);
@@ -155,8 +154,8 @@ describe('projects/show.js', function() {
             function shift_mousedown_on(element) {
                 var e = $.Event('mousedown');
                 e.shiftKey = true;
-                e.pageX = element.offset().left + 10;
-                e.pageY = element.offset().top + 10;
+                e.pageX = element.offset().left;
+                e.pageY = element.offset().top;
                 element.trigger(e);
             }
         });
