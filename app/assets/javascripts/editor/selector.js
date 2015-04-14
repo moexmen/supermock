@@ -1,28 +1,12 @@
+//= require ./selector/resize
+
 var Selector = Selector || {};
 
 Selector.init = function() {
     Selector.selected_elements = [];
 
-    Selector.render().resizable({
-        handles: {
-            'ne': Selector.handle_north_east(),
-            'se': Selector.handle_south_east(),
-            'sw': Selector.handle_south_west(),
-            'nw': Selector.handle_north_west(),
-            'n': Selector.handle_north(),
-            'e': Selector.handle_east(),
-            's': Selector.handle_south(),
-            'w': Selector.handle_west()
-        },
-        start: function(e,ui) { return Selector.OnStartResize(e,ui); },
-        resize: Selector.OnResize,
-        //stop: function(e,ui) { self.OnStopResize(e,ui); }
-    });
-
-    //Selector.handle_south_east().mousedown(function(e) {e.stopPropagation(); });
-
-    //Selector.drag_hitarea().mouseup(Selector.stop_drag);
-    //Selector.render().mousedown(Selector.mousedown).mouseup(Selector.mouseup);
+    Selector.resize.init();
+    Selector.render().mousedown(Selector.mousedown).mouseup(Selector.mouseup);
     Selector.hide();
 }
 
@@ -160,6 +144,12 @@ Selector.drag = function(e) {
         element.set_position(position.left, position.top);
     });
 
+    // update selector
+    var position = Selector.render().position();
+    position.left += delta_left;
+    position.top += delta_top;
+    Selector.render().css({ 'left': position.left, 'top': position.top });
+
     //Selector.drag_hitarea().show();
     //Selector.hide();
 }
@@ -200,40 +190,4 @@ Selector.hide = function() {
 
 Selector.render = function() {
     return $('#selector');
-}
-
-Selector.drag_hitarea = function() {
-    return $('#selector_drag_hitarea');
-}
-
-Selector.handle_north = function() {
-    return $('#handle_north');
-}
-
-Selector.handle_east = function() {
-    return $('#handle_east');
-}
-
-Selector.handle_south = function() {
-    return $('#handle_south');
-}
-
-Selector.handle_west = function() {
-    return $('#handle_west');
-}
-
-Selector.handle_north_west = function() {
-    return $('#handle_north_west');
-}
-
-Selector.handle_north_east = function() {
-    return $('#handle_north_east');
-}
-
-Selector.handle_south_west = function() {
-    return $('#handle_south_west');
-}
-
-Selector.handle_south_east = function() {
-    return $('#handle_south_east');
 }
