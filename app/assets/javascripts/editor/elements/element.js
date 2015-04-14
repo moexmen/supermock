@@ -23,11 +23,11 @@ Elements.Element.prototype.get_position = function() {
 }
 
 Elements.Element.prototype.get_size = function() {
-    return { width: this.render().width(), height: this.render().height() };
+    return { width: this.render().outerWidth(), height: this.render().outerHeight() };
 }
 
 Elements.Element.prototype.set_size = function(width, height) {
-    this.render().css({ width: width, height: height });
+    this.render().outerWidth(width).outerHeight(height);
 }
 
 Elements.Element.prototype.render = function() {

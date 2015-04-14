@@ -144,20 +144,13 @@ Selector.drag = function(e) {
         element.set_position(position.left, position.top);
     });
 
-    // update selector
-    var position = Selector.render().position();
-    position.left += delta_left;
-    position.top += delta_top;
-    Selector.render().css({ 'left': position.left, 'top': position.top });
-
-    //Selector.drag_hitarea().show();
+    Selector.delta_position(delta_left, delta_top);
     //Selector.hide();
 }
 
 Selector.stop_drag = function() {
     console.log('stop drag');
     $(window).off('mousemove').off('mouseup');
-    Selector.drag_hitarea().hide();
     Selector.show();
 }
 
@@ -181,11 +174,43 @@ Selector.show = function() {
         max_y = Math.max(max_y, position.top + size.height);
     });
 
-    Selector.render().css({ left: min_x, top: min_y, width: max_x - min_x, height: max_y - min_y}).show();
+    Selector.set_position(min_x, min_y);
+    Selector.set_size(max_x - min_x, max_y - min_y);
+    Selector.render().show();
 }
 
 Selector.hide = function() {
     Selector.render().hide();
+}
+
+Selector.set_position = function(left, top) {
+    Selector.render().css({ left: left, top: top });
+}
+
+Selector.get_position = function() {
+    return Selector.render().position();
+}
+
+Selector.set_size = function(width, height) {
+    Selector.render().outerWidth(width).outerHeight(height);
+}
+
+Selector.get_size = function() {
+    return { width: Selector.render().outerWidth(), height: Selector.render().outerHeight() };
+}
+
+Selector.delta_position = function(delta_left, delta_top) {
+    var position = Selector.get_position();
+    position.left += delta_left;
+    position.top += delta_top;
+    Selector.set_position(position.left, position.top);
+}
+
+Selector.delta_size = function(delta_width, delta_height) {
+    var size = Selector.get_size();
+    size.width += delta_width;
+    size.height += delta_height;
+    Selector.set_size(size.width, size.height);
 }
 
 Selector.render = function() {
