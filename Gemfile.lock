@@ -118,8 +118,6 @@ GEM
     jquery-turbolinks (2.1.0)
       railties (>= 3.1.0)
       turbolinks
-    jquery-ui-rails (5.0.3)
-      railties (>= 3.2.16)
     json (1.8.2)
     loofah (2.0.1)
       nokogiri (>= 1.5.9)
@@ -261,7 +259,6 @@ DEPENDENCIES
   jasmine-rails
   jquery-rails
   jquery-turbolinks
-  jquery-ui-rails
   pg
   rails (= 4.2.1)
   rails_utils

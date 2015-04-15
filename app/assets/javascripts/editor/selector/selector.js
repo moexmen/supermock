@@ -1,44 +1,13 @@
-//= require ./selector/resize
-
 var Selector = Selector || {};
 
 Selector.init = function() {
     Selector.selected_elements = [];
 
+    Selector.move.init();
     Selector.resize.init();
+
     Selector.render().mousedown(Selector.mousedown).mouseup(Selector.mouseup);
     Selector.hide();
-}
-
-Selector.OnStartResize = function(e,ui) {
-    Selector.originalResizes=[];
-    $.each(Selector.selected_elements, function(idx, element) {
-        var size=element.get_size();
-        var pos=element.get_position();
-        Selector.originalResizes.push({ width:size.width, height:size.height, left:pos.left, top:pos.top });
-    });
-
-    //$(this.resizerId).css({ opacity:0 });
-    console.log('resize start');
-    return false;
-}
-Selector.OnResize = function(e,ui) {
-    var resizeWidthRatio=ui.size.width/ui.originalSize.width;
-    var resizeHeightRatio=ui.size.height/ui.originalSize.height;
-
-    //update ctrls
-    $.each(Selector.selected_elements, function(idx, element) {
-        var resize=Selector.originalResizes[idx];
-
-        //-1,+1 to compensate for border
-        var left=Math.round((resizeWidthRatio*(resize.left-ui.originalPosition.left)) + ui.position.left);
-        var top=Math.round((resizeHeightRatio*(resize.top-ui.originalPosition.top)) + ui.position.top);
-        element.set_position(left, top);
-
-        var width=Math.round(resize.width*resizeWidthRatio);
-        var height=Math.round(resize.height*resizeHeightRatio);
-        element.set_size(width, height);
-    });
 }
 
 Selector.is_selected = function(element) {
@@ -73,35 +42,22 @@ Selector.unselect_all = function() {
 
 Selector.mousedown = function(e) {
     if(e.shiftKey == true) { // shift select
-        var left = e.pageX - Editor.canvas().offset().left;
-        var top = e.pageY - Editor.canvas().offset().top;
-        var element_behind = Selector.element_behind(left, top);
-
+        var element_behind = Selector.element_at(e);
         if(element_behind != null) { // unselect already added element
             Selector.unselect(element_behind);
         }
     }
     else { // non shift
-        Selector.start_drag(event);
+        Selector.move.mousedown(e);
     }
+
+    return false;
 }
 Selector.mouseup = function(e) {
-    Selector.stop_drag();
-}
+    Selector.stop_mouse_events();
+    Selector.show();
 
-Selector.element_behind = function(left, top) {
-    var element_behind = null;
-    $.each(Selector.selected_elements, function(idx, element) {
-        var position = element.get_position();
-        var size = element.get_size();
-
-        if(left >= position.left && left <= position.left + size.width  && top >= position.top && top <= position.top + size.height) {
-            element_behind = element;
-            return false;
-        }
-    });
-
-    return element_behind;
+    return false;
 }
 
 Selector.mousedown_element = function(element, event) {
@@ -114,7 +70,7 @@ Selector.mousedown_element = function(element, event) {
         if(Selector.is_selected(element) == false) { // new element, clear previous selection
             Selector.unselect_all();
             Selector.select(element);
-            Selector.start_drag(event);
+            Selector.move.mousedown(event);
         }
     }
 }
@@ -122,36 +78,9 @@ Selector.mousedown_element = function(element, event) {
 Selector.mouseup_element = function(element, event) {
 }
 
-Selector.update_last_drag_position = function(e) {
-    Selector.last_drag_position = { left: e.pageX, top: e.pageY };
-}
-
-Selector.start_drag = function(e) {
-    Selector.update_last_drag_position(e);
-    $(window).mousemove(Selector.drag).mouseup(Selector.stop_drag);
-}
-
-Selector.drag = function(e) {
-    var delta_left = Math.round(e.pageX - Selector.last_drag_position.left);
-    var delta_top = Math.round(e.pageY - Selector.last_drag_position.top);
-    Selector.update_last_drag_position(e);
-
-    // update elements
-    $.each(Selector.selected_elements, function(idx, element) {
-        var position = element.get_position();
-        position.left += delta_left;
-        position.top += delta_top;
-        element.set_position(position.left, position.top);
-    });
-
-    Selector.delta_position(delta_left, delta_top);
-    //Selector.hide();
-}
-
-Selector.stop_drag = function() {
-    console.log('stop drag');
+Selector.stop_mouse_events = function() {
+    console.log('stop_mouse_events');
     $(window).off('mousemove').off('mouseup');
-    Selector.show();
 }
 
 Selector.visible = function() {
@@ -176,11 +105,21 @@ Selector.show = function() {
 
     Selector.set_position(min_x, min_y);
     Selector.set_size(max_x - min_x, max_y - min_y);
+    Selector.opaque();
     Selector.render().show();
 }
 
 Selector.hide = function() {
+    Selector.stop_mouse_events();
     Selector.render().hide();
+}
+
+Selector.transparent = function() {
+    Selector.render().css('opacity', 0);
+}
+
+Selector.opaque = function() {
+    Selector.render().css('opacity', 1);
 }
 
 Selector.set_position = function(left, top) {
@@ -211,6 +150,24 @@ Selector.delta_size = function(delta_width, delta_height) {
     size.width += delta_width;
     size.height += delta_height;
     Selector.set_size(size.width, size.height);
+}
+
+Selector.element_at = function(e) {
+    var left = e.pageX - Editor.canvas().offset().left;
+    var top = e.pageY - Editor.canvas().offset().top;
+
+    var element_behind = null;
+    $.each(Selector.selected_elements, function(idx, element) {
+        var position = element.get_position();
+        var size = element.get_size();
+
+        if(left >= position.left && left <= position.left + size.width  && top >= position.top && top <= position.top + size.height) {
+            element_behind = element;
+            return false;
+        }
+    });
+
+    return element_behind;
 }
 
 Selector.render = function() {
