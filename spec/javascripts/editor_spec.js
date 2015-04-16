@@ -126,25 +126,21 @@ describe('projects/show.js', function() {
 
             it('should add selected element by shift', function () {
                 PageList.curr_page().render().mouseup();
-                PageList.curr_page().elements[0].hitarea.mousedown();
 
+                PageList.curr_page().elements[0].hitarea.mousedown();
                 expect(Selector.selected_elements.length).toBe(1);
+
                 shift_mousedown_on(PageList.curr_page().elements[1].hitarea);
                 expect(Selector.selected_elements.length).toBe(2);
             });
 
             it('should remove selected element by shift', function () {
-                console.log($('#selector').css('cursor') + ' . ' + Editor.canvas().css('position') + ' . ' + Selector.render().css('position'));
-                $('#stage').css('position', 'relative');
-                Editor.canvas().css('position', 'absolute');
-                Selector.render().css('position', 'absolute');
-                console.log($('#stage').css('position') + ' . ' + Editor.canvas().css('position') + ' . ' + Selector.render().css('position'));
-
+                css_fix();
 
                 PageList.curr_page().render().mouseup();
                 PageList.curr_page().elements[0].hitarea.mousedown();
-                shift_mousedown_on(PageList.curr_page().elements[1].hitarea);
 
+                shift_mousedown_on(PageList.curr_page().elements[1].hitarea);
                 expect(Selector.selected_elements.length).toBe(2);
 
                 shift_mousedown_on(Selector.render());
@@ -157,6 +153,45 @@ describe('projects/show.js', function() {
                 e.pageX = element.offset().left;
                 e.pageY = element.offset().top;
                 element.trigger(e);
+            }
+        });
+
+        describe('move', function() {
+            it('should move', function () {
+                css_fix();
+
+                PageList.curr_page().render().mouseup();
+
+                var position = PageList.curr_page().elements[0].get_position();
+                expect(position.left).toBe(100);
+                expect(position.top).toBe(100);
+
+                mousedown_on(PageList.curr_page().elements[0].hitarea, 100, 100);
+                window_mousemove(150, 200);
+                window_mouseup();
+
+                position = PageList.curr_page().elements[0].get_position();
+                expect(position.left).toBe(150);
+                expect(position.top).toBe(200);
+            });
+
+            function mousedown_on(element, left, top) {
+                var e = $.Event('mousedown');
+                e.pageX = left;
+                e.pageY = top;
+                element.trigger(e);
+            }
+
+            function window_mousemove(left, top) {
+                var e = $.Event('mousemove');
+                e.pageX = left;
+                e.pageY = top;
+                Selector.move.mousemove(e);
+            }
+
+            function window_mouseup() {
+                var e = $.Event('mouseup');
+                Selector.move.mouseup(e);
             }
         });
     });
@@ -225,4 +260,15 @@ describe('projects/show.js', function() {
             TypeToAdd.input().trigger(e);
         }
     });
+
+    function css_fix() {
+        $('#stage').css('position', 'relative');
+        $('#sidebar').css('position', 'absolute');
+        Editor.canvas().css('position', 'absolute');
+        Selector.render().css('position', 'absolute');
+        $('.handle').css('position', 'absolute');
+        $('.element-page').css('position', 'absolute');
+        $('.element-hitarea').css('position', 'absolute');
+        $('.element-button').css('position', 'absolute');
+    }
 });
