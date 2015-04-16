@@ -2,7 +2,7 @@ var Selector = Selector || {};
 Selector.resize = {};
 
 Selector.resize.init = function() {
-    Selector.resize.edge_snap = []
+    Selector.resize.element_ratios = []
 
     var handles = [
         Selector.resize.handle_north(),
@@ -20,8 +20,8 @@ Selector.resize.init = function() {
     });
 }
 
-Selector.resize.init_edge_snap = function() {
-    Selector.resize.edge_snap = []
+Selector.resize.init_element_ratios = function() {
+    Selector.resize.element_ratios = []
     var selector_size = Selector.get_size();
     var selector_position = Selector.get_position();
 
@@ -29,11 +29,11 @@ Selector.resize.init_edge_snap = function() {
         var element_position = element.get_position();
         var element_size = element.get_size();
 
-        Selector.resize.edge_snap.push({
-            left: element_position.left == selector_position.left,
-            top: element_position.top == selector_position.top,
-            right: element_position.left + element_size.width == selector_position.left + selector_size.width,
-            bottom: element_position.top + element_size.height == selector_position.top + selector_size.height,
+        Selector.resize.element_ratios.push({
+            left: (element_position.left - selector_position.left) / selector_size.width,
+            top: (element_position.top - selector_position.top) / selector_size.height,
+            width: element_size.width /selector_size.width,
+            height: element_size.height /selector_size.height
         });
     });
 }
@@ -43,7 +43,7 @@ Selector.resize.update_last_move_position = function(e) {
 }
 
 Selector.resize.mousedown_handle = function(e) {
-    Selector.resize.init_edge_snap();
+    Selector.resize.init_element_ratios();
     Selector.resize.update_last_move_position(e);
     $(window).mousemove($(e.target), Selector.resize.mousemove_handle).mouseup(Selector.resize.mouseup_handle);
 
@@ -69,93 +69,76 @@ Selector.resize.mouseup_handle = function(e) {
 
 Selector.resize.resize = function(handle, delta_left, delta_top) {
     // resize selector
-    var initial_size = Selector.get_size();
-    var initial_position = Selector.get_position();
     Selector.resize.resize_selector(handle, delta_left, delta_top);
 
     // resize elements
     var new_size = Selector.get_size();
     var new_position = Selector.get_position();
-    Selector.resize.resize_elements(initial_size, initial_position, new_size, new_position);
+    Selector.resize.resize_elements(new_size, new_position);
 }
 
 Selector.resize.resize_selector = function(handle, delta_left, delta_top) {
+    var delta = { left: 0, top: 0, width: 0, height: 0 };
+
     if(handle.is(Selector.resize.handle_north())) {
-        Selector.delta_size(0, -delta_top);
-        Selector.delta_position(0, delta_top);
+        delta = { left: 0, top: delta_top, width: 0, height: -delta_top };
     }
     else if(handle.is(Selector.resize.handle_east())) {
-        Selector.delta_size(delta_left, 0);
-        Selector.delta_position(0, 0);
+        delta = { left: 0, top: 0, width: delta_left, height: 0 };
     }
     else if(handle.is(Selector.resize.handle_south())) {
-        Selector.delta_size(0, delta_top);
-        Selector.delta_position(0, 0);
+        delta = { left: 0, top: 0, width: 0, height: delta_top };
     }
     else if(handle.is(Selector.resize.handle_west())) {
-        Selector.delta_size(-delta_left, 0);
-        Selector.delta_position(delta_left, 0);
+        delta = { left: delta_left, top: 0, width: -delta_left, height: 0 };
     }
     else if(handle.is(Selector.resize.handle_north_west())) {
-        Selector.delta_size(-delta_left, -delta_top);
-        Selector.delta_position(delta_left, delta_top);
+        delta = { left: delta_left, top: delta_top, width: -delta_left, height: -delta_top };
     }
     else if(handle.is(Selector.resize.handle_north_east())) {
-        Selector.delta_size(delta_left, -delta_top);
-        Selector.delta_position(0, delta_top);
+        delta = { left: 0, top: delta_top, width: delta_left, height: -delta_top };
     }
     else if(handle.is(Selector.resize.handle_south_west())) {
-        Selector.delta_size(-delta_left, delta_top);
-        Selector.delta_position(delta_left, 0);
+        delta = { left: delta_left, top: 0, width: -delta_left, height: delta_top };
     }
     else if(handle.is(Selector.resize.handle_south_east())) {
-        Selector.delta_size(delta_left, delta_top);
-        Selector.delta_position(0, 0);
+        delta = { left: 0, top: 0, width: delta_left, height: delta_top };
     }
+
+
+    delta = Selector.resize.calc_min_delta(delta);
+    Selector.delta_size(delta.width, delta.height);
+    Selector.delta_position(delta.left, delta.top);
 }
 
-Selector.resize.calc_min_delta_width = function(delta_width) {
-    var min_width = 20;
-    var size = Selector.get_size();
-
-    return (size.width + delta_width < min_width ? min_width - size.width : delta_width);
-}
-
-Selector.resize.calc_min_delta_height = function(delta_height) {
-    var min_height = 20;
-    var size = Selector.get_size();
-
-    return (size.height + delta_height < min_height ? min_height - size.height : delta_height);
-}
-
-Selector.resize.resize_elements = function(initial_size, initial_position, new_size, new_position) {
-    var scale = { width: new_size.width / initial_size.width, height: new_size.height / initial_size.height };
-
+Selector.resize.resize_elements = function(new_size, new_position) {
     $.each(Selector.selected_elements, function(idx, element) {
-        var element_position = element.get_position();
-        var element_size = element.get_size();
+        var element_ratio = Selector.resize.element_ratios[idx];
 
-        // scale it
-        var left = Math.round(scale.width * (element_position.left - initial_position.left)) + new_position.left;
-        var top = Math.round(scale.height * (element_position.top - initial_position.top)) + new_position.top;
-        var width = Math.round(scale.width * element_size.width);
-        var height = Math.round(scale.height * element_size.height);
-
-        // ensure within selector
-        left = Math.max(left, new_position.left);
-        top = Math.max(top, new_position.top);
-        width = Math.min(left + width, new_position.left + new_size.width) - left;
-        height = Math.min(top + height, new_position.top + new_size.height) - top;
-
-        // force edge snap if element was at the edge from the start
-        if(Selector.resize.edge_snap[idx].left) left = new_position.left;
-        if(Selector.resize.edge_snap[idx].top) top = new_position.top;
-        if(Selector.resize.edge_snap[idx].right) width = new_position.left - left + new_size.width;
-        if(Selector.resize.edge_snap[idx].bottom) height = new_position.top - top + new_size.height;
+        var left = new_position.left + Math.round(element_ratio.left * new_size.width);
+        var top = new_position.top + Math.round(element_ratio.top * new_size.height);
+        var width = Math.round(element_ratio.width * new_size.width);
+        var height = Math.round(element_ratio.height * new_size.height);
 
         element.set_position(left, top);
         element.set_size(width, height);
     });
+}
+
+Selector.resize.calc_min_delta = function(delta) {
+    var min = 20;
+    var size = Selector.get_size();
+
+    if(size.width + delta.width < min) {
+        delta.width = min - size.width;
+        delta.left = Math.sign(delta.left) * Math.abs(delta.width);
+    }
+    if(size.height + delta.height < min) {
+        delta.height = min - size.height;
+        delta.top = Math.sign(delta.top) * Math.abs(delta.height);
+    }
+
+    return delta;
 }
 
 Selector.resize.handle_north = function() {
