@@ -79,7 +79,6 @@ Selector.mouseup_element = function(element, event) {
 }
 
 Selector.stop_mouse_events = function() {
-    console.log('stop_mouse_events');
     $(window).off('mousemove').off('mouseup');
 }
 
