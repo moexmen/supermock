@@ -7,14 +7,14 @@ body#editor
     #canvas
 
     #selector
-      #handle_north.handle.ui-resizable-handle.ui-resizable-n
-      #handle_east.handle.ui-resizable-handle.ui-resizable-e
-      #handle_south.handle.ui-resizable-handle.ui-resizable-s
-      #handle_west.handle.ui-resizable-handle.ui-resizable-w
-      #handle_north_west.handle.handle-diagonal.ui-resizable-handle.ui-resizable-nw
-      #handle_north_east.handle.handle-diagonal.ui-resizable-handle.ui-resizable-ne
-      #handle_south_east.handle.handle-diagonal.ui-resizable-handle.ui-resizable-se
-      #handle_south_west.handle.handle-diagonal.ui-resizable-handle.ui-resizable-sw
+      #handle_north.handle
+      #handle_east.handle
+      #handle_south.handle
+      #handle_west.handle
+      #handle_north_west.handle.handle-diagonal
+      #handle_north_east.handle.handle-diagonal
+      #handle_south_east.handle.handle-diagonal
+      #handle_south_west.handle.handle-diagonal
 
   #sidebar
     div
@@ -38,11 +38,15 @@ body#editor
           #page_list
             ul
 
+
   #type_to_add
     div
       input#type_to_add_input.form-control [type='text' placeholder='type to add']
     div#type_to_add_list
       em#type_to_add_no_item No such elements found.
+
+  #type_to_add_list_item_template.hidden
+
 
   #page_list_item_context_menu
     ul.dropdown-menu [role='menu']
@@ -55,7 +59,24 @@ body#editor
     div [ data-toggle="context" ]
     ul
 
-  #type_to_add_list_item_template.hidden
+
+  #element_context_menu
+    ul.dropdown-menu [role='menu']
+
+  li#element_context_menu_item_template.hidden [role='presentation']
+    a [role='menuitem' tabindex='-1']
+
+  #element_context_menu_item_expandable_content_template.hidden
+    span
+    span.pull-right.glyphicon.glyphicon-chevron-right
+
+
+  #element_go_to_page_context_menu
+    ul.dropdown-menu [role='menu']
+
+  li#element_go_to_page_context_menu_item_template.hidden [role='presentation']
+    a [role='menuitem' tabindex='-1']
+
 
   #element_page_template.element-page.hidden
   #element_button_template.element.element-button.hidden
