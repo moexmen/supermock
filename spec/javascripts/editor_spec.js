@@ -8,6 +8,7 @@ describe('projects/show.js', function() {
         loadFixtures('generated/projects/show.html');
         // NOTE: Loading style fixtures doesnt seem to have any effect on CSS
         //loadStyleFixtures('generated/css/editor.css');
+        css_fix();
     });
 
     describe('page list', function() {
@@ -95,9 +96,7 @@ describe('projects/show.js', function() {
 
     describe('selector', function() {
         beforeEach(function () {
-            TypeToAdd.show();
-            TypeToAdd.input().val('Btn');
-            TypeToAdd.parse_input();
+            add_element('Btn');
         });
 
         it('should show when adding element', function () {
@@ -113,21 +112,19 @@ describe('projects/show.js', function() {
         it('should show when selecting element', function () {
             PageList.curr_page().render().mouseup();
             expect(Selector.visible()).toBe(false);
+
             PageList.curr_page().elements[0].hitarea.mousedown();
             expect(Selector.visible()).toBe(true);
         });
 
         describe('shift select', function() {
             beforeEach(function () {
-                TypeToAdd.show();
-                TypeToAdd.input().val('Btn');
-                TypeToAdd.parse_input();
+                add_element('Btn');
+                PageList.curr_page().render().mouseup();
+                PageList.curr_page().elements[0].hitarea.mousedown();
             });
 
             it('should add selected element by shift', function () {
-                PageList.curr_page().render().mouseup();
-
-                PageList.curr_page().elements[0].hitarea.mousedown();
                 expect(Selector.selected_elements.length).toBe(1);
 
                 shift_mousedown_on(PageList.curr_page().elements[1].hitarea);
@@ -135,11 +132,6 @@ describe('projects/show.js', function() {
             });
 
             it('should remove selected element by shift', function () {
-                css_fix();
-
-                PageList.curr_page().render().mouseup();
-                PageList.curr_page().elements[0].hitarea.mousedown();
-
                 shift_mousedown_on(PageList.curr_page().elements[1].hitarea);
                 expect(Selector.selected_elements.length).toBe(2);
 
@@ -158,8 +150,6 @@ describe('projects/show.js', function() {
 
         describe('move', function() {
             it('should move', function () {
-                css_fix();
-
                 PageList.curr_page().render().mouseup();
 
                 var position = PageList.curr_page().elements[0].get_position();
@@ -167,8 +157,8 @@ describe('projects/show.js', function() {
                 expect(position.top).toBe(100);
 
                 mousedown_on(PageList.curr_page().elements[0].hitarea, 100, 100);
-                window_mousemove(150, 200);
-                window_mouseup();
+                mousemove_selector(150, 200);
+                mouseup_selector();
 
                 position = PageList.curr_page().elements[0].get_position();
                 expect(position.left).toBe(150);
@@ -182,47 +172,327 @@ describe('projects/show.js', function() {
                 element.trigger(e);
             }
 
-            function window_mousemove(left, top) {
+            function mousemove_selector(left, top) {
                 var e = $.Event('mousemove');
                 e.pageX = left;
                 e.pageY = top;
                 Selector.move.mousemove(e);
             }
 
-            function window_mouseup() {
+            function mouseup_selector() {
                 var e = $.Event('mouseup');
                 Selector.move.mouseup(e);
+            }
+        });
+
+        describe('resize', function() {
+            beforeEach(function () {
+                // add 2 more elements
+                add_element('Btn');
+                PageList.curr_page().elements[1].set_position(200, 200);
+                var position = PageList.curr_page().elements[1].get_position();
+                expect(position.left).toBe(200);
+                expect(position.top).toBe(200);
+
+                add_element('Btn');
+                PageList.curr_page().elements[2].set_position(300, 300);
+                var position = PageList.curr_page().elements[2].get_position();
+                expect(position.left).toBe(300);
+                expect(position.top).toBe(300);
+
+                PageList.curr_page().render().mouseup();
+                $.each(PageList.curr_page().elements, function(idx, element) {
+                    Selector.select(element);
+                });
+                Selector.show();
+                expect(Selector.selected_elements.length).toBe(3);
+
+                // keep track of initial sizes and positions
+                this.selector_size = Selector.get_size();
+                this.selector_position = Selector.get_position();
+
+                this.element_sizes = [];
+                this.element_positions = [];
+                $.each(PageList.curr_page().elements, function(idx, element) {
+                    this.element_sizes.push(element.get_size());
+                    this.element_positions.push(element.get_position());
+                }.bind(this));
+            });
+
+            it('should resize north', function () {
+                // do 2x resize
+                mousedown_on(Selector.resize.handle_north(), 0, 0);
+                mousemove_handle(Selector.resize.handle_north(), this.selector_size.width, -this.selector_size.height);
+
+                var selector_resized = {
+                    left: this.selector_position.left,
+                    top: this.selector_position.top - this.selector_size.height,
+                    width: this.selector_size.width,
+                    height: this.selector_size.height * 2,
+                };
+
+                var new_selector_position = Selector.get_position();
+                var elements_resized = []
+                $.each(PageList.curr_page().elements, function(idx, element) {
+                    elements_resized.push({
+                        left: this.element_positions[idx].left,
+                        top: new_selector_position.top + 2 * (this.element_positions[idx].top - this.selector_position.top),
+                        width: this.element_sizes[idx].width,
+                        height: this.element_sizes[idx].height * 2,
+                    });
+                }.bind(this));
+
+                test_resize(selector_resized, elements_resized);
+            });
+
+            it('should resize east', function () {
+                // do 2x resize
+                mousedown_on(Selector.resize.handle_east(), 0, 0);
+                mousemove_handle(Selector.resize.handle_east(), this.selector_size.width, this.selector_size.height);
+
+                var selector_resized = {
+                    left: this.selector_position.left,
+                    top: this.selector_position.top,
+                    width: this.selector_size.width * 2,
+                    height: this.selector_size.height,
+                };
+
+                var new_selector_position = Selector.get_position();
+                var elements_resized = []
+                $.each(PageList.curr_page().elements, function(idx, element) {
+                    elements_resized.push({
+                        left: new_selector_position.left + 2 * (this.element_positions[idx].left - this.selector_position.left),
+                        top: this.element_positions[idx].top,
+                        width: this.element_sizes[idx].width * 2,
+                        height: this.element_sizes[idx].height,
+                    });
+                }.bind(this));
+
+                test_resize(selector_resized, elements_resized);
+            });
+
+            it('should resize south', function () {
+                // do 2x resize
+                mousedown_on(Selector.resize.handle_south(), 0, 0);
+                mousemove_handle(Selector.resize.handle_south(), this.selector_size.width, this.selector_size.height);
+
+                var selector_resized = {
+                    left: this.selector_position.left,
+                    top: this.selector_position.top,
+                    width: this.selector_size.width,
+                    height: this.selector_size.height * 2,
+                };
+
+                var new_selector_position = Selector.get_position();
+                var elements_resized = []
+                $.each(PageList.curr_page().elements, function(idx, element) {
+                    elements_resized.push({
+                        left: this.element_positions[idx].left,
+                        top: new_selector_position.top + 2 * (this.element_positions[idx].top - this.selector_position.top),
+                        width: this.element_sizes[idx].width,
+                        height: this.element_sizes[idx].height * 2,
+                    });
+                }.bind(this));
+
+                test_resize(selector_resized, elements_resized);
+            });
+
+            it('should resize west', function () {
+                // do 2x resize
+                mousedown_on(Selector.resize.handle_west(), 0, 0);
+                mousemove_handle(Selector.resize.handle_west(), -this.selector_size.width, this.selector_size.height);
+
+                var selector_resized = {
+                    left: this.selector_position.left - this.selector_size.width,
+                    top: this.selector_position.top,
+                    width: this.selector_size.width * 2,
+                    height: this.selector_size.height,
+                };
+
+                var new_selector_position = Selector.get_position();
+                var elements_resized = []
+                $.each(PageList.curr_page().elements, function(idx, element) {
+                    elements_resized.push({
+                        left: new_selector_position.left + 2 * (this.element_positions[idx].left - this.selector_position.left),
+                        top: this.element_positions[idx].top,
+                        width: this.element_sizes[idx].width * 2,
+                        height: this.element_sizes[idx].height,
+                    });
+                }.bind(this));
+
+                test_resize(selector_resized, elements_resized);
+            });
+
+            it('should resize north west', function () {
+                // do 2x resize
+                mousedown_on(Selector.resize.handle_north_west(), 0, 0);
+                mousemove_handle(Selector.resize.handle_north_west(), -this.selector_size.width, -this.selector_size.height);
+
+                var selector_resized = {
+                    left: this.selector_position.left - this.selector_size.width,
+                    top: this.selector_position.top - this.selector_size.height,
+                    width: this.selector_size.width * 2,
+                    height: this.selector_size.height * 2,
+                };
+
+                var new_selector_position = Selector.get_position();
+                var elements_resized = []
+                $.each(PageList.curr_page().elements, function(idx, element) {
+                    elements_resized.push({
+                        left: new_selector_position.left + 2 * (this.element_positions[idx].left - this.selector_position.left),
+                        top: new_selector_position.top + 2 * (this.element_positions[idx].top - this.selector_position.top),
+                        width: this.element_sizes[idx].width * 2,
+                        height: this.element_sizes[idx].height * 2,
+                    });
+                }.bind(this));
+
+                test_resize(selector_resized, elements_resized);
+            });
+
+            it('should resize north east', function () {
+                // do 2x resize
+                mousedown_on(Selector.resize.handle_north_east(), 0, 0);
+                mousemove_handle(Selector.resize.handle_north_east(), this.selector_size.width, -this.selector_size.height);
+
+                var selector_resized = {
+                    left: this.selector_position.left,
+                    top: this.selector_position.top - this.selector_size.height,
+                    width: this.selector_size.width * 2,
+                    height: this.selector_size.height * 2,
+                };
+
+                var new_selector_position = Selector.get_position();
+                var elements_resized = []
+                $.each(PageList.curr_page().elements, function(idx, element) {
+                    elements_resized.push({
+                        left: new_selector_position.left + 2 * (this.element_positions[idx].left - this.selector_position.left),
+                        top: new_selector_position.top + 2 * (this.element_positions[idx].top - this.selector_position.top),
+                        width: this.element_sizes[idx].width * 2,
+                        height: this.element_sizes[idx].height * 2,
+                    });
+                }.bind(this));
+
+                test_resize(selector_resized, elements_resized);
+            });
+
+            it('should resize south east', function () {
+                // do 2x resize
+                mousedown_on(Selector.resize.handle_south_east(), 0, 0);
+                mousemove_handle(Selector.resize.handle_south_east(), this.selector_size.width, this.selector_size.height);
+
+                var selector_resized = {
+                    left: this.selector_position.left,
+                    top: this.selector_position.top,
+                    width: this.selector_size.width * 2,
+                    height: this.selector_size.height * 2,
+                };
+
+                var new_selector_position = Selector.get_position();
+                var elements_resized = []
+                $.each(PageList.curr_page().elements, function(idx, element) {
+                    elements_resized.push({
+                        left: new_selector_position.left + 2 * (this.element_positions[idx].left - this.selector_position.left),
+                        top: new_selector_position.top + 2 * (this.element_positions[idx].top - this.selector_position.top),
+                        width: this.element_sizes[idx].width * 2,
+                        height: this.element_sizes[idx].height * 2,
+                    });
+                }.bind(this));
+
+                test_resize(selector_resized, elements_resized);
+            });
+
+            it('should resize south west', function () {
+                // do 2x resize
+                mousedown_on(Selector.resize.handle_south_west(), 0, 0);
+                mousemove_handle(Selector.resize.handle_south_west(), -this.selector_size.width, this.selector_size.height);
+
+                var selector_resized = {
+                    left: this.selector_position.left - this.selector_size.width,
+                    top: this.selector_position.top,
+                    width: this.selector_size.width * 2,
+                    height: this.selector_size.height * 2,
+                };
+
+                var new_selector_position = Selector.get_position();
+                var elements_resized = []
+                $.each(PageList.curr_page().elements, function(idx, element) {
+                    elements_resized.push({
+                        left: new_selector_position.left + 2 * (this.element_positions[idx].left - this.selector_position.left),
+                        top: new_selector_position.top + 2 * (this.element_positions[idx].top - this.selector_position.top),
+                        width: this.element_sizes[idx].width * 2,
+                        height: this.element_sizes[idx].height * 2,
+                    });
+                }.bind(this));
+
+                test_resize(selector_resized, elements_resized);
+            });
+
+            function test_resize(selector_resized, elements_resized) {
+                // test selector end result
+                var new_selector_size = Selector.get_size();
+                var new_selector_position = Selector.get_position();
+
+                expect(new_selector_position.left).toBe(selector_resized.left);
+                expect(new_selector_position.top).toBe(selector_resized.top);
+                expect(new_selector_size.width).toBe(selector_resized.width);
+                expect(new_selector_size.height).toBe(selector_resized.height);
+
+
+                // test elements end result
+                $.each(PageList.curr_page().elements, function(idx, element) {
+                    var new_element_size = element.get_size();
+                    var new_element_position = element.get_position();
+
+                    expect(new_element_position.left).toBe(elements_resized[idx].left);
+                    expect(new_element_position.top).toBe(elements_resized[idx].top);
+                    expect(new_element_size.width).toBe(elements_resized[idx].width);
+                    expect(new_element_size.height).toBe(elements_resized[idx].height);
+                }.bind(this));
+            }
+
+            function mousedown_on(element, left, top) {
+                var e = $.Event('mousedown');
+                e.pageX = left;
+                e.pageY = top;
+                element.trigger(e);
+            }
+
+            function mousemove_handle(handle, left, top) {
+                var e = $.Event('mousemove');
+                e.data= handle;
+                e.pageX = left;
+                e.pageY = top;
+                Selector.resize.mousemove_handle(e);
             }
         });
     });
 
     describe('type to add', function() {
-        it('should show up on spacebar', function () {
+        beforeEach(function () {
             show_type_to_add();
+        });
 
+        it('should show up on spacebar', function () {
             expect(TypeToAdd.visible()).toBe(true);
             expect(TypeToAdd.no_such_item_msg().is(':visible')).toBe(false);
+
             $.each(TypeToAdd.list().children(), function(idx, item) {
                 if(idx > 0) expect($(item).is(':visible')).toBe(true);
             });
         });
 
         it('should close on global escape', function () {
-            show_type_to_add();
             hide_type_to_add();
-
             expect(TypeToAdd.visible()).toBe(false);
         });
 
         it('should close on input escape', function () {
-            show_type_to_add();
             type_to_add_trigger_escape();
 
             expect(TypeToAdd.visible()).toBe(false);
         });
 
         it('should add element', function () {
-            show_type_to_add();
             TypeToAdd.input().val('Btn').keyup();
 
             expect(TypeToAdd.visible()).toBe(true);
@@ -260,6 +530,12 @@ describe('projects/show.js', function() {
             TypeToAdd.input().trigger(e);
         }
     });
+
+    function add_element(name) {
+        TypeToAdd.show();
+        TypeToAdd.input().val(name);
+        TypeToAdd.parse_input();
+    }
 
     function css_fix() {
         $('#stage').css('position', 'relative');
