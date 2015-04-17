@@ -49,9 +49,26 @@ Editor.handle_key_events = function() {
                 TypeToAdd.show();
                 break;
             case 27: // escape
-                TypeToAdd.hide();
+                Editor.escape_all();
+                break;
+            case 46: // delete
+                Editor.remove_selected_elements();
                 break;
         }
+    });
+}
+
+Editor.escape_all = function() {
+    TypeToAdd.hide();
+    Selector.unselect_all();
+}
+
+Editor.remove_selected_elements = function() {
+    var selected_elements = Selector.selected_elements;
+    Selector.unselect_all();
+
+    $.each(selected_elements, function(idx, element) {
+        PageList.curr_page().remove_element(element);
     });
 }
 

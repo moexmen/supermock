@@ -34,6 +34,11 @@ Elements.Page.prototype.add_element = function(element) {
     this.render().append(element.render());
 }
 
+Elements.Page.prototype.remove_element = function(element) {
+    this.elements.remove(element);
+    element.destroy();
+}
+
 Elements.Page.prototype.has_child_page = function(page) {
     return this.child_pages.indexOf(page) != -1;
 }
