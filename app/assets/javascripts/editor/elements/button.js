@@ -7,6 +7,8 @@ Elements.Button = function(text, x, y) {
     this.text = text;
     this.x = x;
     this.y = y;
+
+    this.context_menu_items = [ Elements.ContextMenu.Item.new_on_click_item(this) ];
 }
 
 Elements.Button.prototype = new Elements.Element();
@@ -21,11 +23,12 @@ Elements.Button.prototype.destroy = function() {
 Elements.Button.prototype.render = function() {
     if(this.html === null) {
         this.html = Util.clone_template('#element_button_template');
+        this.html.data('element', this);
 
         this.btn = $(this.html.children('button')[0]).text(this.text);
 
         this.hitarea = $(this.html.children('.element-hitarea')[0])
-            .mousedown(function(e) { Editor.mousedown_element(this, e); return false; }.bind(this))
+            .mousedown(function(e) { return Editor.mousedown_element(this, e); }.bind(this))
             .mouseup(function(e) { Editor.mouseup_element(this, e); return false; }.bind(this));
 
         this.set_position(this.x, this.y);

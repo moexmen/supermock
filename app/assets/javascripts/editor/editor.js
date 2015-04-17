@@ -86,7 +86,18 @@ Editor.add_element = function(element) {
 }
 
 Editor.mousedown_element = function(element, event) {
-    Selector.mousedown_element(element, event);
+    switch(event.which) {
+        case 1: // left
+            Selector.mousedown_element(element, event);
+            return false;
+        case 3: // right
+            Selector.unselect_all();
+            Selector.select(element);
+            Selector.mousedown(event);
+            return false;
+        default:
+            return true;
+    }
 }
 
 Editor.mouseup_element = function(element, event) {

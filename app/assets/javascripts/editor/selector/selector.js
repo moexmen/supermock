@@ -5,6 +5,7 @@ Selector.init = function() {
 
     Selector.move.init();
     Selector.resize.init();
+    //Elements.ContextMenu.init(Selector.render(), function() { return Selector.selected_elements; });
 
     Selector.render().mousedown(Selector.mousedown).mouseup(Selector.mouseup);
     Selector.hide();
@@ -41,14 +42,19 @@ Selector.unselect_all = function() {
 }
 
 Selector.mousedown = function(e) {
-    if(e.shiftKey == true) { // shift select
-        var element_behind = Selector.element_at(e);
-        if(element_behind != null) { // unselect already added element
-            Selector.unselect(element_behind);
+    if(e.which == 1) { // left
+        if(e.shiftKey == true) { // shift select
+            var element_behind = Selector.element_at(e);
+            if(element_behind != null) { // unselect already added element
+                Selector.unselect(element_behind);
+            }
+        }
+        else { // non shift
+            Selector.move.mousedown(e);
         }
     }
-    else { // non shift
-        Selector.move.mousedown(e);
+    else if(e.which == 3) { //right
+        Elements.ContextMenu.show(Selector.render(), Selector.selected_elements);
     }
 
     return false;
@@ -76,6 +82,7 @@ Selector.mousedown_element = function(element, event) {
 }
 
 Selector.mouseup_element = function(element, event) {
+
 }
 
 Selector.stop_mouse_events = function() {

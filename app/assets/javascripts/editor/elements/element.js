@@ -1,6 +1,7 @@
 var Elements = Elements || {};
 
 Elements.Element = function() {
+    this.context_menu_items = this.context_menu_items || [];
 }
 
 Elements.Element.prototype.destroy = function() {

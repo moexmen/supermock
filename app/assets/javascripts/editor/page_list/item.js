@@ -60,12 +60,12 @@ PageList.Item.prototype.generate_next_child_page_name = function() {
 
 PageList.Item.prototype.render = function() {
     if(this.html === null) {
-        this.html = Util.clone_template('#page_list_item_template')
+        this.html = Util.clone_template('#page_list_item_template');
         this.html
             .data('page_item', this)
             .children('div')
-            .text(this.page.name)
-            .click(function(e) { PageList.select_item(this); }.bind(this));
+                .text(this.page.name)
+                .click(function() { PageList.select_item(this); }.bind(this));
 
         PageList.ContextMenu.add_to(this);
     }
