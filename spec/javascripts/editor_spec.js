@@ -117,6 +117,30 @@ describe('projects/show.js', function() {
             expect(Selector.visible()).toBe(true);
         });
 
+        it('should hide on global escape', function () {
+            expect(Selector.visible()).toBe(true);
+
+            var e = $.Event('keyup');
+            e.which = 27; // escape
+            $('body').trigger(e);
+
+            expect(Selector.visible()).toBe(false);
+        });
+
+        it('should hide on global delete', function () {
+            expect(Selector.visible()).toBe(true);
+            expect(Selector.selected_elements.length).toBe(1);
+            expect(PageList.curr_page().elements.length).toBe(1);
+
+            var e = $.Event('keyup');
+            e.which = 46; // delete
+            $('body').trigger(e);
+
+            expect(Selector.visible()).toBe(false);
+            expect(Selector.selected_elements.length).toBe(0);
+            expect(PageList.curr_page().elements.length).toBe(0);
+        });
+
         describe('shift select', function() {
             beforeEach(function () {
                 add_element('Btn');
@@ -481,12 +505,12 @@ describe('projects/show.js', function() {
             });
         });
 
-        it('should close on global escape', function () {
+        it('should hide on global escape', function () {
             hide_type_to_add();
             expect(TypeToAdd.visible()).toBe(false);
         });
 
-        it('should close on input escape', function () {
+        it('should hide on input escape', function () {
             type_to_add_trigger_escape();
 
             expect(TypeToAdd.visible()).toBe(false);
