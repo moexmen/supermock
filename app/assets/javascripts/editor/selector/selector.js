@@ -5,7 +5,6 @@ Selector.init = function() {
 
     Selector.move.init();
     Selector.resize.init();
-    //Elements.ContextMenu.init(Selector.render(), function() { return Selector.selected_elements; });
 
     Selector.render().mousedown(Selector.mousedown).mouseup(Selector.mouseup);
     Selector.hide();
@@ -54,7 +53,7 @@ Selector.mousedown = function(e) {
         }
     }
     else if(e.which == 3) { //right
-        Elements.ContextMenu.show(Selector.render(), Selector.selected_elements);
+        Editor.element_action_menu.show(Selector.render(), Selector.selected_elements);
     }
 
     return false;

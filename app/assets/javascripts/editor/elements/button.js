@@ -1,17 +1,18 @@
 //= require ./element
 
-var Elements = Elements || {};
-
 Elements.Button = function(text, x, y) {
+    Elements.Element.call(this);
+
     this.html = null;
     this.text = text;
     this.x = x;
     this.y = y;
 
-    this.context_menu_items = [ Elements.ContextMenu.Item.new_on_click_item(this) ];
+    this.actions = [ Elements.Action.OnClick.singleton() ];
 }
 
-Elements.Button.prototype = new Elements.Element();
+Elements.Button.prototype = Object.create(Elements.Element.prototype);
+Elements.Button.prototype.constructor = Elements.Button;
 
 Elements.Button.prototype.destroy = function() {
     this.render().remove();
