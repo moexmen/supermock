@@ -5,6 +5,7 @@ Editor.init = function() {
     Editor.init_buttons();
     Editor.init_page_list();
     Editor.init_selector();
+    Editor.init_element_menus();
     Editor.init_type_to_add();
     Editor.handle_key_events();
 }
@@ -24,6 +25,11 @@ Editor.init_page_list = function() {
 
 Editor.init_selector = function() {
     Selector.init();
+}
+
+Editor.init_element_menus = function() {
+    Editor.element_action_menu = new Elements.ActionMenu();
+    Editor.element_page_menu = new Elements.PageMenu(this.project);
 }
 
 Editor.init_type_to_add = function() {
@@ -61,6 +67,7 @@ Editor.handle_key_events = function() {
 Editor.escape_all = function() {
     TypeToAdd.hide();
     Selector.unselect_all();
+    Editor.element_action_menu.hide();
 }
 
 Editor.remove_selected_elements = function() {
