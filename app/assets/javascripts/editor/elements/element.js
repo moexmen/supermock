@@ -1,7 +1,7 @@
 var Elements = Elements || {};
 
 Elements.Element = function() {
-    this.actions = [];
+    this.property_items = [];
 }
 
 Elements.Element.prototype.destroy = function() {

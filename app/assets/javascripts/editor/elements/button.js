@@ -8,7 +8,8 @@ Elements.Button = function(text, x, y) {
     this.x = x;
     this.y = y;
 
-    this.actions = [ Elements.Action.OnClick.singleton() ];
+    this.properties = [];
+    this.property_items = [ Elements.Property.ModalItem.singleton(), Elements.Property.ClickItem.singleton() ];
 }
 
 Elements.Button.prototype = Object.create(Elements.Element.prototype);
@@ -19,6 +20,7 @@ Elements.Button.prototype.destroy = function() {
     this.html = null;
     this.btn = null;
     this.hitarea = null;
+    this.property_items = null;
 }
 
 Elements.Button.prototype.render = function() {
