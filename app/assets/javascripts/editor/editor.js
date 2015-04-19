@@ -3,9 +3,9 @@ var Editor = {};
 Editor.init = function() {
     Editor.load_project();
     Editor.init_buttons();
+    Editor.init_element_menus();
     Editor.init_page_list();
     Editor.init_selector();
-    Editor.init_element_menus();
     Editor.init_type_to_add();
     Editor.handle_key_events();
 }
@@ -28,8 +28,8 @@ Editor.init_selector = function() {
 }
 
 Editor.init_element_menus = function() {
-    Editor.element_action_menu = new Elements.ActionMenu();
-    Editor.element_page_menu = new Elements.PageMenu(this.project);
+    Editor.element_property_menu = new Elements.Property.PropertyMenu();
+    Editor.element_page_menu = new Elements.Property.PageMenu(this.project);
 }
 
 Editor.init_type_to_add = function() {
@@ -52,6 +52,7 @@ Editor.handle_key_events = function() {
     $('body').keyup(function(e) {
         switch(e.which) {
             case 32: // space
+                Editor.escape_all();
                 TypeToAdd.show();
                 break;
             case 27: // escape
@@ -67,7 +68,7 @@ Editor.handle_key_events = function() {
 Editor.escape_all = function() {
     TypeToAdd.hide();
     Selector.unselect_all();
-    Editor.element_action_menu.hide();
+    Editor.element_property_menu.hide();
 }
 
 Editor.remove_selected_elements = function() {

@@ -67,7 +67,7 @@ PageList.Item.prototype.render = function() {
                 .text(this.page.name)
                 .click(function() { PageList.select_item(this); }.bind(this));
 
-        PageList.ContextMenu.add_to(this);
+        PageList.Menu.add_to(this);
     }
 
     return this.html;

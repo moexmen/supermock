@@ -20,8 +20,8 @@ describe('projects/show.js', function() {
         });
 
         it('should render current selected child page', function () {
-            PageList.ContextMenu.show(PageList.root_item.child_items[0]);
-            PageList.ContextMenu.new_child_page_menu_item().click();
+            PageList.Menu.show(PageList.root_item.child_items[0]);
+            PageList.Menu.new_child_page_menu_item().click();
             PageList.select_item(PageList.root_item.child_items[0].child_items[0])
 
             expect(Editor.canvas().children().length).toBe(2);
@@ -43,53 +43,53 @@ describe('projects/show.js', function() {
         });
 
         it('should show context menu on right click', function() {
-            expect(PageList.ContextMenu.visible()).toBe(false);
+            expect(PageList.Menu.visible()).toBe(false);
 
-            PageList.ContextMenu.show(PageList.root_item.child_items[0]);
-            expect(PageList.ContextMenu.visible()).toBe(true);
+            PageList.Menu.show(PageList.root_item.child_items[0]);
+            expect(PageList.Menu.visible()).toBe(true);
         });
 
         it('should add child pages', function () {
             expect(Editor.project.pages[0].child_pages.length).toBe(0);
 
-            PageList.ContextMenu.show(PageList.root_item.child_items[0]);
-            PageList.ContextMenu.new_child_page_menu_item().click();
+            PageList.Menu.show(PageList.root_item.child_items[0]);
+            PageList.Menu.new_child_page_menu_item().click();
             expect(Editor.project.pages[0].child_pages.length).toBe(1);
             expect(PageList.root_item.child_items[0].child_items[0].render().children('div').text()).toBe('Homepage > 1');
 
-            PageList.ContextMenu.show(PageList.root_item.child_items[0].child_items[0]);
-            PageList.ContextMenu.new_child_page_menu_item().click();
+            PageList.Menu.show(PageList.root_item.child_items[0].child_items[0]);
+            PageList.Menu.new_child_page_menu_item().click();
             expect(Editor.project.pages[0].child_pages[0].child_pages.length).toBe(1);
             expect(PageList.root_item.child_items[0].child_items[0].child_items[0].render().children('div').text()).toBe('Homepage > 1 > 1');
         });
 
         it('should not remove the only top level page', function () {
-            PageList.ContextMenu.show(PageList.root_item.child_items[0]);
-            expect(PageList.ContextMenu.delete_menu_item().hasClass('disabled')).toBe(true);
+            PageList.Menu.show(PageList.root_item.child_items[0]);
+            expect(PageList.Menu.delete_menu_item().hasClass('disabled')).toBe(true);
 
-            PageList.ContextMenu.delete_menu_item().click();
+            PageList.Menu.delete_menu_item().click();
             expect(Editor.project.pages.length).toBe(1);
             expect(PageList.root_item.render().children('li').size()).toBe(1);
         });
 
         it('should remove pages', function () {
-            PageList.ContextMenu.show(PageList.root_item.child_items[0]);
-            PageList.ContextMenu.new_child_page_menu_item().click();
+            PageList.Menu.show(PageList.root_item.child_items[0]);
+            PageList.Menu.new_child_page_menu_item().click();
 
-            PageList.ContextMenu.show(PageList.root_item.child_items[0].child_items[0]);
-            PageList.ContextMenu.new_child_page_menu_item().click();
+            PageList.Menu.show(PageList.root_item.child_items[0].child_items[0]);
+            PageList.Menu.new_child_page_menu_item().click();
 
             PageList.new_page_btn().click();
 
             expect(Editor.project.pages.length).toBe(2);
-            PageList.ContextMenu.show(PageList.root_item.child_items[1]);
-            PageList.ContextMenu.delete_menu_item().click();
+            PageList.Menu.show(PageList.root_item.child_items[1]);
+            PageList.Menu.delete_menu_item().click();
             expect(Editor.project.pages.length).toBe(1);
 
             expect(Editor.project.pages[0].child_pages.length).toBe(1);
             expect(Editor.project.pages[0].child_pages[0].child_pages.length).toBe(1);
-            PageList.ContextMenu.show(PageList.root_item.child_items[0].child_items[0]);
-            PageList.ContextMenu.delete_menu_item().click();
+            PageList.Menu.show(PageList.root_item.child_items[0].child_items[0]);
+            PageList.Menu.delete_menu_item().click();
             expect(Editor.project.pages[0].child_pages.length).toBe(0);
         });
     });

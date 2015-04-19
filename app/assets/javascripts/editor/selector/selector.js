@@ -32,6 +32,8 @@ Selector.unselect = function(element) {
 }
 
 Selector.unselect_all = function() {
+    Editor.element_property_menu.hide();
+
     $.each(Selector.selected_elements || [], function(idx, element) {
         element.unselect();
     });
@@ -53,7 +55,7 @@ Selector.mousedown = function(e) {
         }
     }
     else if(e.which == 3) { //right
-        Editor.element_action_menu.show(Selector.render(), Selector.selected_elements);
+        Editor.element_property_menu.show(Selector.render(), Selector.selected_elements);
     }
 
     return false;

@@ -60,21 +60,25 @@ body#editor
     ul
 
 
-  #element_action_menu
+  #element_property_menu
     ul.dropdown-menu [role='menu']
 
   #element_page_menu
     ul.dropdown-menu [role='menu']
 
 
-  li#element_context_menu_item_template.hidden [role='presentation']
+  li#element_menu_item_template.hidden [role='presentation']
+    a [role='menuitem' tabindex='-1']
+
+  li#element_menu_item_expandable_template.hidden [role='presentation']
     a [role='menuitem' tabindex='-1']
       span
-      span.pull-right.glyphicon.glyphicon-chevron-right.hidden
+      span.pull-right.glyphicon.glyphicon-chevron-right
 
-  #element_context_menu_item_expandable_content_template.hidden
-    span
-    span.pull-right.glyphicon.glyphicon-chevron-right
+  li#element_menu_page_item_template.hidden [role='presentation']
+    a [role='menuitem' tabindex='-1']
+      span
+      span.pull-right.glyphicon.glyphicon-ok.hidden
 
 
   #element_page_template.element-page.hidden
