@@ -113,7 +113,7 @@ describe('projects/show.js', function() {
             PageList.curr_page().render().mouseup();
             expect(Selector.visible()).toBe(false);
 
-            PageList.curr_page().elements[0].hitarea.mousedown();
+            mousedown_on(PageList.curr_page().elements[0].hitarea, 1);
             expect(Selector.visible()).toBe(true);
         });
 
@@ -145,31 +145,23 @@ describe('projects/show.js', function() {
             beforeEach(function () {
                 add_element('Btn');
                 PageList.curr_page().render().mouseup();
-                PageList.curr_page().elements[0].hitarea.mousedown();
+                mousedown_on(PageList.curr_page().elements[0].hitarea, 1);
             });
 
             it('should add selected element by shift', function () {
                 expect(Selector.selected_elements.length).toBe(1);
 
-                shift_mousedown_on(PageList.curr_page().elements[1].hitarea);
+                mousedown_on(PageList.curr_page().elements[1].hitarea, 1, null, null, true);
                 expect(Selector.selected_elements.length).toBe(2);
             });
 
             it('should remove selected element by shift', function () {
-                shift_mousedown_on(PageList.curr_page().elements[1].hitarea);
+                mousedown_on(PageList.curr_page().elements[1].hitarea, 1, null, null, true);
                 expect(Selector.selected_elements.length).toBe(2);
 
-                shift_mousedown_on(Selector.render());
+                mousedown_on(Selector.render(), 1, null, null, true);
                 expect(Selector.selected_elements.length).toBe(1);
             });
-
-            function shift_mousedown_on(element) {
-                var e = $.Event('mousedown');
-                e.shiftKey = true;
-                e.pageX = element.offset().left;
-                e.pageY = element.offset().top;
-                element.trigger(e);
-            }
         });
 
         describe('move', function() {
@@ -180,7 +172,8 @@ describe('projects/show.js', function() {
                 expect(position.left).toBe(100);
                 expect(position.top).toBe(100);
 
-                mousedown_on(PageList.curr_page().elements[0].hitarea, 100, 100);
+                //mousedown_on(PageList.curr_page().elements[0].hitarea, 100, 100);
+                mousedown_on(PageList.curr_page().elements[0].hitarea, 1, 100, 100);
                 mousemove_selector(150, 200);
                 mouseup_selector();
 
@@ -188,13 +181,6 @@ describe('projects/show.js', function() {
                 expect(position.left).toBe(150);
                 expect(position.top).toBe(200);
             });
-
-            function mousedown_on(element, left, top) {
-                var e = $.Event('mousedown');
-                e.pageX = left;
-                e.pageY = top;
-                element.trigger(e);
-            }
 
             function mousemove_selector(left, top) {
                 var e = $.Event('mousemove');
@@ -245,7 +231,7 @@ describe('projects/show.js', function() {
 
             it('should resize north', function () {
                 // do 2x resize
-                mousedown_on(Selector.resize.handle_north(), 0, 0);
+                mousedown_on(Selector.resize.handle_north(), 1, 0, 0);
                 mousemove_handle(Selector.resize.handle_north(), this.selector_size.width, -this.selector_size.height);
 
                 var selector_resized = {
@@ -271,7 +257,7 @@ describe('projects/show.js', function() {
 
             it('should resize east', function () {
                 // do 2x resize
-                mousedown_on(Selector.resize.handle_east(), 0, 0);
+                mousedown_on(Selector.resize.handle_east(), 1, 0, 0);
                 mousemove_handle(Selector.resize.handle_east(), this.selector_size.width, this.selector_size.height);
 
                 var selector_resized = {
@@ -297,7 +283,7 @@ describe('projects/show.js', function() {
 
             it('should resize south', function () {
                 // do 2x resize
-                mousedown_on(Selector.resize.handle_south(), 0, 0);
+                mousedown_on(Selector.resize.handle_south(), 1, 0, 0);
                 mousemove_handle(Selector.resize.handle_south(), this.selector_size.width, this.selector_size.height);
 
                 var selector_resized = {
@@ -323,7 +309,7 @@ describe('projects/show.js', function() {
 
             it('should resize west', function () {
                 // do 2x resize
-                mousedown_on(Selector.resize.handle_west(), 0, 0);
+                mousedown_on(Selector.resize.handle_west(), 1, 0, 0);
                 mousemove_handle(Selector.resize.handle_west(), -this.selector_size.width, this.selector_size.height);
 
                 var selector_resized = {
@@ -349,7 +335,7 @@ describe('projects/show.js', function() {
 
             it('should resize north west', function () {
                 // do 2x resize
-                mousedown_on(Selector.resize.handle_north_west(), 0, 0);
+                mousedown_on(Selector.resize.handle_north_west(), 1, 0, 0);
                 mousemove_handle(Selector.resize.handle_north_west(), -this.selector_size.width, -this.selector_size.height);
 
                 var selector_resized = {
@@ -375,7 +361,7 @@ describe('projects/show.js', function() {
 
             it('should resize north east', function () {
                 // do 2x resize
-                mousedown_on(Selector.resize.handle_north_east(), 0, 0);
+                mousedown_on(Selector.resize.handle_north_east(), 1, 0, 0);
                 mousemove_handle(Selector.resize.handle_north_east(), this.selector_size.width, -this.selector_size.height);
 
                 var selector_resized = {
@@ -401,7 +387,7 @@ describe('projects/show.js', function() {
 
             it('should resize south east', function () {
                 // do 2x resize
-                mousedown_on(Selector.resize.handle_south_east(), 0, 0);
+                mousedown_on(Selector.resize.handle_south_east(), 1, 0, 0);
                 mousemove_handle(Selector.resize.handle_south_east(), this.selector_size.width, this.selector_size.height);
 
                 var selector_resized = {
@@ -427,7 +413,7 @@ describe('projects/show.js', function() {
 
             it('should resize south west', function () {
                 // do 2x resize
-                mousedown_on(Selector.resize.handle_south_west(), 0, 0);
+                mousedown_on(Selector.resize.handle_south_west(), 1, 0, 0);
                 mousemove_handle(Selector.resize.handle_south_west(), -this.selector_size.width, this.selector_size.height);
 
                 var selector_resized = {
@@ -474,21 +460,23 @@ describe('projects/show.js', function() {
                 }.bind(this));
             }
 
-            function mousedown_on(element, left, top) {
-                var e = $.Event('mousedown');
-                e.pageX = left;
-                e.pageY = top;
-                element.trigger(e);
-            }
-
             function mousemove_handle(handle, left, top) {
                 var e = $.Event('mousemove');
-                e.data= handle;
+                e.data = handle;
                 e.pageX = left;
                 e.pageY = top;
                 Selector.resize.mousemove_handle(e);
             }
         });
+
+        function mousedown_on(element, button, left, top, shift) {
+            var e = $.Event('mousedown');
+            e.pageX = left === null || left === undefined ? element.offset().left : left;
+            e.pageY = top === null || top === undefined ? element.offset().top : top;
+            e.which = button || 1;
+            e.shiftKey = shift || false;
+            element.trigger(e);
+        }
     });
 
     describe('type to add', function() {

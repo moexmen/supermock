@@ -1,6 +1,6 @@
 //= require ./item
 
-Elements.Property.PageItem = function(page, selected, select_callback) {
+Elements.Property.PageItem = function PageItem(page, selected, select_callback) {
     Elements.Property.Item.call(this);
 
     this.page = page;
@@ -17,10 +17,17 @@ Elements.Property.PageItem.prototype.click = function(e) {
 }
 
 Elements.Property.PageItem.prototype.render = function(parent_menu) {
+    this.parent_menu = parent_menu;
+
     if(!this.html) {
-        Elements.Property.Item.prototype.render.call(this, parent_menu, null, '#element_menu_page_item_template');
-        $(this.hitarea.children('span')[0]).text(this.page.name);
+        this.html = Util.clone_template('#element_menu_page_item_template');
+        this.hitarea = this.html.children('a');
+
+        $(this.hitarea.children('span')[0]).text(!this.page ? '< No Where >' : this.page.name);
         if(this.selected) $(this.hitarea.children('span')[1]).removeClass('hidden');
+
+        this.hitarea.click(this.click.bind(this));
+        this.hitarea.mouseenter(this.hover.bind(this));
     }
 
     return this.html;

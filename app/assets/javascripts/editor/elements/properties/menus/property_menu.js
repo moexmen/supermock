@@ -8,11 +8,21 @@ Elements.Property.PropertyMenu.prototype = Object.create(Elements.Property.Menu.
 Elements.Property.PropertyMenu.prototype.constructor = Elements.Property.PropertyMenu;
 
 Elements.Property.PropertyMenu.prototype.show = function(target, elements) {
-    this.detach_list_items();
+    this.detach_items();
 
-    // TODO show only union of properties
-    $.each(elements[0].property_items, function(idx, property_item) {
-        this.add_item(property_item, property_item.render(this, elements));
+    // find intersection of menu items of elements
+    var intersected_items = [];
+    $.each(elements, function(idx, element) {
+        if(idx === 0) {
+            intersected_items = element.property_menu_items;
+        }
+        else {
+            intersected_items = intersected_items.filter(function(item) { return element.property_menu_items.indexOf(item) != -1; });
+        }
+    }.bind(this));
+
+    $.each(intersected_items, function(idx, item) {
+        this.add_item(item, item.render(this, elements));
     }.bind(this));
 
     Elements.Property.Menu.prototype.show.call(this, target);

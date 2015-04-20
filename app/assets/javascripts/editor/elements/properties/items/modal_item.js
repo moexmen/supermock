@@ -1,6 +1,6 @@
 //= require ./item
 
-Elements.Property.ModalItem = function() {
+Elements.Property.ModalItem = function ModalItem() {
     Elements.Property.Item.call(this);
 }
 
@@ -17,9 +17,15 @@ Elements.Property.ModalItem.prototype.click = function(e) {
 }
 
 Elements.Property.ModalItem.prototype.render = function(parent_menu, elements) {
+    this.parent_menu = parent_menu;
+    this.elements = elements;
+
     if(!this.html) {
-        Elements.Property.Item.prototype.render.call(this, parent_menu, elements, '#element_menu_item_template');
-        this.hitarea.text('Create Modal');
+        this.html = Util.clone_template('#element_menu_item_template');
+        this.hitarea = this.html.children('a').text('Create Modal');
+
+        this.hitarea.click(this.click.bind(this));
+        this.hitarea.mouseenter(this.hover.bind(this));
     }
 
     return this.html;
