@@ -10,12 +10,12 @@ Elements.Property.Menu.prototype.add_item = function(item, html) {
     this.list().append(html);
 }
 
-Elements.Property.Menu.prototype.detach_list_items = function() {
+Elements.Property.Menu.prototype.detach_items = function() {
     this.items = [];
     this.list().children().detach();
 }
 
-Elements.Property.Menu.prototype.empty_list_items = function() {
+Elements.Property.Menu.prototype.empty_items = function() {
     this.items = [];
     this.list().empty();
 }

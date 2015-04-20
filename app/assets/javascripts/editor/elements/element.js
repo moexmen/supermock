@@ -1,7 +1,7 @@
 var Elements = Elements || {};
 
 Elements.Element = function() {
-    this.property_items = [];
+    this.property_menu_items = [];
 }
 
 Elements.Element.prototype.destroy = function() {
@@ -37,7 +37,7 @@ Elements.Element.prototype.render = function() {
 Elements.Element.create_default = function(element_type) {
     switch(element_type) {
         case Elements.Page:
-            return new Elements.Page('', [], null, []);
+            return new Elements.Page(Util.uuid(), '', [], null, []);
         case Elements.Button:
             return new Elements.Button('Button', 0, 0);
         default:
@@ -50,7 +50,7 @@ Elements.Element.parse_json = function(json) {
 
     switch(model.type) {
         case 'Page':
-            return new Elements.Page(model.name, model.elements, model.parent_page, model.child_pages);
+            return new Elements.Page(model.id, model.name, model.elements, model.parent_page, model.child_pages);
         default:
             return null;
     }

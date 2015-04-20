@@ -1,7 +1,8 @@
 var Elements = Elements || {};
 
-Elements.Page = function(name, element_models, parent_model, child_page_models) {
+Elements.Page = function(id, name, element_models, parent_model, child_page_models) {
     this.html = null;
+    this.id = id;
     this.name = name;
     this.elements = [];
     this.parent_page = null;
