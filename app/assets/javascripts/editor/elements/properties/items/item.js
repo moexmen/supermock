@@ -17,3 +17,7 @@ Elements.Property.Item.prototype.hover = function(e) {
     this.parent_menu.hide_sub_menus();
     return false;
 }
+
+Elements.Property.Item.prototype.visible = function() {
+    return this.render().is(':visible');
+}
