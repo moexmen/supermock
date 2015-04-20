@@ -468,15 +468,111 @@ describe('projects/show.js', function() {
                 Selector.resize.mousemove_handle(e);
             }
         });
+    });
 
-        function mousedown_on(element, button, left, top, shift) {
-            var e = $.Event('mousedown');
-            e.pageX = left === null || left === undefined ? element.offset().left : left;
-            e.pageY = top === null || top === undefined ? element.offset().top : top;
-            e.which = button || 1;
-            e.shiftKey = shift || false;
-            element.trigger(e);
-        }
+    describe('property menus', function() {
+        describe('on click go to page', function() {
+            beforeEach(function () {
+                add_element('Btn');
+            });
+
+            it('should show "click item" when right clicking element', function () {
+                expect(Editor.element_property_menu.visible()).toBe(false);
+                mousedown_on(Selector.render(), 3);
+                expect(Editor.element_property_menu.visible()).toBe(true);
+                expect(Elements.Property.ClickItem.singleton().visible()).toBe(true);
+            });
+
+            it('should show "pages" when hover on "click item"', function () {
+                mousedown_on(Selector.render(), 3);
+
+                expect(Editor.element_page_menu.visible()).toBe(false);
+                Elements.Property.ClickItem.singleton().hover();
+                expect(Editor.element_page_menu.visible()).toBe(true);
+
+                // minus 1 for "< No Where >"
+                expect(Editor.element_page_menu.items.length - 1).toBe(Editor.project.pages.length);
+            });
+
+            it('should hide "pages" when hover out "click item"', function () {
+                mousedown_on(Selector.render(), 3);
+                Elements.Property.ClickItem.singleton().hover();
+
+                expect(Editor.element_page_menu.visible()).toBe(true);
+                Elements.Property.ModalItem.singleton().hover();
+                expect(Editor.element_page_menu.visible()).toBe(false);
+            });
+
+            it('should hide "pages" when clicked', function () {
+                mousedown_on(Selector.render(), 3);
+                Elements.Property.ClickItem.singleton().hover();
+
+                Editor.element_page_menu.items[0].hitarea.click();
+                expect(Editor.element_page_menu.visible()).toBe(false);
+            });
+
+            it('should show "No Where" as selected (single element)', function () {
+                mousedown_on(Selector.render(), 3);
+                Elements.Property.ClickItem.singleton().hover();
+
+                expect(PageList.curr_page().elements[0].properties.click_page_id).toBe(undefined);
+                expect(Editor.element_page_menu.items[0].selected).toBe(true);
+                Editor.element_page_menu.items[0].hitarea.click();
+                expect(PageList.curr_page().elements[0].properties.click_page_id).toBe(null);
+
+                Elements.Property.ClickItem.singleton().hover();
+                expect(Editor.element_page_menu.items[0].selected).toBe(true);
+            });
+
+            it('should set click page id (single element)', function () {
+                mousedown_on(Selector.render(), 3);
+                Elements.Property.ClickItem.singleton().hover();
+
+                expect(PageList.curr_page().elements[0].properties.click_page_id).toBe(undefined);
+                Editor.element_page_menu.items[1].hitarea.click();
+                expect(PageList.curr_page().elements[0].properties.click_page_id).toBe(Editor.project.pages[0].id);
+
+                Elements.Property.ClickItem.singleton().hover();
+                expect(Editor.element_page_menu.items[1].selected).toBe(true);
+            });
+
+            describe('multiple elements', function() {
+                beforeEach(function () {
+                    add_element('Btn');
+                    Selector.select(PageList.curr_page().elements[0]);
+                });
+
+                it('should show "No Where" as selected (multiple elements)', function () {
+                    mousedown_on(Selector.render(), 3);
+                    Elements.Property.ClickItem.singleton().hover();
+
+                    expect(Editor.element_page_menu.items[0].selected).toBe(true);
+                });
+
+                it('should show nothing as selected (multiple elements)', function () {
+                    PageList.curr_page().elements[0].properties.click_page_id = 'something else';
+
+                    mousedown_on(Selector.render(), 3);
+                    Elements.Property.ClickItem.singleton().hover();
+
+                    expect(Editor.element_page_menu.items[0].selected).toBe(false);
+                });
+
+                it('should set click page id (multiple element)', function () {
+                    mousedown_on(Selector.render(), 3);
+                    Elements.Property.ClickItem.singleton().hover();
+
+                    expect(PageList.curr_page().elements[0].properties.click_page_id).toBe(undefined);
+                    expect(PageList.curr_page().elements[1].properties.click_page_id).toBe(undefined);
+                    Editor.element_page_menu.items[1].hitarea.click();
+                    expect(PageList.curr_page().elements[0].properties.click_page_id).toBe(Editor.project.pages[0].id);
+                    expect(PageList.curr_page().elements[1].properties.click_page_id).toBe(Editor.project.pages[0].id);
+
+                    Elements.Property.ClickItem.singleton().hover();
+                    expect(Editor.element_page_menu.items[1].selected).toBe(true);
+                });
+            });
+        });
     });
 
     describe('type to add', function() {
@@ -547,6 +643,15 @@ describe('projects/show.js', function() {
         TypeToAdd.show();
         TypeToAdd.input().val(name);
         TypeToAdd.parse_input();
+    }
+
+    function mousedown_on(element, button, left, top, shift) {
+        var e = $.Event('mousedown');
+        e.pageX = left === null || left === undefined ? element.offset().left : left;
+        e.pageY = top === null || top === undefined ? element.offset().top : top;
+        e.which = button || 1;
+        e.shiftKey = shift || false;
+        element.trigger(e);
     }
 
     function css_fix() {

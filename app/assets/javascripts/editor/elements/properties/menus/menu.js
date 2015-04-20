@@ -3,6 +3,7 @@ Elements.Property = Elements.Property || {};
 
 Elements.Property.Menu = function() {
     this.items = [];
+    this.hide();
 }
 
 Elements.Property.Menu.prototype.add_item = function(item, html) {
@@ -24,6 +25,10 @@ Elements.Property.Menu.prototype.hide_sub_menus = function() {
     $.each(this.items, function(idx, item) {
        item.hide_sub_menus();
     });
+}
+
+Elements.Property.Menu.prototype.visible = function() {
+    return this.render().is(':visible');
 }
 
 Elements.Property.Menu.prototype.show = function(target) {
