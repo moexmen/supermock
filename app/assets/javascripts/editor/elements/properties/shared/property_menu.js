@@ -8,21 +8,22 @@ Elements.Property.PropertyMenu.prototype = Object.create(Elements.Property.Menu.
 Elements.Property.PropertyMenu.prototype.constructor = Elements.Property.PropertyMenu;
 
 Elements.Property.PropertyMenu.prototype.show = function(target, elements) {
-    this.detach_items();
+    this.hide_sub_menus();
+    this.remove_items();
 
-    // find intersection of menu items of elements
-    var intersected_items = [];
+    // find common properties of elements
+    var common_properties = elements[0].properties;
     $.each(elements, function(idx, element) {
-        if(idx === 0) {
-            intersected_items = element.property_menu_items;
-        }
-        else {
-            intersected_items = intersected_items.filter(function(item) { return element.property_menu_items.indexOf(item) != -1; });
-        }
-    }.bind(this));
+        common_properties = common_properties.filter(function(property) {
+            return element.properties.filter(function(other_property) {
+                return property.constructor == other_property.constructor;
+            });
+        });
+    });
 
-    $.each(intersected_items, function(idx, item) {
-        this.add_item(item, item.render(this, elements));
+    // add common properties items
+    $.each(common_properties, function(idx, property) {
+        this.add_items(property.constructor.menu_items(this, elements));
     }.bind(this));
 
     Elements.Property.Menu.prototype.show.call(this, target);

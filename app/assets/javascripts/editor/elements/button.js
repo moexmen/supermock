@@ -8,8 +8,7 @@ Elements.Button = function(text, x, y) {
     this.x = x;
     this.y = y;
 
-    this.properties = {};
-    this.property_menu_items = [ Elements.Property.ModalItem.singleton(), Elements.Property.ClickItem.singleton() ];
+    this.properties = [ new Elements.Property.ClickPage(null) ];
 }
 
 Elements.Button.prototype = Object.create(Elements.Element.prototype);
@@ -20,7 +19,7 @@ Elements.Button.prototype.destroy = function() {
     this.html = null;
     this.btn = null;
     this.hitarea = null;
-    this.property_menu_items = null;
+    this.properties = null;
 }
 
 Elements.Button.prototype.render = function() {

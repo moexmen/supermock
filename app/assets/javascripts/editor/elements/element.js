@@ -1,10 +1,22 @@
 var Elements = Elements || {};
 
 Elements.Element = function() {
-    this.property_menu_items = [];
+    this.properties = [];
 }
 
 Elements.Element.prototype.destroy = function() {
+}
+
+Elements.Element.prototype.find_property = function(property_constructor) {
+    var matched_property = null;
+    $.each(this.properties, function(idx, property) {
+       if(property.constructor === property_constructor) {
+           matched_property = property;
+           return false;
+       }
+    });
+
+    return matched_property;
 }
 
 Elements.Element.prototype.select = function() {

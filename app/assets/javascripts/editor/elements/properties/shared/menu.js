@@ -1,22 +1,33 @@
-var Elements = Elements || {};
-Elements.Property = Elements.Property || {};
+//= require ../property
 
 Elements.Property.Menu = function() {
     this.items = [];
     this.hide();
 }
+Elements.Property.Menu.prototype.find_item = function(item_constructor) {
+    var matched_item = null;
+    $.each(this.items, function(idx, item) {
+        if(item.constructor === item_constructor) {
+            matched_item = item;
+            return false;
+        }
+    });
 
-Elements.Property.Menu.prototype.add_item = function(item, html) {
+    return matched_item;
+}
+
+Elements.Property.Menu.prototype.add_item = function(item) {
     this.items.push(item);
-    this.list().append(html);
+    this.list().append(item.render());
 }
 
-Elements.Property.Menu.prototype.detach_items = function() {
-    this.items = [];
-    this.list().children().detach();
+Elements.Property.Menu.prototype.add_items = function(items) {
+    $.each(items, function(idx, item) {
+        this.add_item(item);
+    }.bind(this));
 }
 
-Elements.Property.Menu.prototype.empty_items = function() {
+Elements.Property.Menu.prototype.remove_items = function() {
     this.items = [];
     this.list().empty();
 }
