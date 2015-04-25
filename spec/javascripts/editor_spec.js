@@ -476,64 +476,75 @@ describe('projects/show.js', function() {
                 add_element('Btn');
             });
 
-            it('should show "click item" when right clicking element', function () {
-                expect(Editor.element_property_menu.visible()).toBe(false);
-                mousedown_on(Selector.render(), 3);
-                expect(Editor.element_property_menu.visible()).toBe(true);
-                expect(Elements.Property.ClickItem.singleton().visible()).toBe(true);
-            });
+            describe('single elements', function() {
 
-            it('should show "pages" when hover on "click item"', function () {
-                mousedown_on(Selector.render(), 3);
 
-                expect(Editor.element_page_menu.visible()).toBe(false);
-                Elements.Property.ClickItem.singleton().hover();
-                expect(Editor.element_page_menu.visible()).toBe(true);
+                it('should show "click item" when right clicking element', function () {
+                    expect(Editor.element_property_menu.visible()).toBe(false);
+                    mousedown_on(Selector.render(), 3);
+                    expect(Editor.element_property_menu.visible()).toBe(true);
+                    expect(Editor.element_property_menu.find_item(Elements.Property.ClickPage.MenuItem)).not.toBe(null);
+                });
 
-                // minus 1 for "< No Where >"
-                expect(Editor.element_page_menu.items.length - 1).toBe(Editor.project.pages.length);
-            });
+                it('should show "pages" when hover on "click item"', function () {
+                    mousedown_on(Selector.render(), 3);
 
-            it('should hide "pages" when hover out "click item"', function () {
-                mousedown_on(Selector.render(), 3);
-                Elements.Property.ClickItem.singleton().hover();
+                    expect(Editor.element_page_menu.visible()).toBe(false);
+                    Editor.element_property_menu.find_item(Elements.Property.ClickPage.MenuItem).hover();
+                    expect(Editor.element_page_menu.visible()).toBe(true);
 
-                expect(Editor.element_page_menu.visible()).toBe(true);
-                Elements.Property.ModalItem.singleton().hover();
-                expect(Editor.element_page_menu.visible()).toBe(false);
-            });
+                    // minus 1 for "< No Where >"
+                    expect(Editor.element_page_menu.items.length - 1).toBe(Editor.project.pages.length);
+                });
 
-            it('should hide "pages" when clicked', function () {
-                mousedown_on(Selector.render(), 3);
-                Elements.Property.ClickItem.singleton().hover();
+                it('should hide "pages" when hover out "click item"', function () {
+                    mousedown_on(Selector.render(), 3);
+                    Editor.element_property_menu.find_item(Elements.Property.ClickPage.MenuItem).hover();
 
-                Editor.element_page_menu.items[0].hitarea.click();
-                expect(Editor.element_page_menu.visible()).toBe(false);
-            });
+                    expect(Editor.element_page_menu.visible()).toBe(true);
+                    Editor.element_property_menu.find_item(Elements.Property.ClickPage.MenuItem.CreateModal).hover();
+                    expect(Editor.element_page_menu.visible()).toBe(false);
+                });
 
-            it('should show "No Where" as selected (single element)', function () {
-                mousedown_on(Selector.render(), 3);
-                Elements.Property.ClickItem.singleton().hover();
+                it('should hide "pages" when clicked', function () {
+                    mousedown_on(Selector.render(), 3);
+                    Editor.element_property_menu.find_item(Elements.Property.ClickPage.MenuItem).hover();
 
-                expect(PageList.curr_page().elements[0].properties.click_page_id).toBe(undefined);
-                expect(Editor.element_page_menu.items[0].selected).toBe(true);
-                Editor.element_page_menu.items[0].hitarea.click();
-                expect(PageList.curr_page().elements[0].properties.click_page_id).toBe(null);
+                    Editor.element_page_menu.items[0].hitarea.click();
+                    expect(Editor.element_page_menu.visible()).toBe(false);
+                });
 
-                Elements.Property.ClickItem.singleton().hover();
-                expect(Editor.element_page_menu.items[0].selected).toBe(true);
-            });
+                it('should show "No Where" as selected (single element)', function () {
+                    mousedown_on(Selector.render(), 3);
 
-            it('should set click page id (single element)', function () {
-                mousedown_on(Selector.render(), 3);
-                Elements.Property.ClickItem.singleton().hover();
+                    var click_page_menu_item = Editor.element_property_menu.find_item(Elements.Property.ClickPage.MenuItem);
+                    click_page_menu_item.hover();
 
-                expect(PageList.curr_page().elements[0].properties.click_page_id).toBe(undefined);
-                Editor.element_page_menu.items[1].hitarea.click();
-                expect(PageList.curr_page().elements[0].properties.click_page_id).toBe(Editor.project.pages[0].id);
+                    var click_page_property = PageList.curr_page().elements[0].find_property(Elements.Property.ClickPage);
+                    expect(click_page_property.value).toBe(null);
+                    expect(Editor.element_page_menu.items[0].selected).toBe(true);
+                    Editor.element_page_menu.items[0].hitarea.click();
+                    expect(click_page_property.value).toBe(null);
 
-                Elements.Property.ClickItem.singleton().hover();
-                expect(Editor.element_page_menu.items[1].selected).toBe(true);
+                    click_page_menu_item.hover();
+                    expect(Editor.element_page_menu.items[0].selected).toBe(true);
+                });
+
+                it('should set click page id (single element)', function () {
+                    mousedown_on(Selector.render(), 3);
+
+                    var click_page_menu_item = Editor.element_property_menu.find_item(Elements.Property.ClickPage.MenuItem);
+                    click_page_menu_item.hover();
+
+                    var click_page_property = PageList.curr_page().elements[0].find_property(Elements.Property.ClickPage);
+                    expect(click_page_property.value).toBe(null);
+                    expect(Editor.element_page_menu.items[0].selected).toBe(true);
+                    Editor.element_page_menu.items[1].hitarea.click();
+                    expect(click_page_property.value).toBe(Editor.project.pages[0].id);
+
+                    click_page_menu_item.hover();
+                    expect(Editor.element_page_menu.items[1].selected).toBe(true);
+                });
             });
 
             describe('multiple elements', function() {
@@ -544,31 +555,36 @@ describe('projects/show.js', function() {
 
                 it('should show "No Where" as selected (multiple elements)', function () {
                     mousedown_on(Selector.render(), 3);
-                    Elements.Property.ClickItem.singleton().hover();
+                    Editor.element_property_menu.find_item(Elements.Property.ClickPage.MenuItem).hover();
 
                     expect(Editor.element_page_menu.items[0].selected).toBe(true);
                 });
 
                 it('should show nothing as selected (multiple elements)', function () {
-                    PageList.curr_page().elements[0].properties.click_page_id = 'something else';
+                    PageList.curr_page().elements[0].find_property(Elements.Property.ClickPage).value = 'something else';
 
                     mousedown_on(Selector.render(), 3);
-                    Elements.Property.ClickItem.singleton().hover();
+                    Editor.element_property_menu.find_item(Elements.Property.ClickPage.MenuItem).hover();
 
                     expect(Editor.element_page_menu.items[0].selected).toBe(false);
                 });
 
                 it('should set click page id (multiple element)', function () {
                     mousedown_on(Selector.render(), 3);
-                    Elements.Property.ClickItem.singleton().hover();
 
-                    expect(PageList.curr_page().elements[0].properties.click_page_id).toBe(undefined);
-                    expect(PageList.curr_page().elements[1].properties.click_page_id).toBe(undefined);
+                    var click_page_menu_item = Editor.element_property_menu.find_item(Elements.Property.ClickPage.MenuItem);
+                    click_page_menu_item.hover();
+
+                    var click_page_property_1 = PageList.curr_page().elements[0].find_property(Elements.Property.ClickPage);
+                    var click_page_property_2 = PageList.curr_page().elements[1].find_property(Elements.Property.ClickPage);
+
+                    expect(click_page_property_1.value).toBe(null);
+                    expect(click_page_property_2.value).toBe(null);
                     Editor.element_page_menu.items[1].hitarea.click();
-                    expect(PageList.curr_page().elements[0].properties.click_page_id).toBe(Editor.project.pages[0].id);
-                    expect(PageList.curr_page().elements[1].properties.click_page_id).toBe(Editor.project.pages[0].id);
+                    expect(click_page_property_1.value).toBe(Editor.project.pages[0].id);
+                    expect(click_page_property_2.value).toBe(Editor.project.pages[0].id);
 
-                    Elements.Property.ClickItem.singleton().hover();
+                    click_page_menu_item.hover();
                     expect(Editor.element_page_menu.items[1].selected).toBe(true);
                 });
             });
