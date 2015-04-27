@@ -31,6 +31,7 @@ class ProjectsController < ApplicationController
 
   # PATCH/PUT /projects/1
   def update
+    pp project_params
     if @project.update(project_params)
       flash[:notice] = 'Project was successfully updated.'
     else
@@ -48,10 +49,7 @@ class ProjectsController < ApplicationController
 
   private
     def set_project
-      unless @project = Project.where(id: params[:id]).first
-        flash[:error] = 'Project does not exist'
-        redirect_to projects_path
-      end
+      @project = Project.find(params[:id])
     end
 
     def check_ownership
