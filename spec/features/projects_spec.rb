@@ -84,6 +84,7 @@ feature 'Projects' do
       def open_project_mobile_modal
         all('.project-card')[1].right_click
         all('#project_dropdown_menu a')[0].click
+        expect(find('#project_modal')).to be_visible
       end
 
       def test_project_modal_values(project)

@@ -21,13 +21,6 @@ describe ProjectsController do
       expect(assigns(:project)).to eq project
     end
 
-    it 'should not assign project (no such project)' do
-      get :show, id: 123456
-
-      expect(flash[:error]).to be_present
-      expect(response).to redirect_to(projects_path)
-    end
-
     it 'should not assign project (not owner)' do
       another_user = FactoryGirl.create(:user)
       another_project = FactoryGirl.create(:project, :platform_desktop, user: another_user)
