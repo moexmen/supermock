@@ -56,22 +56,20 @@ Elements.Page.prototype.remove_child_page = function(page) {
     this.child_pages.remove(page);
 }
 
-Elements.Page.prototype.render = function(canvas) {
-    if(canvas != null && this.parent_page != null) {
-        this.parent_page.render(canvas);
-    }
-
+Elements.Page.prototype.render = function() {
     if(this.html === null) {
-        this.html = Util.clone_template('#element_page_template')
+        this.html = Util.clone_template('#element_page_template');
+        this.hitarea = $(this.html.children('.element-page-hitarea')[0])
             .mouseup(function(e) { Editor.mouseup_element(this, e); return false; }.bind(this));
+        this.parent_html = $(this.html.children('.element-page-parent')[0])
 
         $.each(this.elements, function(idx, element) {
             this.html.append(element.render());
         }.bind(this));
     }
 
-    if(canvas != null) {
-        canvas.append(this.html);
+    if(this.parent_page != null) {
+        this.parent_html.append(this.parent_page.render());
     }
 
     return this.html;

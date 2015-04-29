@@ -82,7 +82,7 @@ Editor.remove_selected_elements = function() {
 
 Editor.render_page = function() {
     Editor.canvas().children().detach();
-    PageList.curr_page().render(Editor.canvas());
+    Editor.canvas().append(PageList.curr_page().render());
     Selector.unselect_all();
 }
 

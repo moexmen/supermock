@@ -677,6 +677,8 @@ describe('projects/show.js', function() {
         Selector.render().css('position', 'absolute');
         $('.handle').css('position', 'absolute');
         $('.element-page').css('position', 'absolute');
+        $('.element-page-hitarea').css('position', 'absolute');
+        $('.element-page-parent').css('position', 'absolute');
         $('.element-hitarea').css('position', 'absolute');
         $('.element-button').css('position', 'absolute');
     }
