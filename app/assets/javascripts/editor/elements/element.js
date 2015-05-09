@@ -9,6 +9,7 @@ Elements.Element.prototype.destroy = function() {
 
 Elements.Element.prototype.find_property = function(property_constructor) {
     var matched_property = null;
+
     $.each(this.properties, function(idx, property) {
        if(property.constructor === property_constructor) {
            matched_property = property;
@@ -41,6 +42,14 @@ Elements.Element.prototype.get_size = function() {
 
 Elements.Element.prototype.set_size = function(width, height) {
     this.render().outerWidth(width).outerHeight(height);
+}
+
+Elements.Element.prototype.edit_mode = function() {
+    this.hitarea.show();
+}
+
+Elements.Element.prototype.view_mode = function() {
+    this.hitarea.hide();
 }
 
 Elements.Element.prototype.render = function() {

@@ -28,7 +28,7 @@ Elements.Property.ClickPage.MenuItem.prototype.hover = function() {
         }
     });
 
-    Editor.element_page_menu.show(this.html, selected_page_id, this.select_callback.bind(this));
+    Editor.element_page_menu.show(this.render(), selected_page_id, this.select_callback.bind(this));
 
     return false;
 }
@@ -42,10 +42,10 @@ Elements.Property.ClickPage.MenuItem.prototype.select_callback = function(page) 
 }
 
 Elements.Property.ClickPage.MenuItem.prototype.render = function() {
-    if(!this.html) {
+    if(this.html === null) {
         this.html = Util.clone_template('#element_menu_item_expandable_template');
         this.hitarea = this.html.children('a');
-        $(this.hitarea.children('span')[0]).text('On click go to');
+        this.hitarea.children('span:nth-child(1)').text('On click go to');
 
         this.hitarea.click(this.click.bind(this));
         this.hitarea.mouseenter(this.hover.bind(this));
