@@ -6,6 +6,7 @@ Elements.Property.Menu = function() {
 }
 Elements.Property.Menu.prototype.find_item = function(item_constructor) {
     var matched_item = null;
+
     $.each(this.items, function(idx, item) {
         if(item.constructor === item_constructor) {
             matched_item = item;
@@ -56,7 +57,7 @@ Elements.Property.Menu.prototype.render = function() {
 }
 
 Elements.Property.Menu.prototype.list = function() {
-    return $(this.render().children('ul')[0]);
+    return this.render().children('ul:nth-child(1)');
 }
 
 Elements.Property.Menu.prototype.new_trigger_event = function(target) {

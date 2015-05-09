@@ -15,6 +15,7 @@ Elements.Page = function(id, name, element_models, parent_model, child_page_mode
 }
 
 Elements.Page.prototype.destroy = function() {
+    this.parent_page = null;
     this.render().remove();
     this.html = null;
 
@@ -27,7 +28,6 @@ Elements.Page.prototype.destroy = function() {
        page.destroy();
     });
     this.child_pages = null;
-    this.parent_page = null;
 }
 
 Elements.Page.prototype.add_element = function(element) {
@@ -56,6 +56,30 @@ Elements.Page.prototype.remove_child_page = function(page) {
     this.child_pages.remove(page);
 }
 
+Elements.Page.prototype.edit_mode = function() {
+    $.each(this.elements, function(idx, element) {
+        element.edit_mode();
+    });
+
+    if(this.parent_page != null) {
+        this.parent_page.edit_mode();
+    }
+
+    this.hitarea.show();
+}
+
+Elements.Page.prototype.view_mode = function() {
+    $.each(this.elements, function(idx, element) {
+        element.view_mode();
+    });
+
+    if(this.parent_page != null) {
+        this.parent_page.view_mode();
+    }
+
+    this.hitarea.hide();
+}
+
 Elements.Page.prototype.render = function() {
     if(this.html === null) {
         this.html = Util.clone_template('#element_page_template');
@@ -73,4 +97,8 @@ Elements.Page.prototype.render = function() {
     }
 
     return this.html;
+}
+
+Elements.Page.prototype.render_hitarea = function() {
+    return this.hitarea;
 }

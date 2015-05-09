@@ -5,8 +5,8 @@ PageList.init = function(project) {
     this.curr_item = null;
     this.root_item = new PageList.RootItem(project);
 
-    this.recursive_init(PageList.project.pages, PageList.root_item);
-    this.init_buttons();
+    PageList.recursive_init(PageList.project.pages, PageList.root_item);
+    PageList.init_buttons();
 }
 
 PageList.recursive_init = function(pages, parent_item) {
@@ -17,15 +17,26 @@ PageList.recursive_init = function(pages, parent_item) {
 }
 
 PageList.init_buttons = function() {
-    this.new_page_btn().click(function() { PageList.add_item(null, PageList.root_item); });
-}
-
-PageList.new_page_btn = function() {
-    return $('#new_page_btn');
+    PageList.new_page_btn().click(function() { PageList.add_item(null, PageList.root_item); });
 }
 
 PageList.curr_page = function() {
-    return this.curr_item.page;
+    return PageList.curr_item.page;
+}
+
+PageList.set_curr_page_with_id = function(page_id) {
+    var recursive_find_item = function(item, page_id) {
+        if(item != PageList.root_item && item.page.id === page_id) {
+            PageList.select_item(item);
+        }
+        else {
+            $.each(item.child_items, function(idx, child_item) {
+                recursive_find_item(child_item, page_id);
+            });
+        }
+    }
+
+    recursive_find_item(PageList.root_item, page_id);
 }
 
 PageList.select_first_item = function() {
@@ -33,11 +44,14 @@ PageList.select_first_item = function() {
 }
 
 PageList.select_item = function(item) {
-    if(PageList.curr_item != null) PageList.curr_item.unselect();
+    if(PageList.curr_item != null) {
+        PageList.curr_item.unselect();
+    }
+
     PageList.curr_item = item;
     PageList.curr_item.select();
 
-    Editor.render_page();
+    Editor.render_curr_page();
 }
 
 PageList.add_item = function(page, parent_item) {
@@ -58,9 +72,13 @@ PageList.delete_item = function(item) {
     if(item.can_delete()) {
         item.delete();
 
-        if(this.curr_item == item) {
-            this.curr_item = null;
+        if(PageList.curr_item == item) {
+            PageList.curr_item = null;
             PageList.select_first_item();
         }
     }
+}
+
+PageList.new_page_btn = function() {
+    return $('#new_page_btn');
 }

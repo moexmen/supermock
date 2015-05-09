@@ -24,9 +24,9 @@ describe('projects/show.js', function() {
             PageList.Menu.new_child_page_menu_item().click();
             PageList.select_item(PageList.root_item.child_items[0].child_items[0])
 
-            expect(Editor.canvas().children().length).toBe(2);
-            expect($(Editor.canvas().children()[0]).is(PageList.root_item.child_items[0].page.render())).toBe(true);
-            expect($(Editor.canvas().children()[1]).is(PageList.curr_page().render())).toBe(true);
+            expect(Editor.canvas().children().length).toBe(1);
+            expect(Editor.canvas().children(':nth-child(1)').is(PageList.curr_page().render())).toBe(true);
+            expect(Editor.canvas().children(':nth-child(1)').children('.element-page-parent').children().is(PageList.root_item.child_items[0].page.render())).toBe(true);
         });
 
         it('should add top level pages', function () {
@@ -105,12 +105,12 @@ describe('projects/show.js', function() {
 
         it('should hide when selecting page', function () {
             expect(Selector.visible()).toBe(true);
-            PageList.curr_page().render().mouseup();
+            PageList.curr_page().render_hitarea().mouseup();
             expect(Selector.visible()).toBe(false);
         });
 
         it('should show when selecting element', function () {
-            PageList.curr_page().render().mouseup();
+            PageList.curr_page().render_hitarea().mouseup();
             expect(Selector.visible()).toBe(false);
 
             mousedown_on(PageList.curr_page().elements[0].hitarea, 1);
@@ -144,7 +144,7 @@ describe('projects/show.js', function() {
         describe('shift select', function() {
             beforeEach(function () {
                 add_element('Btn');
-                PageList.curr_page().render().mouseup();
+                PageList.curr_page().render_hitarea().mouseup();
                 mousedown_on(PageList.curr_page().elements[0].hitarea, 1);
             });
 
@@ -166,7 +166,7 @@ describe('projects/show.js', function() {
 
         describe('move', function() {
             it('should move', function () {
-                PageList.curr_page().render().mouseup();
+                PageList.curr_page().render_hitarea().mouseup();
 
                 var position = PageList.curr_page().elements[0].get_position();
                 expect(position.left).toBe(100);
@@ -210,7 +210,7 @@ describe('projects/show.js', function() {
                 expect(position.left).toBe(300);
                 expect(position.top).toBe(300);
 
-                PageList.curr_page().render().mouseup();
+                PageList.curr_page().render_hitarea().mouseup();
                 $.each(PageList.curr_page().elements, function(idx, element) {
                     Selector.select(element);
                 });

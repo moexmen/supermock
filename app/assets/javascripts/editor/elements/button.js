@@ -7,8 +7,6 @@ Elements.Button = function(text, x, y) {
     this.text = text;
     this.x = x;
     this.y = y;
-
-    this.properties = [ new Elements.Property.ClickPage(null) ];
 }
 
 Elements.Button.prototype = Object.create(Elements.Element.prototype);
@@ -27,11 +25,14 @@ Elements.Button.prototype.render = function() {
         this.html = Util.clone_template('#element_button_template');
         this.html.data('element', this);
 
-        this.btn = $(this.html.children('button')[0]).text(this.text);
+        this.btn = this.html.children('button:nth-child(1)').text(this.text);
 
         this.hitarea = $(this.html.children('.element-hitarea')[0])
             .mousedown(function(e) { return Editor.mousedown_element(this, e); }.bind(this))
             .mouseup(function(e) { Editor.mouseup_element(this, e); return false; }.bind(this));
+
+
+        this.properties = [ new Elements.Property.ClickPage(this.btn, null) ];
 
         this.set_position(this.x, this.y);
     }

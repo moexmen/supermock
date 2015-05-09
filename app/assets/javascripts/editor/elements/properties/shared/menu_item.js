@@ -9,12 +9,12 @@ Elements.Property.MenuItem = function(parent_menu, elements) {
 Elements.Property.MenuItem.prototype.hide_sub_menus = function() {
 }
 
-Elements.Property.MenuItem.prototype.click = function(e) {
+Elements.Property.MenuItem.prototype.click = function() {
     this.parent_menu.hide();
     return false;
 }
 
-Elements.Property.MenuItem.prototype.hover = function(e) {
+Elements.Property.MenuItem.prototype.hover = function() {
     this.parent_menu.hide_sub_menus();
     return false;
 }
