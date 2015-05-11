@@ -11,10 +11,9 @@ describe('projects/show.js', function() {
         css_fix();
     });
 
-    describe('page list', function() {
-        beforeEach(function() {
-        });
+    describe('view_mode', view_mode);
 
+    describe('page list', function() {
         it('should render current selected page', function () {
             expect($(Editor.canvas().children()[0]).is(PageList.curr_page().render())).toBe(true);
         });
@@ -477,8 +476,6 @@ describe('projects/show.js', function() {
             });
 
             describe('single elements', function() {
-
-
                 it('should show "click item" when right clicking element', function () {
                     expect(Editor.element_property_menu.visible()).toBe(false);
                     mousedown_on(Selector.render(), 3);
@@ -655,31 +652,109 @@ describe('projects/show.js', function() {
         }
     });
 
-    function add_element(name) {
-        TypeToAdd.show();
-        TypeToAdd.input().val(name);
-        TypeToAdd.parse_input();
-    }
 
-    function mousedown_on(element, button, left, top, shift) {
-        var e = $.Event('mousedown');
-        e.pageX = left === null || left === undefined ? element.offset().left : left;
-        e.pageY = top === null || top === undefined ? element.offset().top : top;
-        e.which = button || 1;
-        e.shiftKey = shift || false;
-        element.trigger(e);
-    }
-
-    function css_fix() {
-        $('#stage').css('position', 'relative');
-        $('#sidebar').css('position', 'absolute');
-        Editor.canvas().css('position', 'absolute');
-        Selector.render().css('position', 'absolute');
-        $('.handle').css('position', 'absolute');
-        $('.element-page').css('position', 'absolute');
-        $('.element-page-hitarea').css('position', 'absolute');
-        $('.element-page-parent').css('position', 'absolute');
-        $('.element-hitarea').css('position', 'absolute');
-        $('.element-button').css('position', 'absolute');
-    }
 });
+
+function view_mode() {
+    beforeEach(function () {
+        PageList.new_page_btn().click();
+        PageList.select_item(PageList.root_item.child_items[1]);
+        add_element('Btn');
+
+        PageList.select_item(PageList.root_item.child_items[0]);
+        add_element('Btn');
+        PageList.curr_page().elements[0].find_property(Elements.Property.ClickPage).value = PageList.project.pages[1].id;
+
+        PageList.Menu.show(PageList.root_item.child_items[0]);
+        PageList.Menu.new_child_page_menu_item().click();
+        PageList.select_item(PageList.root_item.child_items[0].child_items[0]);
+        add_element('Btn');
+        PageList.curr_page().elements[0].find_property(Elements.Property.ClickPage).value = PageList.project.pages[0].id;
+    });
+
+    it('should enter view mode', function () {
+        expect(Editor.sidebar().is(':visible')).toBe(true);
+        Editor.view_btn().click();
+        expect(Editor.sidebar().is(':visible')).toBe(false);
+    });
+
+    it('should enable element behaviours', function () {
+        Editor.view_btn().click();
+
+        expect(PageList.curr_page()).toBe(PageList.project.pages[0].child_pages[0]);
+        expect(Editor.canvas().children(':nth-child(1)').is(PageList.curr_page().render())).toBe(true);
+
+        PageList.curr_page().elements[0].btn.click();
+        expect(PageList.curr_page()).toBe(PageList.project.pages[0]);
+        expect(Editor.canvas().children(':nth-child(1)').is(PageList.curr_page().render())).toBe(true);
+
+        PageList.curr_page().elements[0].btn.click();
+        expect(PageList.curr_page()).toBe(PageList.project.pages[1]);
+        expect(Editor.canvas().children(':nth-child(1)').is(PageList.curr_page().render())).toBe(true);
+    });
+
+    it('should return to edit mode', function () {
+        Editor.view_btn().click();
+        PageList.curr_page().elements[0].btn.click();
+        PageList.curr_page().elements[0].btn.click();
+
+        trigger_key_event('body', KEY_EVENTS.UP, KEY_CODES.ESCAPE);
+        expect(Editor.sidebar().is(':visible')).toBe(true);
+
+        expect(Selector.visible()).toBe(false);
+        mousedown_on(PageList.curr_page().elements[0].hitarea, 1);
+        expect(Selector.visible()).toBe(true);
+
+        PageList.select_item(PageList.root_item.child_items[0]);
+        expect(Selector.visible()).toBe(false);
+        mousedown_on(PageList.curr_page().elements[0].hitarea, 1);
+        expect(Selector.visible()).toBe(true);
+
+        PageList.select_item(PageList.root_item.child_items[0].child_items[0]);
+        expect(Selector.visible()).toBe(false);
+        mousedown_on(PageList.curr_page().elements[0].hitarea, 1);
+        expect(Selector.visible()).toBe(true);
+    });
+}
+
+function add_element(name) {
+    TypeToAdd.show();
+    TypeToAdd.input().val(name);
+    TypeToAdd.parse_input();
+}
+
+var KEY_EVENTS = {
+    UP: 'keyup'
+}
+
+var KEY_CODES = {
+    ESCAPE: 27
+}
+
+function trigger_key_event(target, event, key_code) {
+    var e = $.Event(event);
+    e.which = key_code;
+    $(target).trigger(e);
+}
+
+function mousedown_on(element, button, left, top, shift) {
+    var e = $.Event('mousedown');
+    e.pageX = left === null || left === undefined ? element.offset().left : left;
+    e.pageY = top === null || top === undefined ? element.offset().top : top;
+    e.which = button || 1;
+    e.shiftKey = shift || false;
+    element.trigger(e);
+}
+
+function css_fix() {
+    $('#stage').css('position', 'relative');
+    Editor.sidebar().css('position', 'absolute');
+    Editor.canvas().css('position', 'absolute');
+    Selector.render().css('position', 'absolute');
+    $('.handle').css('position', 'absolute');
+    $('.element-page').css('position', 'absolute');
+    $('.element-page-hitarea').css('position', 'absolute');
+    $('.element-page-parent').css('position', 'absolute');
+    $('.element-hitarea').css('position', 'absolute');
+    $('.element-button').css('position', 'absolute');
+}

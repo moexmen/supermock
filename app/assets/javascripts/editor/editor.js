@@ -53,7 +53,7 @@ Editor.init_type_to_add = function() {
 }
 
 Editor.edit_mode = function() {
-    $('#sidebar').show();
+    Editor.sidebar().show();
     PageList.curr_page().edit_mode();
 
     Editor.mode = Editor.modes.EDIT;
@@ -62,7 +62,7 @@ Editor.edit_mode = function() {
 Editor.view_mode = function() {
     Editor.escape_all();
 
-    $('#sidebar').hide();
+    Editor.sidebar().hide();
     PageList.curr_page().view_mode();
 
     Editor.mode = Editor.modes.VIEW;
@@ -148,18 +148,26 @@ Editor.escape_all = function() {
     Editor.element_property_menu.hide();
 }
 
-Editor.render_page_with_id = function(page_id) {
+Editor.set_curr_page_with_id = function(page_id) {
     PageList.set_curr_page_with_id(page_id);
 }
 
 Editor.render_curr_page = function() {
     Editor.canvas().children().detach();
     Editor.canvas().append(PageList.curr_page().render());
+
+    if(Editor.is_edit_mode()) PageList.curr_page().edit_mode();
+    else if(Editor.is_view_mode()) PageList.curr_page().view_mode();
+
     Selector.unselect_all();
 }
 
 Editor.canvas = function() {
     return $('#canvas');
+}
+
+Editor.sidebar = function() {
+    return $('#sidebar');
 }
 
 Editor.view_btn = function() {
