@@ -9,8 +9,10 @@ Selector.move.update_last_move_position = function(e) {
 }
 
 Selector.move.mousedown = function(e) {
-    Selector.move.update_last_move_position(e);
-    $(window).mousemove(Selector.move.mousemove).mouseup(Selector.move.mouseup);
+    if(e.which == 1) { // left
+        Selector.move.update_last_move_position(e);
+        $(window).mousemove(Selector.move.mousemove).mouseup(Selector.move.mouseup);
+    }
 
     return false;
 }
@@ -38,9 +40,11 @@ Selector.move.move = function(delta_left, delta_top) {
     Selector.delta_position(delta_left, delta_top);
 }
 
-Selector.move.mouseup = function() {
-    Selector.stop_mouse_events();
-    Selector.show();
+Selector.move.mouseup = function(e) {
+    if(e.which == 1) { // left
+        Selector.stop_mouse_events();
+        Selector.show();
+    }
 
     return false;
 }

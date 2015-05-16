@@ -2,30 +2,22 @@ var Elements = Elements || {};
 
 Elements.Element = function() {
     this.properties = [];
+    this.html = null;
 }
 
 Elements.Element.prototype.destroy = function() {
+    this.unrender();
+    this.html = null;
+    this.hitarea = null;
 }
 
 Elements.Element.prototype.find_property = function(property_constructor) {
-    var matched_property = null;
-
-    $.each(this.properties, function(idx, property) {
-       if(property.constructor === property_constructor) {
-           matched_property = property;
-           return false;
-       }
-    });
-
-    return matched_property;
+    var matched_property = $.grep(this.properties, function(property) { return property.constructor === property_constructor });
+    return matched_property[0] || null;
 }
 
-Elements.Element.prototype.select = function() {
-    this.hitarea.css('opacity', 0.2);
-}
-
-Elements.Element.prototype.unselect = function() {
-    this.hitarea.css('opacity', 0.0);
+Elements.Element.prototype.has_property = function(property_constructor) {
+    return this.find_property(property_constructor) != null;
 }
 
 Elements.Element.prototype.set_position = function(left, top) {
@@ -44,15 +36,37 @@ Elements.Element.prototype.set_size = function(width, height) {
     this.render().outerWidth(width).outerHeight(height);
 }
 
+Elements.Element.prototype.select = function() {
+    if(this.hitarea != null) {
+        this.hitarea.css('opacity', 0.2);
+    }
+}
+
+Elements.Element.prototype.unselect = function() {
+    if(this.hitarea != null) {
+        this.hitarea.css('opacity', 0.0);
+    }
+}
+
 Elements.Element.prototype.edit_mode = function() {
-    this.hitarea.show();
+    if(this.hitarea != null) {
+        this.hitarea.show();
+    }
 }
 
 Elements.Element.prototype.view_mode = function() {
-    this.hitarea.hide();
+    if(this.hitarea != null) {
+        this.hitarea.hide();
+    }
 }
 
 Elements.Element.prototype.render = function() {
+}
+
+Elements.Element.prototype.unrender = function() {
+    if(this.html != null) {
+        this.render().remove();
+    }
 }
 
 Elements.Element.create_default = function(element_type) {

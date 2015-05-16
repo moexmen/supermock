@@ -2,7 +2,7 @@ var Selector = Selector || {};
 Selector.resize = {};
 
 Selector.resize.init = function() {
-    Selector.resize.element_ratios = []
+    Selector.resize.element_dimensions = []
 
     var handles = [
         Selector.resize.handle_north(),
@@ -20,8 +20,8 @@ Selector.resize.init = function() {
     });
 }
 
-Selector.resize.init_element_ratios = function() {
-    Selector.resize.element_ratios = []
+Selector.resize.save_element_dimensions = function() {
+    Selector.resize.element_dimensions = []
     var selector_size = Selector.get_size();
     var selector_position = Selector.get_position();
 
@@ -29,7 +29,7 @@ Selector.resize.init_element_ratios = function() {
         var element_position = element.get_position();
         var element_size = element.get_size();
 
-        Selector.resize.element_ratios.push({
+        Selector.resize.element_dimensions.push({
             left: (element_position.left - selector_position.left) / selector_size.width,
             top: (element_position.top - selector_position.top) / selector_size.height,
             width: element_size.width /selector_size.width,
@@ -43,9 +43,11 @@ Selector.resize.update_last_move_position = function(e) {
 }
 
 Selector.resize.mousedown_handle = function(e) {
-    Selector.resize.init_element_ratios();
-    Selector.resize.update_last_move_position(e);
-    $(window).mousemove($(e.target), Selector.resize.mousemove_handle).mouseup(Selector.resize.mouseup_handle);
+    if(e.which == 1) { // left
+        Selector.resize.save_element_dimensions();
+        Selector.resize.update_last_move_position(e);
+        $(window).mousemove($(e.target), Selector.resize.mousemove_handle).mouseup(Selector.resize.mouseup_handle);
+    }
 
     return false;
 }
@@ -61,8 +63,10 @@ Selector.resize.mousemove_handle = function(e) {
 }
 
 Selector.resize.mouseup_handle = function(e) {
-    Selector.stop_mouse_events();
-    Selector.show();
+    if(e.which == 1) { // left
+        Selector.stop_mouse_events();
+        Selector.show();
+    }
 
     return false;
 }
@@ -105,7 +109,6 @@ Selector.resize.resize_selector = function(handle, delta_left, delta_top) {
         delta = { left: 0, top: 0, width: delta_left, height: delta_top };
     }
 
-
     delta = Selector.resize.calc_min_delta(delta);
     Selector.delta_size(delta.width, delta.height);
     Selector.delta_position(delta.left, delta.top);
@@ -113,7 +116,7 @@ Selector.resize.resize_selector = function(handle, delta_left, delta_top) {
 
 Selector.resize.resize_elements = function(new_size, new_position) {
     $.each(Selector.selected_elements, function(idx, element) {
-        var element_ratio = Selector.resize.element_ratios[idx];
+        var element_ratio = Selector.resize.element_dimensions[idx];
 
         var left = new_position.left + Math.round(element_ratio.left * new_size.width);
         var top = new_position.top + Math.round(element_ratio.top * new_size.height);

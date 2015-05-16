@@ -1,12 +1,12 @@
 var PageList = PageList || {};
 PageList.Menu = {};
 
-PageList.Menu.add_to = function(page_item) {
-    page_item.context_menu_trigger_area().contextmenu({
-        target: '#page_list_item_context_menu',
+PageList.Menu.enable_menu_for = function(page_item) {
+    page_item.render_hitarea().contextmenu({
+        target: PageList.Menu.render(),
         before: function(e, context) {
             var page_item = context.parent().data('page_item');
-            PageList.Menu.allow_delete(page_item.can_delete());
+            PageList.Menu.show_delete(page_item.can_delete());
 
             return true;
         },
@@ -20,12 +20,8 @@ PageList.Menu.add_to = function(page_item) {
     })
 }
 
-PageList.Menu.render = function() {
-    return $('#page_list_item_context_menu');
-}
-
-PageList.Menu.allow_delete = function(allow) {
-    if(allow) this.delete_menu_item().removeClass('disabled');
+PageList.Menu.show_delete = function(show) {
+    if(show) this.delete_menu_item().removeClass('disabled');
     else this.delete_menu_item().addClass('disabled');
 }
 
@@ -34,13 +30,17 @@ PageList.Menu.visible = function() {
 }
 
 PageList.Menu.show = function(page_item) {
-    page_item.context_menu_trigger_area().contextmenu().trigger('contextmenu');
+    page_item.render_hitarea().contextmenu().trigger('contextmenu');
+}
+
+PageList.Menu.render = function() {
+    return $('#page_list_item_menu');
 }
 
 PageList.Menu.new_child_page_menu_item = function() {
-    return $(this.render().find('li')[0]);
+    return this.render().find('li:eq(0)');
 }
 
 PageList.Menu.delete_menu_item = function() {
-    return $(this.render().find('li')[1]);
+    return this.render().find('li:eq(1)');
 }

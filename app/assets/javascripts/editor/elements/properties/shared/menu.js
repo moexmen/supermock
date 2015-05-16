@@ -5,16 +5,8 @@ Elements.Property.Menu = function() {
     this.hide();
 }
 Elements.Property.Menu.prototype.find_item = function(item_constructor) {
-    var matched_item = null;
-
-    $.each(this.items, function(idx, item) {
-        if(item.constructor === item_constructor) {
-            matched_item = item;
-            return false;
-        }
-    });
-
-    return matched_item;
+    var matched_item = $.grep(this.items, function(item) { return item.constructor === item_constructor });
+    return matched_item[0] || null;
 }
 
 Elements.Property.Menu.prototype.add_item = function(item) {
@@ -28,7 +20,11 @@ Elements.Property.Menu.prototype.add_items = function(items) {
     }.bind(this));
 }
 
-Elements.Property.Menu.prototype.remove_items = function() {
+Elements.Property.Menu.prototype.remove_all_items = function() {
+    $.each(this.items, function(idx, item) {
+        item.destroy();
+    });
+
     this.items = [];
     this.list().empty();
 }
@@ -57,7 +53,7 @@ Elements.Property.Menu.prototype.render = function() {
 }
 
 Elements.Property.Menu.prototype.list = function() {
-    return this.render().children('ul:nth-child(1)');
+    return this.render().children('ul:eq(0)');
 }
 
 Elements.Property.Menu.prototype.new_trigger_event = function(target) {

@@ -1,10 +1,8 @@
 var Editor = {};
 
 Editor.init = function() {
-    this.modes = { EDIT: 0, VIEW: 1 }
-    this.mode = this.modes.EDIT;
-
     Editor.load_project();
+    Editor.init_mode();
     Editor.init_buttons();
     Editor.init_element_menus();
     Editor.init_page_list();
@@ -16,6 +14,11 @@ Editor.init = function() {
 Editor.load_project = function() {
     var project_model = $('#data').data('project');
     this.project = new Elements.Project(project_model);
+}
+
+Editor.init_mode = function() {
+    this.modes = { EDIT: 0, VIEW: 1 }
+    this.mode = this.modes.EDIT;
 }
 
 Editor.init_buttons = function() {
@@ -124,11 +127,14 @@ Editor.mouseup_element = function(element, event) {
         Selector.unselect_all();
     else
         Selector.mouseup_element(element, event);
+
+    return false;
 }
 
 Editor.add_element = function(element) {
     PageList.curr_page().add_element(element);
     element.set_position(100, 100);
+
     Selector.unselect_all();
     Selector.select(element);
 }
@@ -153,13 +159,13 @@ Editor.set_curr_page_with_id = function(page_id) {
 }
 
 Editor.render_curr_page = function() {
+    Selector.unselect_all();
+
     Editor.canvas().children().detach();
     Editor.canvas().append(PageList.curr_page().render());
 
     if(Editor.is_edit_mode()) PageList.curr_page().edit_mode();
     else if(Editor.is_view_mode()) PageList.curr_page().view_mode();
-
-    Selector.unselect_all();
 }
 
 Editor.canvas = function() {

@@ -3,7 +3,6 @@
 Elements.Button = function(text, x, y) {
     Elements.Element.call(this);
 
-    this.html = null;
     this.text = text;
     this.x = x;
     this.y = y;
@@ -13,10 +12,8 @@ Elements.Button.prototype = Object.create(Elements.Element.prototype);
 Elements.Button.prototype.constructor = Elements.Button;
 
 Elements.Button.prototype.destroy = function() {
-    this.render().remove();
-    this.html = null;
+    Elements.Element.prototype.destroy.call(this);
     this.btn = null;
-    this.hitarea = null;
     this.properties = null;
 }
 
@@ -25,12 +22,11 @@ Elements.Button.prototype.render = function() {
         this.html = Util.clone_template('#element_button_template');
         this.html.data('element', this);
 
-        this.btn = this.html.children('button:nth-child(1)').text(this.text);
+        this.btn = this.html.children('button:eq(0)').text(this.text);
 
-        this.hitarea = $(this.html.children('.element-hitarea')[0])
+        this.hitarea = this.html.children('.element-hitarea:eq(0)')
             .mousedown(function(e) { return Editor.mousedown_element(this, e); }.bind(this))
-            .mouseup(function(e) { Editor.mouseup_element(this, e); return false; }.bind(this));
-
+            .mouseup(function(e) { return Editor.mouseup_element(this, e); }.bind(this));
 
         this.properties = [ new Elements.Property.ClickPage(this.btn, null) ];
 

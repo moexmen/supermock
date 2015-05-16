@@ -8,27 +8,40 @@ TypeToAdd.Item = function(labels, add_element_callback) {
 
 TypeToAdd.Item.prototype.input_changed = function(input) {
     if(input.length == 0) {
-        this.html.show();
+        this.show();
     }
     else {
-        this.html.hide();
+        this.hide();
         input = input.toLowerCase();
 
-        $.each(this.labels, function(idx, label) {
-            if(label.toLowerCase().indexOf(input) != -1) {
-                this.html.show();
-                return false;
-            }
-        }.bind(this));
+        var matched_label = $.grep(this.labels, function(label) {
+           return label.toLowerCase().indexOf(input) != -1;
+        });
+
+        if(matched_label[0] != null) {
+            this.show();
+        }
     }
 }
 
 TypeToAdd.Item.prototype.matched = function() {
-    return this.html.is(':visible');
+    return this.visible();
 }
 
 TypeToAdd.Item.prototype.call_add_element_callback = function() {
     this.add_element_callback();
+}
+
+TypeToAdd.Item.prototype.visible = function() {
+    return this.render().is(':visible');
+}
+
+TypeToAdd.Item.prototype.show = function() {
+    this.render().show();
+}
+
+TypeToAdd.Item.prototype.hide = function() {
+    this.render().hide();
 }
 
 TypeToAdd.Item.prototype.render = function() {

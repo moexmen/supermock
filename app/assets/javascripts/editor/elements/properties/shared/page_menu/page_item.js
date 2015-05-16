@@ -19,13 +19,17 @@ Elements.Property.PageItem.prototype.click = function(e) {
 Elements.Property.PageItem.prototype.render = function() {
     if(!this.html) {
         this.html = Util.clone_template('#element_menu_page_item_template');
+
         this.hitarea = this.html.children('a');
+        this.hitarea
+            .mouseenter(this.mouseenter.bind(this))
+            .click(this.click.bind(this));
 
-        $(this.hitarea.children('span')[0]).text(this.page === null ? '< No Where >' : this.page.name);
-        if(this.selected) $(this.hitarea.children('span')[1]).removeClass('hidden');
-
-        this.hitarea.click(this.click.bind(this));
-        this.hitarea.mouseenter(this.hover.bind(this));
+        var page_name = this.page === null ? '< No Where >' : this.page.name;
+        this.hitarea.children('span:eq(0)').text(page_name);
+        if(this.selected) {
+            this.hitarea.children('span:eq(1)').removeClass('hidden');
+        }
     }
 
     return this.html;

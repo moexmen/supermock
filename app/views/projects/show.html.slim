@@ -45,46 +45,47 @@ body#editor
     div#type_to_add_list
       em#type_to_add_no_item No such elements found.
 
-  #type_to_add_list_item_template.hidden
+    #type_to_add_list_item_template.hidden
 
 
-  #page_list_item_context_menu
+  #page_list_item_menu
     ul.dropdown-menu [role='menu']
       li [role='presentation']
         a [role='menuitem' tabindex='-1'] New Child Page
       li [role='presentation']
         a [role='menuitem' tabindex='-1'] Delete
 
-  li#page_list_item_template.hidden
-    div [ data-toggle="context" ]
-    ul
+    li#page_list_item_template.hidden
+      div [ data-toggle="context" ]
+      ul
 
 
-  #element_property_menu
-    ul.dropdown-menu [role='menu']
+  #element_menus
+    #element_property_menu
+      ul.dropdown-menu [role='menu']
 
-  #element_page_menu
-    ul.dropdown-menu [role='menu']
+    #element_page_menu
+      ul.dropdown-menu [role='menu']
+
+    li#element_menu_item_template.hidden [role='presentation']
+      a [role='menuitem' tabindex='-1']
+
+    li#element_menu_item_expandable_template.hidden [role='presentation']
+      a [role='menuitem' tabindex='-1']
+        span
+        span.pull-right.glyphicon.glyphicon-chevron-right
+
+    li#element_menu_page_item_template.hidden [role='presentation']
+      a [role='menuitem' tabindex='-1']
+        span
+        span.pull-right.glyphicon.glyphicon-ok.hidden
 
 
-  li#element_menu_item_template.hidden [role='presentation']
-    a [role='menuitem' tabindex='-1']
+  #element_templates
+    #element_page_template.element-page.hidden
+      .element-page-parent
+      .element-page-hitarea
 
-  li#element_menu_item_expandable_template.hidden [role='presentation']
-    a [role='menuitem' tabindex='-1']
-      span
-      span.pull-right.glyphicon.glyphicon-chevron-right
-
-  li#element_menu_page_item_template.hidden [role='presentation']
-    a [role='menuitem' tabindex='-1']
-      span
-      span.pull-right.glyphicon.glyphicon-ok.hidden
-
-
-  #element_page_template.element-page.hidden
-    .element-page-parent
-    .element-page-hitarea
-
-  #element_button_template.element.element-button.hidden
-    button.btn.btn-default [type='button']
-    .element-hitarea
+    #element_button_template.element.element-button.hidden
+      button.btn.btn-default [type='button']
+      .element-hitarea
