@@ -9,16 +9,18 @@ Elements.Property.PropertyMenu.prototype.constructor = Elements.Property.Propert
 
 Elements.Property.PropertyMenu.prototype.show = function(target, elements) {
     this.hide_sub_menus();
-    this.remove_items();
+    this.remove_all_items();
 
     // find common properties of elements
-    var common_properties = elements[0].properties;
-    $.each(elements, function(idx, element) {
-        common_properties = common_properties.filter(function(property) {
-            return element.properties.filter(function(other_property) {
-                return property.constructor == other_property.constructor;
-            });
+    var common_properties = [];
+    $.each(elements[0].properties, function(idx, property) {
+        var elements_with_property = $.grep(elements, function(element) {
+            return element.has_property(property.constructor);
         });
+
+        if(elements_with_property.length == elements.length) {
+            common_properties.push(property);
+        }
     });
 
     // add common properties items

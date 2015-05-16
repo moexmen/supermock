@@ -45,7 +45,7 @@ Selector.unselect_all = function() {
 Selector.mousedown = function(e) {
     if(e.which == 1) { // left
         if(e.shiftKey == true) { // shift select
-            var element_behind = Selector.element_at(e);
+            var element_behind = Selector.element_at(e.pageX, e.pageY);
             if(element_behind != null) { // unselect already added element
                 Selector.unselect(element_behind);
             }
@@ -83,50 +83,10 @@ Selector.mousedown_element = function(element, event) {
 }
 
 Selector.mouseup_element = function(element, event) {
-
 }
 
 Selector.stop_mouse_events = function() {
     $(window).off('mousemove').off('mouseup');
-}
-
-Selector.visible = function() {
-    return Selector.render().is(':visible');
-}
-
-Selector.show = function() {
-    var min_x = Number.MAX_VALUE;
-    var min_y = Number.MAX_VALUE;
-    var max_x = 0;
-    var max_y = 0;
-
-    $.each(Selector.selected_elements, function(idx, element) {
-        var position = element.get_position();
-        var size = element.get_size();
-
-        min_x = Math.min(min_x, position.left);
-        min_y = Math.min(min_y, position.top);
-        max_x = Math.max(max_x, position.left + size.width);
-        max_y = Math.max(max_y, position.top + size.height);
-    });
-
-    Selector.set_position(min_x, min_y);
-    Selector.set_size(max_x - min_x, max_y - min_y);
-    Selector.opaque();
-    Selector.render().show();
-}
-
-Selector.hide = function() {
-    Selector.stop_mouse_events();
-    Selector.render().hide();
-}
-
-Selector.transparent = function() {
-    Selector.render().css('opacity', 0);
-}
-
-Selector.opaque = function() {
-    Selector.render().css('opacity', 1);
 }
 
 Selector.set_position = function(left, top) {
@@ -159,22 +119,54 @@ Selector.delta_size = function(delta_width, delta_height) {
     Selector.set_size(size.width, size.height);
 }
 
-Selector.element_at = function(e) {
-    var left = e.pageX - Editor.canvas().offset().left;
-    var top = e.pageY - Editor.canvas().offset().top;
+Selector.element_at = function(left, top) {
+    left -= Editor.canvas().offset().left;
+    top -= Editor.canvas().offset().top;
 
     var element_behind = null;
     $.each(Selector.selected_elements, function(idx, element) {
         var position = element.get_position();
         var size = element.get_size();
 
-        if(left >= position.left && left <= position.left + size.width  && top >= position.top && top <= position.top + size.height) {
+        if(left >= position.left && left <= position.left + size.width
+            && top >= position.top && top <= position.top + size.height) {
+
             element_behind = element;
             return false;
         }
     });
 
     return element_behind;
+}
+
+Selector.visible = function() {
+    return Selector.render().is(':visible');
+}
+
+Selector.show = function() {
+    var min_x = Number.MAX_VALUE;
+    var min_y = Number.MAX_VALUE;
+    var max_x = 0;
+    var max_y = 0;
+
+    $.each(Selector.selected_elements, function(idx, element) {
+        var position = element.get_position();
+        var size = element.get_size();
+
+        min_x = Math.min(min_x, position.left);
+        min_y = Math.min(min_y, position.top);
+        max_x = Math.max(max_x, position.left + size.width);
+        max_y = Math.max(max_y, position.top + size.height);
+    });
+
+    Selector.set_position(min_x, min_y);
+    Selector.set_size(max_x - min_x, max_y - min_y);
+    Selector.render().show();
+}
+
+Selector.hide = function() {
+    Selector.stop_mouse_events();
+    Selector.render().hide();
 }
 
 Selector.render = function() {

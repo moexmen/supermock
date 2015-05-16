@@ -25,18 +25,8 @@ PageList.curr_page = function() {
 }
 
 PageList.set_curr_page_with_id = function(page_id) {
-    var recursive_find_item = function(item, page_id) {
-        if(item != PageList.root_item && item.page.id === page_id) {
-            PageList.select_item(item);
-        }
-        else {
-            $.each(item.child_items, function(idx, child_item) {
-                recursive_find_item(child_item, page_id);
-            });
-        }
-    }
-
-    recursive_find_item(PageList.root_item, page_id);
+    var item = PageList.find_item_by_page_id(page_id);
+    PageList.select_item(item);
 }
 
 PageList.select_first_item = function() {
@@ -77,6 +67,32 @@ PageList.delete_item = function(item) {
             PageList.select_first_item();
         }
     }
+}
+
+PageList.find_item_by_page_id = function(page_id) {
+    var recursive_find_item = function(item, page_id) {
+        var matched_item = null;
+
+        if(item != PageList.root_item && item.page.id === page_id) {
+            matched_item = item;
+        }
+        else {
+            $.each(item.child_items, function(idx, child_item) {
+                matched_item = recursive_find_item(child_item, page_id);
+                if(matched_item != null) {
+                    return false
+                }
+            });
+        }
+
+        return matched_item;
+    }
+
+    return recursive_find_item(PageList.root_item, page_id);
+}
+
+PageList.top_level_items = function() {
+    return PageList.root_item.child_items;
 }
 
 PageList.new_page_btn = function() {

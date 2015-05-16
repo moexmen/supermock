@@ -35,17 +35,12 @@ TypeToAdd.init_input = function() {
 }
 
 TypeToAdd.parse_input = function() {
-    var matched_item = null;
-
-    $.each(TypeToAdd.item_list, function(idx, item) {
-        if(item.matched()) {
-            matched_item = item;
-            return false;
-        }
+    var matched_item = $.grep(TypeToAdd.item_list, function(item) {
+        return item.matched();
     });
 
-    if(matched_item != null) {
-        matched_item.call_add_element_callback();
+    if(matched_item[0] != null) {
+        matched_item[0].call_add_element_callback();
     }
 }
 

@@ -18,7 +18,7 @@ Elements.Property.ClickPage.MenuItem.CreateModal.prototype.render = function() {
         this.hitarea = this.html.children('a').text('Create Modal');
 
         this.hitarea.click(this.click.bind(this));
-        this.hitarea.mouseenter(this.hover.bind(this));
+        this.hitarea.mouseenter(this.mouseenter.bind(this));
     }
 
     return this.html;

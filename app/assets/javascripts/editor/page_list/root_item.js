@@ -3,7 +3,6 @@ var PageList = PageList || {};
 PageList.RootItem = function(project) {
     this.project = project;
     this.child_items = [];
-    this.html = $('#page_list').children('ul');
 }
 
 PageList.RootItem.prototype.first_child_item = function() {
@@ -14,7 +13,7 @@ PageList.RootItem.prototype.add_child_item = function(child_item) {
     this.project.add_page(child_item.page);
     this.child_items.push(child_item);
 
-    this.html.append(child_item.render());
+    this.render().append(child_item.render());
 }
 
 PageList.RootItem.prototype.can_remove_child_item = function() {
@@ -34,5 +33,5 @@ PageList.RootItem.prototype.generate_next_child_page_name = function() {
 }
 
 PageList.RootItem.prototype.render = function() {
-    return this.html;
+    return $('#page_list').children('ul');
 }

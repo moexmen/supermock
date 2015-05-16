@@ -10,9 +10,11 @@ PageList.Item = function(page, parent_item) {
 PageList.Item.prototype.destroy = function() {
     this.page.destroy();
     this.page = null;
+
     this.child_items = null;
     this.parent_item = null;
-    this.html.remove();
+
+    this.unrender();
     this.html = null;
 }
 
@@ -31,7 +33,7 @@ PageList.Item.prototype.add_child_item = function(child_item) {
     this.page.add_child_page(child_item.page);
     this.child_items.push(child_item);
 
-    this.html.children('ul').append(child_item.render());
+    this.html.children('ul:eq(0)').append(child_item.render());
 }
 
 PageList.Item.prototype.can_remove_child_item = function() {
@@ -47,11 +49,11 @@ PageList.Item.prototype.remove_child_item = function(child_item) {
 }
 
 PageList.Item.prototype.select = function() {
-    this.html.children('div').addClass('page_list_item_selected');
+    this.html.children('div:eq(0)').addClass('page_list_item_selected');
 }
 
 PageList.Item.prototype.unselect = function() {
-    this.html.children('div').removeClass('page_list_item_selected');
+    this.html.children('div:eq(0)').removeClass('page_list_item_selected');
 }
 
 PageList.Item.prototype.generate_next_child_page_name = function() {
@@ -61,18 +63,24 @@ PageList.Item.prototype.generate_next_child_page_name = function() {
 PageList.Item.prototype.render = function() {
     if(this.html === null) {
         this.html = Util.clone_template('#page_list_item_template');
-        this.html
-            .data('page_item', this)
-            .children('div')
-                .text(this.page.name)
-                .click(function() { PageList.select_item(this); }.bind(this));
+        this.html.data('page_item', this);
 
-        PageList.Menu.add_to(this);
+        this.html.children('div:eq(0)')
+            .text(this.page.name)
+            .click(function() { PageList.select_item(this); }.bind(this));
+
+        PageList.Menu.enable_menu_for(this);
     }
 
     return this.html;
 }
 
-PageList.Item.prototype.context_menu_trigger_area = function() {
-    return this.render().children('div');
+PageList.Item.prototype.unrender = function() {
+    if(this.html != null) {
+        this.render().remove();
+    }
+}
+
+PageList.Item.prototype.render_hitarea = function() {
+    return this.render().children('div:eq(0)');
 }
