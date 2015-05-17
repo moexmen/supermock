@@ -13,190 +13,8 @@ describe('projects/show.js', function() {
 
     describe('page list', page_list_spec);
     describe('selector', selector_spec);
-
-    describe('property menus', function() {
-        describe('on click go to page', function() {
-            beforeEach(function () {
-                add_element('Btn');
-            });
-
-            describe('single elements', function() {
-                it('should show "click item" when right clicking element', function () {
-                    expect(Editor.element_property_menu.visible()).toBe(false);
-                    mousedown_on(Selector.render(), 3);
-                    expect(Editor.element_property_menu.visible()).toBe(true);
-                    expect(Editor.element_property_menu.find_item(Elements.Property.ClickPage.MenuItem)).not.toBe(null);
-                });
-
-                it('should show "pages" when mouse enter on "click item"', function () {
-                    mousedown_on(Selector.render(), 3);
-
-                    expect(Editor.element_page_menu.visible()).toBe(false);
-                    Editor.element_property_menu.find_item(Elements.Property.ClickPage.MenuItem).mouseenter();
-                    expect(Editor.element_page_menu.visible()).toBe(true);
-
-                    // minus 1 for "< No Where >"
-                    expect(Editor.element_page_menu.items.length - 1).toBe(Editor.project.pages.length);
-                });
-
-                it('should hide "pages" when mouse enter on other items', function () {
-                    mousedown_on(Selector.render(), 3);
-                    Editor.element_property_menu.find_item(Elements.Property.ClickPage.MenuItem).mouseenter();
-
-                    expect(Editor.element_page_menu.visible()).toBe(true);
-                    Editor.element_property_menu.find_item(Elements.Property.ClickPage.MenuItem.CreateModal).mouseenter();
-                    expect(Editor.element_page_menu.visible()).toBe(false);
-                });
-
-                it('should hide "pages" when clicked', function () {
-                    mousedown_on(Selector.render(), 3);
-                    Editor.element_property_menu.find_item(Elements.Property.ClickPage.MenuItem).mouseenter();
-
-                    Editor.element_page_menu.items[0].hitarea.click();
-                    expect(Editor.element_page_menu.visible()).toBe(false);
-                });
-
-                it('should show "No Where" as selected (single element)', function () {
-                    mousedown_on(Selector.render(), 3);
-
-                    var click_page_menu_item = Editor.element_property_menu.find_item(Elements.Property.ClickPage.MenuItem);
-                    click_page_menu_item.mouseenter();
-
-                    var click_page_property = PageList.curr_page().elements[0].find_property(Elements.Property.ClickPage);
-                    expect(click_page_property.value).toBe(null);
-                    expect(Editor.element_page_menu.items[0].selected).toBe(true);
-                    Editor.element_page_menu.items[0].hitarea.click();
-                    expect(click_page_property.value).toBe(null);
-
-                    click_page_menu_item.mouseenter();
-                    expect(Editor.element_page_menu.items[0].selected).toBe(true);
-                });
-
-                it('should set click page id (single element)', function () {
-                    mousedown_on(Selector.render(), 3);
-
-                    var click_page_menu_item = Editor.element_property_menu.find_item(Elements.Property.ClickPage.MenuItem);
-                    click_page_menu_item.mouseenter();
-
-                    var click_page_property = PageList.curr_page().elements[0].find_property(Elements.Property.ClickPage);
-                    expect(click_page_property.value).toBe(null);
-                    expect(Editor.element_page_menu.items[0].selected).toBe(true);
-                    Editor.element_page_menu.items[1].hitarea.click();
-                    expect(click_page_property.value).toBe(Editor.project.pages[0].id);
-
-                    click_page_menu_item.mouseenter();
-                    expect(Editor.element_page_menu.items[1].selected).toBe(true);
-                });
-            });
-
-            describe('multiple elements', function() {
-                beforeEach(function () {
-                    add_element('Btn');
-                    Selector.select(PageList.curr_page().elements[0]);
-                });
-
-                it('should show "No Where" as selected (multiple elements)', function () {
-                    mousedown_on(Selector.render(), 3);
-                    Editor.element_property_menu.find_item(Elements.Property.ClickPage.MenuItem).mouseenter();
-
-                    expect(Editor.element_page_menu.items[0].selected).toBe(true);
-                });
-
-                it('should show nothing as selected (multiple elements)', function () {
-                    PageList.curr_page().elements[0].find_property(Elements.Property.ClickPage).value = 'something else';
-
-                    mousedown_on(Selector.render(), 3);
-                    Editor.element_property_menu.find_item(Elements.Property.ClickPage.MenuItem).mouseenter();
-
-                    expect(Editor.element_page_menu.items[0].selected).toBe(false);
-                });
-
-                it('should set click page id (multiple element)', function () {
-                    mousedown_on(Selector.render(), 3);
-
-                    var click_page_menu_item = Editor.element_property_menu.find_item(Elements.Property.ClickPage.MenuItem);
-                    click_page_menu_item.mouseenter();
-
-                    var click_page_property_1 = PageList.curr_page().elements[0].find_property(Elements.Property.ClickPage);
-                    var click_page_property_2 = PageList.curr_page().elements[1].find_property(Elements.Property.ClickPage);
-
-                    expect(click_page_property_1.value).toBe(null);
-                    expect(click_page_property_2.value).toBe(null);
-                    Editor.element_page_menu.items[1].hitarea.click();
-                    expect(click_page_property_1.value).toBe(Editor.project.pages[0].id);
-                    expect(click_page_property_2.value).toBe(Editor.project.pages[0].id);
-
-                    click_page_menu_item.mouseenter();
-                    expect(Editor.element_page_menu.items[1].selected).toBe(true);
-                });
-            });
-        });
-    });
-
-    describe('type to add', function() {
-        beforeEach(function () {
-            show_type_to_add();
-        });
-
-        it('should show up on spacebar', function () {
-            expect(TypeToAdd.visible()).toBe(true);
-            expect(TypeToAdd.no_such_item_msg().is(':visible')).toBe(false);
-
-            $.each(TypeToAdd.list().children(), function(idx, item) {
-                if(idx > 0) expect($(item).is(':visible')).toBe(true);
-            });
-        });
-
-        it('should hide on global escape', function () {
-            hide_type_to_add();
-            expect(TypeToAdd.visible()).toBe(false);
-        });
-
-        it('should hide on input escape', function () {
-            type_to_add_trigger_escape();
-
-            expect(TypeToAdd.visible()).toBe(false);
-        });
-
-        it('should add element', function () {
-            TypeToAdd.input().val('Btn').keyup();
-
-            expect(TypeToAdd.visible()).toBe(true);
-            expect(TypeToAdd.no_such_item_msg().is(':visible')).toBe(false);
-            $.each(TypeToAdd.list().children(), function(idx, item) {
-                expect($(item).is(':visible')).toBe(($(item).text() === 'Button / Btn'));
-            });
-
-            type_to_add_trigger_enter();
-            expect(TypeToAdd.visible()).toBe(false);
-            expect($(Editor.canvas().children()[0]).children('.element-button').length).toBe(1);
-        });
-
-        function show_type_to_add() {
-            var e = $.Event('keyup');
-            e.which = 32; // space
-            $('body').trigger(e);
-        }
-
-        function hide_type_to_add() {
-            var e = $.Event('keyup');
-            e.which = 27; // escape
-            $('body').trigger(e);
-        }
-
-        function type_to_add_trigger_enter() {
-            var e = $.Event('keyup');
-            e.which = 13; // enter
-            TypeToAdd.input().trigger(e);
-        }
-
-        function type_to_add_trigger_escape() {
-            var e = $.Event('keyup');
-            e.which = 27; // escape
-            TypeToAdd.input().trigger(e);
-        }
-    });
-
+    describe('property menus', property_menu_spec);
+    describe('type to add', type_to_add_spec);
     describe('view_mode', view_mode_spec);
 
 });
@@ -300,7 +118,7 @@ function selector_spec() {
         PageList.curr_page().render_hitarea().mouseup();
         expect(Selector.visible()).toBe(false);
 
-        mousedown_on(PageList.curr_page().elements[0].hitarea, 1);
+        trigger_mouse_event(PageList.curr_page().elements[0].hitarea, MOUSE_EVENTS.DOWN, null, null, MOUSE_BTNS.LEFT);
         expect(Selector.visible()).toBe(true);
     });
 
@@ -322,323 +140,492 @@ function selector_spec() {
         expect(PageList.curr_page().elements.length).toBe(0);
     });
 
-    describe('shift select', selector_shift_select_spec);
-    describe('move', selector_move_spec);
-    describe('resize', selector_resize_spec);
-}
+    describe('shift select', shift_select_spec);
+    describe('move', move_spec);
+    describe('resize', resize_spec);
 
-function selector_shift_select_spec() {
-    beforeEach(function () {
-        add_element('Btn');
-        PageList.curr_page().render_hitarea().mouseup();
-        mousedown_on(PageList.curr_page().elements[0].hitarea, 1);
-    });
 
-    it('should add selected element by shift', function () {
-        expect(Selector.selected_elements.length).toBe(1);
-
-        mousedown_on(PageList.curr_page().elements[1].hitarea, 1, null, null, true);
-        expect(Selector.selected_elements.length).toBe(2);
-    });
-
-    it('should remove selected element by shift', function () {
-        mousedown_on(PageList.curr_page().elements[1].hitarea, 1, null, null, true);
-        expect(Selector.selected_elements.length).toBe(2);
-
-        mousedown_on(Selector.render(), 1, null, null, true);
-        expect(Selector.selected_elements.length).toBe(1);
-    });
-}
-
-function selector_move_spec() {
-    it('should move', function () {
-        PageList.curr_page().render_hitarea().mouseup();
-
-        var position = PageList.curr_page().elements[0].get_position();
-        expect(position.left).toBe(100);
-        expect(position.top).toBe(100);
-
-        mousedown_on(PageList.curr_page().elements[0].hitarea, 1, 100, 100);
-        trigger_mouse_event(window, 'mousemove', null, 150, 200);
-        trigger_mouse_event(window, 'mouseup', MOUSE_BTNS.LEFT, 0, 0);
-
-        position = PageList.curr_page().elements[0].get_position();
-        expect(position.left).toBe(150);
-        expect(position.top).toBe(200);
-    });
-}
-
-function selector_resize_spec() {
-    beforeEach(function () {
-        // add 2 more elements
-        add_element('Btn');
-        PageList.curr_page().elements[1].set_position(200, 200);
-        var position = PageList.curr_page().elements[1].get_position();
-        expect(position.left).toBe(200);
-        expect(position.top).toBe(200);
-
-        add_element('Btn');
-        PageList.curr_page().elements[2].set_position(300, 300);
-        var position = PageList.curr_page().elements[2].get_position();
-        expect(position.left).toBe(300);
-        expect(position.top).toBe(300);
-
-        PageList.curr_page().render_hitarea().mouseup();
-        $.each(PageList.curr_page().elements, function(idx, element) {
-            Selector.select(element);
+    function shift_select_spec() {
+        beforeEach(function () {
+            add_element('Btn');
+            PageList.curr_page().render_hitarea().mouseup();
+            trigger_mouse_event(PageList.curr_page().elements[0].hitarea, MOUSE_EVENTS.DOWN, null, null, MOUSE_BTNS.LEFT);
         });
-        Selector.show();
-        expect(Selector.selected_elements.length).toBe(3);
 
-        // keep track of initial sizes and positions
-        this.selector_size = Selector.get_size();
-        this.selector_position = Selector.get_position();
+        it('should add selected element by shift', function () {
+            expect(Selector.selected_elements.length).toBe(1);
 
-        this.element_sizes = [];
-        this.element_positions = [];
-        $.each(PageList.curr_page().elements, function(idx, element) {
-            this.element_sizes.push(element.get_size());
-            this.element_positions.push(element.get_position());
-        }.bind(this));
-    });
+            trigger_mouse_event(PageList.curr_page().elements[1].hitarea, MOUSE_EVENTS.DOWN, null, null, MOUSE_BTNS.LEFT, true);
+            expect(Selector.selected_elements.length).toBe(2);
+        });
 
-    it('should resize north', function () {
-        // do 2x resize
-        mousedown_on(Selector.resize.handle_north(), 1, 0, 0);
-        mousemove_handle(Selector.resize.handle_north(), this.selector_size.width, -this.selector_size.height);
+        it('should remove selected element by shift', function () {
+            trigger_mouse_event(PageList.curr_page().elements[1].hitarea, MOUSE_EVENTS.DOWN, null, null, MOUSE_BTNS.LEFT, true);
+            expect(Selector.selected_elements.length).toBe(2);
 
-        var selector_resized = {
-            left: this.selector_position.left,
-            top: this.selector_position.top - this.selector_size.height,
-            width: this.selector_size.width,
-            height: this.selector_size.height * 2,
-        };
-
-        var new_selector_position = Selector.get_position();
-        var elements_resized = []
-        $.each(PageList.curr_page().elements, function(idx, element) {
-            elements_resized.push({
-                left: this.element_positions[idx].left,
-                top: new_selector_position.top + 2 * (this.element_positions[idx].top - this.selector_position.top),
-                width: this.element_sizes[idx].width,
-                height: this.element_sizes[idx].height * 2,
-            });
-        }.bind(this));
-
-        test_resize(selector_resized, elements_resized);
-    });
-
-    it('should resize east', function () {
-        // do 2x resize
-        mousedown_on(Selector.resize.handle_east(), 1, 0, 0);
-        mousemove_handle(Selector.resize.handle_east(), this.selector_size.width, this.selector_size.height);
-
-        var selector_resized = {
-            left: this.selector_position.left,
-            top: this.selector_position.top,
-            width: this.selector_size.width * 2,
-            height: this.selector_size.height,
-        };
-
-        var new_selector_position = Selector.get_position();
-        var elements_resized = []
-        $.each(PageList.curr_page().elements, function(idx, element) {
-            elements_resized.push({
-                left: new_selector_position.left + 2 * (this.element_positions[idx].left - this.selector_position.left),
-                top: this.element_positions[idx].top,
-                width: this.element_sizes[idx].width * 2,
-                height: this.element_sizes[idx].height,
-            });
-        }.bind(this));
-
-        test_resize(selector_resized, elements_resized);
-    });
-
-    it('should resize south', function () {
-        // do 2x resize
-        mousedown_on(Selector.resize.handle_south(), 1, 0, 0);
-        mousemove_handle(Selector.resize.handle_south(), this.selector_size.width, this.selector_size.height);
-
-        var selector_resized = {
-            left: this.selector_position.left,
-            top: this.selector_position.top,
-            width: this.selector_size.width,
-            height: this.selector_size.height * 2,
-        };
-
-        var new_selector_position = Selector.get_position();
-        var elements_resized = []
-        $.each(PageList.curr_page().elements, function(idx, element) {
-            elements_resized.push({
-                left: this.element_positions[idx].left,
-                top: new_selector_position.top + 2 * (this.element_positions[idx].top - this.selector_position.top),
-                width: this.element_sizes[idx].width,
-                height: this.element_sizes[idx].height * 2,
-            });
-        }.bind(this));
-
-        test_resize(selector_resized, elements_resized);
-    });
-
-    it('should resize west', function () {
-        // do 2x resize
-        mousedown_on(Selector.resize.handle_west(), 1, 0, 0);
-        mousemove_handle(Selector.resize.handle_west(), -this.selector_size.width, this.selector_size.height);
-
-        var selector_resized = {
-            left: this.selector_position.left - this.selector_size.width,
-            top: this.selector_position.top,
-            width: this.selector_size.width * 2,
-            height: this.selector_size.height,
-        };
-
-        var new_selector_position = Selector.get_position();
-        var elements_resized = []
-        $.each(PageList.curr_page().elements, function(idx, element) {
-            elements_resized.push({
-                left: new_selector_position.left + 2 * (this.element_positions[idx].left - this.selector_position.left),
-                top: this.element_positions[idx].top,
-                width: this.element_sizes[idx].width * 2,
-                height: this.element_sizes[idx].height,
-            });
-        }.bind(this));
-
-        test_resize(selector_resized, elements_resized);
-    });
-
-    it('should resize north west', function () {
-        // do 2x resize
-        mousedown_on(Selector.resize.handle_north_west(), 1, 0, 0);
-        mousemove_handle(Selector.resize.handle_north_west(), -this.selector_size.width, -this.selector_size.height);
-
-        var selector_resized = {
-            left: this.selector_position.left - this.selector_size.width,
-            top: this.selector_position.top - this.selector_size.height,
-            width: this.selector_size.width * 2,
-            height: this.selector_size.height * 2,
-        };
-
-        var new_selector_position = Selector.get_position();
-        var elements_resized = []
-        $.each(PageList.curr_page().elements, function(idx, element) {
-            elements_resized.push({
-                left: new_selector_position.left + 2 * (this.element_positions[idx].left - this.selector_position.left),
-                top: new_selector_position.top + 2 * (this.element_positions[idx].top - this.selector_position.top),
-                width: this.element_sizes[idx].width * 2,
-                height: this.element_sizes[idx].height * 2,
-            });
-        }.bind(this));
-
-        test_resize(selector_resized, elements_resized);
-    });
-
-    it('should resize north east', function () {
-        // do 2x resize
-        mousedown_on(Selector.resize.handle_north_east(), 1, 0, 0);
-        mousemove_handle(Selector.resize.handle_north_east(), this.selector_size.width, -this.selector_size.height);
-
-        var selector_resized = {
-            left: this.selector_position.left,
-            top: this.selector_position.top - this.selector_size.height,
-            width: this.selector_size.width * 2,
-            height: this.selector_size.height * 2,
-        };
-
-        var new_selector_position = Selector.get_position();
-        var elements_resized = []
-        $.each(PageList.curr_page().elements, function(idx, element) {
-            elements_resized.push({
-                left: new_selector_position.left + 2 * (this.element_positions[idx].left - this.selector_position.left),
-                top: new_selector_position.top + 2 * (this.element_positions[idx].top - this.selector_position.top),
-                width: this.element_sizes[idx].width * 2,
-                height: this.element_sizes[idx].height * 2,
-            });
-        }.bind(this));
-
-        test_resize(selector_resized, elements_resized);
-    });
-
-    it('should resize south east', function () {
-        // do 2x resize
-        mousedown_on(Selector.resize.handle_south_east(), 1, 0, 0);
-        mousemove_handle(Selector.resize.handle_south_east(), this.selector_size.width, this.selector_size.height);
-
-        var selector_resized = {
-            left: this.selector_position.left,
-            top: this.selector_position.top,
-            width: this.selector_size.width * 2,
-            height: this.selector_size.height * 2,
-        };
-
-        var new_selector_position = Selector.get_position();
-        var elements_resized = []
-        $.each(PageList.curr_page().elements, function(idx, element) {
-            elements_resized.push({
-                left: new_selector_position.left + 2 * (this.element_positions[idx].left - this.selector_position.left),
-                top: new_selector_position.top + 2 * (this.element_positions[idx].top - this.selector_position.top),
-                width: this.element_sizes[idx].width * 2,
-                height: this.element_sizes[idx].height * 2,
-            });
-        }.bind(this));
-
-        test_resize(selector_resized, elements_resized);
-    });
-
-    it('should resize south west', function () {
-        // do 2x resize
-        mousedown_on(Selector.resize.handle_south_west(), 1, 0, 0);
-        mousemove_handle(Selector.resize.handle_south_west(), -this.selector_size.width, this.selector_size.height);
-
-        var selector_resized = {
-            left: this.selector_position.left - this.selector_size.width,
-            top: this.selector_position.top,
-            width: this.selector_size.width * 2,
-            height: this.selector_size.height * 2,
-        };
-
-        var new_selector_position = Selector.get_position();
-        var elements_resized = []
-        $.each(PageList.curr_page().elements, function(idx, element) {
-            elements_resized.push({
-                left: new_selector_position.left + 2 * (this.element_positions[idx].left - this.selector_position.left),
-                top: new_selector_position.top + 2 * (this.element_positions[idx].top - this.selector_position.top),
-                width: this.element_sizes[idx].width * 2,
-                height: this.element_sizes[idx].height * 2,
-            });
-        }.bind(this));
-
-        test_resize(selector_resized, elements_resized);
-    });
-
-    function test_resize(selector_resized, elements_resized) {
-        // test selector end result
-        var new_selector_size = Selector.get_size();
-        var new_selector_position = Selector.get_position();
-
-        expect(new_selector_position.left).toBe(selector_resized.left);
-        expect(new_selector_position.top).toBe(selector_resized.top);
-        expect(new_selector_size.width).toBe(selector_resized.width);
-        expect(new_selector_size.height).toBe(selector_resized.height);
-
-
-        // test elements end result
-        $.each(PageList.curr_page().elements, function(idx, element) {
-            var new_element_size = element.get_size();
-            var new_element_position = element.get_position();
-
-            expect(new_element_position.left).toBe(elements_resized[idx].left);
-            expect(new_element_position.top).toBe(elements_resized[idx].top);
-            expect(new_element_size.width).toBe(elements_resized[idx].width);
-            expect(new_element_size.height).toBe(elements_resized[idx].height);
-        }.bind(this));
+            trigger_mouse_event(Selector.render(), MOUSE_EVENTS.DOWN, null, null, MOUSE_BTNS.LEFT, true);
+            expect(Selector.selected_elements.length).toBe(1);
+        });
     }
 
-    function mousemove_handle(handle, left, top) {
-        var e = $.Event('mousemove');
-        e.data = handle;
-        e.pageX = left;
-        e.pageY = top;
-        Selector.resize.mousemove_handle(e);
+    function move_spec() {
+        it('should move', function () {
+            PageList.curr_page().render_hitarea().mouseup();
+
+            var position = PageList.curr_page().elements[0].get_position();
+            expect(position.left).toBe(100);
+            expect(position.top).toBe(100);
+
+            trigger_mouse_event(PageList.curr_page().elements[0].hitarea, MOUSE_EVENTS.DOWN, 100, 100, MOUSE_BTNS.LEFT);
+            trigger_mouse_event(window, MOUSE_EVENTS.MOVE, 150, 200);
+            trigger_mouse_event(window, MOUSE_EVENTS.UP, 0, 0, MOUSE_BTNS.LEFT);
+
+            position = PageList.curr_page().elements[0].get_position();
+            expect(position.left).toBe(150);
+            expect(position.top).toBe(200);
+        });
+    }
+
+    function resize_spec() {
+        beforeEach(function () {
+            // add 2 more elements
+            add_element('Btn');
+            PageList.curr_page().elements[1].set_position(200, 200);
+            var position = PageList.curr_page().elements[1].get_position();
+            expect(position.left).toBe(200);
+            expect(position.top).toBe(200);
+
+            add_element('Btn');
+            PageList.curr_page().elements[2].set_position(300, 300);
+            position = PageList.curr_page().elements[2].get_position();
+            expect(position.left).toBe(300);
+            expect(position.top).toBe(300);
+
+            PageList.curr_page().render_hitarea().mouseup();
+            $.each(PageList.curr_page().elements, function(idx, element) {
+                Selector.select(element);
+            });
+            Selector.show();
+            expect(Selector.selected_elements.length).toBe(3);
+
+            // keep track of initial sizes and positions
+            this.selector_dimension = {
+                left: Selector.get_position().left,
+                top: Selector.get_position().top,
+                width: Selector.get_size().width,
+                height: Selector.get_size().height
+            }
+
+            this.element_dimensions = [];
+            $.each(PageList.curr_page().elements, function(idx, element) {
+                this.element_dimensions.push({
+                    left: element.get_position().left,
+                    top: element.get_position().top,
+                    width: element.get_size().width,
+                    height: element.get_size().height
+                });
+            }.bind(this));
+        });
+
+        it('should resize north', function () {
+            // do 2x resize
+            do_resize(Selector.resize.handle_north(), this.selector_dimension.width, -this.selector_dimension.height);
+
+            var selector_resized = {
+                left: this.selector_dimension.left,
+                top: this.selector_dimension.top - this.selector_dimension.height,
+                width: this.selector_dimension.width,
+                height: this.selector_dimension.height * 2
+            };
+
+            var elements_resized = calc_elements_resized(
+                function(idx, new_selector_position) {
+                    return {
+                        left: this.element_dimensions[idx].left,
+                        top: new_selector_position.top + 2 * (this.element_dimensions[idx].top - this.selector_dimension.top),
+                        width: this.element_dimensions[idx].width,
+                        height: this.element_dimensions[idx].height * 2
+                    }
+                }.bind(this));
+
+            test_resize(selector_resized, elements_resized);
+        });
+
+        it('should resize east', function () {
+            // do 2x resize
+            do_resize(Selector.resize.handle_east(), this.selector_dimension.width, this.selector_dimension.height);
+
+            var selector_resized = {
+                left: this.selector_dimension.left,
+                top: this.selector_dimension.top,
+                width: this.selector_dimension.width * 2,
+                height: this.selector_dimension.height
+            };
+
+            var elements_resized = calc_elements_resized(
+                function(idx, new_selector_position) {
+                    return {
+                        left: new_selector_position.left + 2 * (this.element_dimensions[idx].left - this.selector_dimension.left),
+                        top: this.element_dimensions[idx].top,
+                        width: this.element_dimensions[idx].width * 2,
+                        height: this.element_dimensions[idx].height
+                    }
+                }.bind(this));
+
+            test_resize(selector_resized, elements_resized);
+        });
+
+        it('should resize south', function () {
+            // do 2x resize
+            do_resize(Selector.resize.handle_south(), this.selector_dimension.width, this.selector_dimension.height);
+
+            var selector_resized = {
+                left: this.selector_dimension.left,
+                top: this.selector_dimension.top,
+                width: this.selector_dimension.width,
+                height: this.selector_dimension.height * 2
+            };
+
+            var elements_resized = calc_elements_resized(
+                function(idx, new_selector_position) {
+                    return {
+                        left: this.element_dimensions[idx].left,
+                        top: new_selector_position.top + 2 * (this.element_dimensions[idx].top - this.selector_dimension.top),
+                        width: this.element_dimensions[idx].width,
+                        height: this.element_dimensions[idx].height * 2
+                    }
+                }.bind(this));
+
+            test_resize(selector_resized, elements_resized);
+        });
+
+        it('should resize west', function () {
+            // do 2x resize
+            do_resize(Selector.resize.handle_west(), -this.selector_dimension.width, this.selector_dimension.height);
+
+            var selector_resized = {
+                left: this.selector_dimension.left - this.selector_dimension.width,
+                top: this.selector_dimension.top,
+                width: this.selector_dimension.width * 2,
+                height: this.selector_dimension.height
+            };
+
+            var elements_resized = calc_elements_resized(
+                function(idx, new_selector_position) {
+                    return {
+                        left: new_selector_position.left + 2 * (this.element_dimensions[idx].left - this.selector_dimension.left),
+                        top: this.element_dimensions[idx].top,
+                        width: this.element_dimensions[idx].width * 2,
+                        height: this.element_dimensions[idx].height
+                    }
+                }.bind(this));
+
+            test_resize(selector_resized, elements_resized);
+        });
+
+        it('should resize north west', function () {
+            // do 2x resize
+            do_resize(Selector.resize.handle_north_west(), -this.selector_dimension.width, -this.selector_dimension.height);
+
+            var selector_resized = {
+                left: this.selector_dimension.left - this.selector_dimension.width,
+                top: this.selector_dimension.top - this.selector_dimension.height,
+                width: this.selector_dimension.width * 2,
+                height: this.selector_dimension.height * 2
+            };
+
+            var elements_resized = calc_elements_resized(
+                function(idx, new_selector_position) {
+                    return {
+                        left: new_selector_position.left + 2 * (this.element_dimensions[idx].left - this.selector_dimension.left),
+                        top: new_selector_position.top + 2 * (this.element_dimensions[idx].top - this.selector_dimension.top),
+                        width: this.element_dimensions[idx].width * 2,
+                        height: this.element_dimensions[idx].height * 2
+                    }
+                }.bind(this));
+
+            test_resize(selector_resized, elements_resized);
+        });
+
+        it('should resize north east', function () {
+            do_resize(Selector.resize.handle_north_east(), this.selector_dimension.width, -this.selector_dimension.height);
+
+            var selector_resized = {
+                left: this.selector_dimension.left,
+                top: this.selector_dimension.top - this.selector_dimension.height,
+                width: this.selector_dimension.width * 2,
+                height: this.selector_dimension.height * 2
+            };
+
+            var elements_resized = calc_elements_resized(
+                function(idx, new_selector_position) {
+                    return {
+                        left: new_selector_position.left + 2 * (this.element_dimensions[idx].left - this.selector_dimension.left),
+                        top: new_selector_position.top + 2 * (this.element_dimensions[idx].top - this.selector_dimension.top),
+                        width: this.element_dimensions[idx].width * 2,
+                        height: this.element_dimensions[idx].height * 2
+                    }
+                }.bind(this));
+
+            test_resize(selector_resized, elements_resized);
+        });
+
+        it('should resize south east', function () {
+            // do 2x resize
+            do_resize(Selector.resize.handle_south_east(), this.selector_dimension.width, this.selector_dimension.height);
+
+            var selector_resized = {
+                left: this.selector_dimension.left,
+                top: this.selector_dimension.top,
+                width: this.selector_dimension.width * 2,
+                height: this.selector_dimension.height * 2
+            };
+
+            var elements_resized = calc_elements_resized(
+                function(idx, new_selector_position) {
+                    return {
+                        left: new_selector_position.left + 2 * (this.element_dimensions[idx].left - this.selector_dimension.left),
+                        top: new_selector_position.top + 2 * (this.element_dimensions[idx].top - this.selector_dimension.top),
+                        width: this.element_dimensions[idx].width * 2,
+                        height: this.element_dimensions[idx].height * 2
+                    }
+                }.bind(this));
+
+            test_resize(selector_resized, elements_resized);
+        });
+
+        it('should resize south west', function () {
+            // do 2x resize
+            do_resize(Selector.resize.handle_south_west(), -this.selector_dimension.width, this.selector_dimension.height);
+
+            var selector_resized = {
+                left: this.selector_dimension.left - this.selector_dimension.width,
+                top: this.selector_dimension.top,
+                width: this.selector_dimension.width * 2,
+                height: this.selector_dimension.height * 2
+            };
+
+            var elements_resized = calc_elements_resized(
+                function(idx, new_selector_position) {
+                    return {
+                        left: new_selector_position.left + 2 * (this.element_dimensions[idx].left - this.selector_dimension.left),
+                        top: new_selector_position.top + 2 * (this.element_dimensions[idx].top - this.selector_dimension.top),
+                        width: this.element_dimensions[idx].width * 2,
+                        height: this.element_dimensions[idx].height * 2
+                    }
+                }.bind(this));
+
+            test_resize(selector_resized, elements_resized);
+        });
+
+        function do_resize(handle, left, top) {
+            trigger_mouse_event(handle, MOUSE_EVENTS.DOWN, 0, 0, MOUSE_BTNS.LEFT);
+            trigger_mouse_event(window, MOUSE_EVENTS.MOVE, left, top, MOUSE_BTNS.LEFT, false, handle);
+        }
+
+        function calc_elements_resized(formula) {
+            var new_selector_position = Selector.get_position();
+            var elements_resized = [];
+
+            $.each(PageList.curr_page().elements, function(idx, element) {
+                elements_resized.push(formula(idx, new_selector_position));
+            });
+
+            return elements_resized;
+        }
+
+        function test_resize(selector_resized, elements_resized) {
+            // test selector end result
+            var new_selector_size = Selector.get_size();
+            var new_selector_position = Selector.get_position();
+
+            expect(new_selector_position.left).toBe(selector_resized.left);
+            expect(new_selector_position.top).toBe(selector_resized.top);
+            expect(new_selector_size.width).toBe(selector_resized.width);
+            expect(new_selector_size.height).toBe(selector_resized.height);
+
+            // test elements end result
+            $.each(PageList.curr_page().elements, function(idx, element) {
+                var new_element_size = element.get_size();
+                var new_element_position = element.get_position();
+
+                expect(new_element_position.left).toBe(elements_resized[idx].left);
+                expect(new_element_position.top).toBe(elements_resized[idx].top);
+                expect(new_element_size.width).toBe(elements_resized[idx].width);
+                expect(new_element_size.height).toBe(elements_resized[idx].height);
+            }.bind(this));
+        }
+    }
+}
+
+function property_menu_spec() {
+    describe('click page', click_page_spec);
+
+    function click_page_spec() {
+        beforeEach(function () {
+            add_element('Btn');
+
+            expect(Editor.element_property_menu.visible()).toBe(false);
+            trigger_mouse_event(Selector.render(), MOUSE_EVENTS.DOWN, null, null, MOUSE_BTNS.RIGHT);
+        });
+
+        describe('single elements', function() {
+            it('should show "click item" when right clicking element', function () {
+                expect(Editor.element_property_menu.visible()).toBe(true);
+                expect(Editor.element_property_menu.find_item(Elements.Property.ClickPage.MenuItem)).not.toBe(null);
+            });
+
+            it('should show "pages" when mouse enter on "click item"', function () {
+                expect(Editor.element_page_menu.visible()).toBe(false);
+                mouseenter_click_page_item();
+                expect(Editor.element_page_menu.visible()).toBe(true);
+
+                // minus 1 for "< No Where >"
+                expect(Editor.element_page_menu.items.length - 1).toBe(Editor.project.pages.length);
+            });
+
+            it('should hide "pages" when mouse enter on other items', function () {
+                mouseenter_click_page_item();
+
+                expect(Editor.element_page_menu.visible()).toBe(true);
+                Editor.element_property_menu.find_item(Elements.Property.ClickPage.MenuItem.CreateModal).mouseenter();
+                expect(Editor.element_page_menu.visible()).toBe(false);
+            });
+
+            it('should hide "pages" when clicked', function () {
+                mouseenter_click_page_item();
+
+                Editor.element_page_menu.items[0].hitarea.click();
+                expect(Editor.element_page_menu.visible()).toBe(false);
+            });
+
+            it('should show "No Where" as selected (single element)', function () {
+                mouseenter_click_page_item();
+
+                var click_page_property = PageList.curr_page().elements[0].find_property(Elements.Property.ClickPage);
+                expect(click_page_property.value).toBe(null);
+                expect(Editor.element_page_menu.items[0].selected).toBe(true);
+
+                Editor.element_page_menu.items[0].hitarea.click();
+                expect(click_page_property.value).toBe(null);
+
+                mouseenter_click_page_item();
+                expect(Editor.element_page_menu.items[0].selected).toBe(true);
+            });
+
+            it('should set click page id (single element)', function () {
+                mouseenter_click_page_item();
+
+                var click_page_property = PageList.curr_page().elements[0].find_property(Elements.Property.ClickPage);
+                expect(click_page_property.value).toBe(null);
+                expect(Editor.element_page_menu.items[0].selected).toBe(true);
+
+                Editor.element_page_menu.items[1].hitarea.click();
+                expect(click_page_property.value).toBe(Editor.project.pages[0].id);
+
+                mouseenter_click_page_item();
+                expect(Editor.element_page_menu.items[1].selected).toBe(true);
+            });
+        });
+
+        describe('multiple elements', function() {
+            beforeEach(function () {
+                add_element('Btn');
+
+                Selector.select(PageList.curr_page().elements[0]);
+                trigger_mouse_event(Selector.render(), MOUSE_EVENTS.DOWN, null, null, MOUSE_BTNS.RIGHT);
+            });
+
+            it('should show "No Where" as selected (multiple elements)', function () {
+                mouseenter_click_page_item();
+                expect(Editor.element_page_menu.items[0].selected).toBe(true);
+            });
+
+            it('should show nothing as selected (multiple elements)', function () {
+                PageList.curr_page().elements[0].find_property(Elements.Property.ClickPage).value = 'something else';
+
+                mouseenter_click_page_item();
+                expect(Editor.element_page_menu.items[0].selected).toBe(false);
+            });
+
+            it('should set click page id (multiple element)', function () {
+                mouseenter_click_page_item();
+
+                var click_page_property_1 = PageList.curr_page().elements[0].find_property(Elements.Property.ClickPage);
+                var click_page_property_2 = PageList.curr_page().elements[1].find_property(Elements.Property.ClickPage);
+
+                expect(click_page_property_1.value).toBe(null);
+                expect(click_page_property_2.value).toBe(null);
+                Editor.element_page_menu.items[1].hitarea.click();
+                expect(click_page_property_1.value).toBe(Editor.project.pages[0].id);
+                expect(click_page_property_2.value).toBe(Editor.project.pages[0].id);
+
+                mouseenter_click_page_item();
+                expect(Editor.element_page_menu.items[1].selected).toBe(true);
+            });
+        });
+
+        function mouseenter_click_page_item() {
+            var click_page_menu_item = Editor.element_property_menu.find_item(Elements.Property.ClickPage.MenuItem);
+            trigger_mouse_event(click_page_menu_item, MOUSE_EVENTS.ENTER, null, null, MOUSE_BTNS.LEFT);
+        }
+    }
+}
+
+function type_to_add_spec() {
+    beforeEach(function () {
+        show_type_to_add();
+    });
+
+    it('should show up on spacebar', function () {
+        expect(TypeToAdd.visible()).toBe(true);
+        expect(TypeToAdd.no_such_item_msg().is(':visible')).toBe(false);
+
+        $.each(TypeToAdd.list().children(), function(idx, item) {
+            if(idx > 0) {
+                expect($(item).is(':visible')).toBe(true);
+            }
+        });
+    });
+
+    it('should hide on global escape', function () {
+        hide_type_to_add();
+        expect(TypeToAdd.visible()).toBe(false);
+    });
+
+    it('should hide on input escape', function () {
+        type_to_add_trigger_escape();
+        expect(TypeToAdd.visible()).toBe(false);
+    });
+
+    it('should add element', function () {
+        TypeToAdd.input().val('Btn').keyup();
+
+        expect(TypeToAdd.visible()).toBe(true);
+        expect(TypeToAdd.no_such_item_msg().is(':visible')).toBe(false);
+        $.each(TypeToAdd.list().children(), function(idx, item) {
+            expect($(item).is(':visible')).toBe(($(item).text() === 'Button / Btn'));
+        });
+
+        type_to_add_trigger_enter();
+        expect(TypeToAdd.visible()).toBe(false);
+        expect($(Editor.canvas().children()[0]).children('.element-button:eq(0)').length).toBe(1);
+    });
+
+    function show_type_to_add() {
+        trigger_key_event('body', KEY_EVENTS.UP, KEY_CODES.SPACE);
+    }
+
+    function hide_type_to_add() {
+        trigger_key_event('body', KEY_EVENTS.UP, KEY_CODES.ESCAPE);
+    }
+
+    function type_to_add_trigger_enter() {
+        trigger_key_event(TypeToAdd.input(), KEY_EVENTS.UP, KEY_CODES.ENTER);
+    }
+
+    function type_to_add_trigger_escape() {
+        trigger_key_event(TypeToAdd.input(), KEY_EVENTS.UP, KEY_CODES.ESCAPE);
     }
 }
 
@@ -689,17 +676,17 @@ function view_mode_spec() {
         expect(Editor.sidebar().is(':visible')).toBe(true);
 
         expect(Selector.visible()).toBe(false);
-        mousedown_on(PageList.curr_page().elements[0].hitarea, 1);
+        trigger_mouse_event(PageList.curr_page().elements[0].hitarea, MOUSE_EVENTS.DOWN, null, null, MOUSE_BTNS.LEFT);
         expect(Selector.visible()).toBe(true);
 
         PageList.select_item(PageList.top_level_items()[0]);
         expect(Selector.visible()).toBe(false);
-        mousedown_on(PageList.curr_page().elements[0].hitarea, 1);
+        trigger_mouse_event(PageList.curr_page().elements[0].hitarea, MOUSE_EVENTS.DOWN, null, null, MOUSE_BTNS.LEFT);
         expect(Selector.visible()).toBe(true);
 
         PageList.select_item(PageList.top_level_items()[0].child_items[0]);
         expect(Selector.visible()).toBe(false);
-        mousedown_on(PageList.curr_page().elements[0].hitarea, 1);
+        trigger_mouse_event(PageList.curr_page().elements[0].hitarea, MOUSE_EVENTS.DOWN, null, null, MOUSE_BTNS.LEFT);
         expect(Selector.visible()).toBe(true);
     });
 }
@@ -715,7 +702,9 @@ var KEY_EVENTS = {
 }
 
 var KEY_CODES = {
+    ENTER: 13,
     ESCAPE: 27,
+    SPACE: 32,
     DELETE: 46
 }
 
@@ -725,27 +714,40 @@ function trigger_key_event(target, event, key_code) {
     $(target).trigger(e);
 }
 
+var MOUSE_EVENTS = {
+    DOWN: 'mousedown',
+    UP: 'mouseup',
+    MOVE: 'mousemove',
+    ENTER: 'mouseenter'
+}
+
 var MOUSE_BTNS = {
     LEFT: 1,
-    RIGHT: 2
+    RIGHT: 3
 }
 
-function trigger_mouse_event(target, event, button, left, top, shift) {
+function trigger_mouse_event(target, event, left, top, button, shift, data) {
     var e = $.Event(event);
-    e.pageX = left === null || left === undefined ? target.offset().left : left;
-    e.pageY = top === null || top === undefined ? target.offset().top : top;
-    e.which = button || MOUSE_BTNS.LEFT;
-    e.shiftKey = shift || false;
-    $(target).trigger(e);
-}
 
-function mousedown_on(element, button, left, top, shift) {
-    var e = $.Event('mousedown');
-    e.pageX = left === null || left === undefined ? element.offset().left : left;
-    e.pageY = top === null || top === undefined ? element.offset().top : top;
-    e.which = button || 1;
-    e.shiftKey = shift || false;
-    element.trigger(e);
+    if(left === null || left === undefined) {
+        e.pageX = target.offset === undefined ? 0 : target.offset().left;
+    }
+    else {
+        e.pageX = left;
+    }
+
+    if(top === null || top === undefined) {
+        e.pageY = target.offset === undefined ? 0 : target.offset().top;
+    }
+    else {
+        e.pageY = top;
+    }
+
+    if(button != null || button != undefined) e.which = button;
+    if(shift != null || shift != undefined) e.shiftKey = shift;
+    if(data != null || data != undefined) e.data = data;
+
+    $(target).trigger(e);
 }
 
 function css_fix() {
