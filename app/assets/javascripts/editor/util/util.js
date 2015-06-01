@@ -1,4 +1,4 @@
-var Util = {}
+var Util = {};
 
 Util.uuid = function() {
     function s4() {
@@ -9,5 +9,5 @@ Util.uuid = function() {
 }
 
 Util.clone_template = function(id) {
-    return $(id).clone().attr('id',null).removeClass('hidden');
+    return $(id).clone().attr('id', null).removeClass('hidden');
 }
