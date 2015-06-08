@@ -14,6 +14,11 @@ Elements.Property.PageMenu.prototype.add_no_where_item = function() {
     this.add_item(item);
 }
 
+Elements.Property.PageMenu.prototype.add_create_modal_item = function() {
+    var item = new Elements.Property.PageItem(this, null, false, this.select_callback);
+    this.add_item(new Elements.Property.PageMenu.CreateModalItem(this));
+}
+
 Elements.Property.PageMenu.prototype.recursive_add_items = function(pages) {
     $.each(pages, function(idx, page) {
         var selected = this.selected_page_id === page.id;
