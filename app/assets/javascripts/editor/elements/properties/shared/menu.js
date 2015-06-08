@@ -9,6 +9,12 @@ Elements.Property.Menu.prototype.find_item = function(item_constructor) {
     return matched_item[0] || null;
 }
 
+Elements.Property.Menu.prototype.add_divider = function() {
+    var item = new Elements.Property.Menu.Divider();
+    this.items.push(item);
+    this.list().append(item.render());
+}
+
 Elements.Property.Menu.prototype.add_item = function(item) {
     this.items.push(item);
     this.list().append(item.render());

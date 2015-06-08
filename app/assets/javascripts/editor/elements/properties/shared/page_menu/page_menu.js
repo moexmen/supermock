@@ -15,8 +15,7 @@ Elements.Property.PageMenu.prototype.add_no_where_item = function() {
 }
 
 Elements.Property.PageMenu.prototype.add_create_modal_item = function() {
-    var item = new Elements.Property.PageItem(this, null, false, this.select_callback);
-    this.add_item(new Elements.Property.PageMenu.CreateModalItem(this));
+    this.add_item(new Elements.Property.PageMenu.CreateModalItem(this, this.select_callback));
 }
 
 Elements.Property.PageMenu.prototype.recursive_add_items = function(pages) {
@@ -34,6 +33,8 @@ Elements.Property.PageMenu.prototype.show = function(target, selected_page_id, s
     this.select_callback = select_callback;
 
     this.remove_all_items();
+    this.add_create_modal_item();
+    this.add_divider();
     this.add_no_where_item();
     this.recursive_add_items(this.project.pages);
 

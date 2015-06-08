@@ -24,6 +24,10 @@ PageList.curr_page = function() {
     return PageList.curr_item.page;
 }
 
+PageList.curr_page_item = function() {
+    return PageList.curr_item;
+}
+
 PageList.set_curr_page_with_id = function(page_id) {
     var item = PageList.find_item_by_page_id(page_id);
     PageList.select_item(item);

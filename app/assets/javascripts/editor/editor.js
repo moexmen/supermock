@@ -173,6 +173,10 @@ Editor.render_curr_page = function() {
     else if(Editor.is_view_mode()) PageList.curr_page().view_mode();
 }
 
+Editor.add_child_page = function(page) {
+    PageList.add_item(page, PageList.curr_page_item());
+}
+
 Editor.canvas = function() {
     return $('#canvas');
 }
