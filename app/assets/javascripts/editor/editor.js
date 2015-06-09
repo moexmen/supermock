@@ -18,11 +18,25 @@ Editor.load_project = function() {
 
 Editor.init_mode = function() {
     this.modes = { EDIT: 0, VIEW: 1 }
-    this.mode = this.modes.EDIT;
+    this.mode = this.modes.EDIT; 
 }
 
 Editor.init_buttons = function() {
     Editor.view_btn().click(Editor.view_mode);
+}
+
+Editor.view_mode = function() {
+    Editor.escape_all();
+
+    Editor.sidebar().hide();
+    PageList.curr_page().view_mode();
+
+    Editor.mode = Editor.modes.VIEW;
+}
+
+Editor.init_element_menus = function() {
+    Editor.element_property_menu = new Elements.Property.PropertyMenu();
+    Editor.element_page_menu = new Elements.Property.PageMenu(this.project);
 }
 
 Editor.init_page_list = function() {
@@ -34,15 +48,10 @@ Editor.init_selector = function() {
     Selector.init();
 }
 
-Editor.init_element_menus = function() {
-    Editor.element_property_menu = new Elements.Property.PropertyMenu();
-    Editor.element_page_menu = new Elements.Property.PageMenu(this.project);
-}
-
 Editor.init_type_to_add = function() {
     var element_list = [
         { labels: ['Button', 'Btn'], type: Elements.Button },
-        { labels: ['Text'], type: null },
+        { labels: ['Text'], type: Elements.Text }, //created for testing purposes
         { labels: ['Textfield', 'Input'], type: null },
         { labels: ['Textarea'], type: null },
         { labels: ['Checkbox', 'Chk'], type: null },
@@ -62,15 +71,6 @@ Editor.edit_mode = function() {
     Editor.mode = Editor.modes.EDIT;
 }
 
-Editor.view_mode = function() {
-    Editor.escape_all();
-
-    Editor.sidebar().hide();
-    PageList.curr_page().view_mode();
-
-    Editor.mode = Editor.modes.VIEW;
-}
-
 Editor.is_edit_mode = function() {
     return Editor.mode === Editor.modes.EDIT;
 }
@@ -81,7 +81,6 @@ Editor.is_view_mode = function() {
 
 Editor.handle_key_events = function() {
     $('body').keyup(function (e) {
-
         if (Editor.is_edit_mode()) {
             switch (e.which) {
                 case 32: // space
@@ -132,8 +131,9 @@ Editor.mouseup_element = function(element, event) {
 }
 
 Editor.add_element = function(element) {
-    PageList.curr_page().add_element(element);
+    console.log("----->" + element.text + "What do you think is going on?");
     element.set_position(100, 100);
+    PageList.curr_page().add_element(element);
 
     Selector.unselect_all();
     Selector.select(element);
