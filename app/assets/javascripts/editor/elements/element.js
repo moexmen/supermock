@@ -21,6 +21,7 @@ Elements.Element.prototype.has_property = function(property_constructor) {
 }
 
 Elements.Element.prototype.set_position = function(left, top) {
+    console.log(this.render(), "Cool stuffs");
     this.render().css({ left: left, top: top });
 }
 
@@ -72,10 +73,16 @@ Elements.Element.prototype.unrender = function() {
 Elements.Element.create_default = function(element_type) {
     switch(element_type) {
         case Elements.Page:
+            console.log("creating a new page");
             return new Elements.Page(Util.uuid(), '', [], null, []);
         case Elements.Button:
+            console.log("creating a button");
             return new Elements.Button('Button', 0, 0);
+        case Elements.Text:
+            console.log("please be here?");
+            return new Elements.Text(50, 50);
         default:
+            console.log("FUCK YOU");
             return null;
     }
 }
