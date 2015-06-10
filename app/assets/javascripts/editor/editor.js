@@ -52,7 +52,7 @@ Editor.init_type_to_add = function() {
     var element_list = [
         { labels: ['Button', 'Btn'], type: Elements.Button },
         { labels: ['Text'], type: Elements.Text }, 
-        { labels: ['Textfield', 'Input'], type: null },
+        { labels: ['Textfield', 'Input'], type: Elements.Text_Input },
         { labels: ['Textarea'], type: null },
         { labels: ['Checkbox', 'Chk'], type: null },
         { labels: ['Radiobutton', 'Rdo'], type: null },
@@ -133,7 +133,7 @@ Editor.mouseup_element = function(element, event) {
 Editor.add_element = function(element) {
     PageList.curr_page().add_element(element);
     element.set_position(100, 100);
-    element.set_size(100, 100);
+    // element.set_size(100, 100);
 
     Selector.unselect_all();
     Selector.select(element);

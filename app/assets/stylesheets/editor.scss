@@ -287,6 +287,14 @@
       overflow: hidden; 
     }
   }
-   
+  .element-textinput {
+    position: absolute;
+
+    > input {
+      overflow: hidden; 
+      width: 100%;
+      height: 100%;
+    }
+  }
 }
 
