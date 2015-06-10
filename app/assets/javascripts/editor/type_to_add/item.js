@@ -4,7 +4,6 @@ TypeToAdd.Item = function(labels, add_element_callback) {
     this.html = null;
     this.labels = labels;
     this.add_element_callback = add_element_callback;
-    console.log(labels, add_element_callback);
 }
 
 TypeToAdd.Item.prototype.input_changed = function(input) {

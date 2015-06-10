@@ -284,9 +284,7 @@
     height: 100%;
     border: 1px dashed #565656;
 
-    > * {
-      width: auto;
-      height: auto;
+    > div {
       text-overflow: ellipsis-word;
       overflow: hidden; 
     }
