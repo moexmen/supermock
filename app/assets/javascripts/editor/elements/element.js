@@ -33,9 +33,14 @@ Elements.Element.prototype.get_size = function() {
 }
 
 Elements.Element.prototype.set_size = function(width, height) {
-    this.width = width; this.height = height;
     this.render().outerWidth(width).outerHeight(height);
+    this.on_resize();
 }
+
+Elements.Element.prototype.on_resize = function() {
+    return;
+}
+
 
 Elements.Element.prototype.select = function() {
     if(this.hitarea != null) {
@@ -79,7 +84,7 @@ Elements.Element.create_default = function(element_type) {
         case Elements.Text:
             return new Elements.Text(50, 50, 300, 100);
         default:
-            console.log("No element of useful type has been created");
+            // console.log("No element of useful type has been created");
             return null;
     }
 }
