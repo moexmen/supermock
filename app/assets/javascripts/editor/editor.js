@@ -18,7 +18,7 @@ Editor.load_project = function() {
 
 Editor.init_mode = function() {
     this.modes = { EDIT: 0, VIEW: 1 }
-    this.mode = this.modes.EDIT; 
+    this.mode = this.modes.EDIT;
 }
 
 Editor.init_buttons = function() {
@@ -131,9 +131,8 @@ Editor.mouseup_element = function(element, event) {
 }
 
 Editor.add_element = function(element) {
-    element.set_position(100, 100);
-
     PageList.curr_page().add_element(element);
+    element.set_position(100, 100);
     element.set_size(100, 100);
 
     Selector.unselect_all();

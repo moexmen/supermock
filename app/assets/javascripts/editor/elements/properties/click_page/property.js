@@ -19,6 +19,3 @@ Elements.Property.ClickPage.menu_items = function(parent_menu, elements) {
         new Elements.Property.ClickPage.MenuItem.CreateModal(parent_menu, elements)
     ];
 }
-
-
-

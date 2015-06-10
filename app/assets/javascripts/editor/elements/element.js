@@ -38,7 +38,6 @@ Elements.Element.prototype.set_size = function(width, height) {
 }
 
 Elements.Element.prototype.on_resize = function() {
-    return;
 }
 
 
