@@ -278,5 +278,19 @@
       height: 100%;
     }
   }
+  .element-text {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border: 1px dashed #565656;
+
+    > * {
+      width: auto;
+      height: auto;
+      text-overflow: ellipsis-word;
+      overflow: hidden; 
+    }
+  }
+   
 }
 

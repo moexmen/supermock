@@ -1,11 +1,13 @@
 //= require ./element
 
-Elements.Text = function(x, y) {
+Elements.Text = function(x, y, height, width) {
     Elements.Element.call(this);
-
-    this.text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sit amet felis a diam facilisis mattis vitae a metus. Sed a turpis pretium, tincidunt turpis a, posuere sem. Proin consequat vulputate arcu. Ut nisl elit, fermentum gravida nunc eget, porta eleifend risus. Praesent cursus purus sed nunc posuere mollis. Duis ullamcorper, enim in auctor congue, est sem porta nisl, ut blandit nibh velit at quam. Aenean nisl nisl, fermentum ac leo non, laoreet vulputate metus. Suspendisse auctor eget leo vel fringilla. Sed fermentum sapien ut ante pharetra imperdiet. Pellentesque euismod erat urna, ut congue quam euismod non. Donec risus tellus, ullamcorper a tincidunt id, fringilla vitae lorem. Maecenas mi ipsum, vestibulum quis mauris vel, facilisis sodales leo.";
     this.x = x;
     this.y = y;
+    this.height = height;
+    this.width = width;
+    var random_num = Math.floor(Math.random() * lorem_ipsum_array.length);
+    this.sentences_array = lorem_ipsum_array.slice(random_num, random_num+3);
 }
 
 Elements.Text.prototype = Object.create(Elements.Element.prototype); //to inherit from Button?
@@ -13,24 +15,36 @@ Elements.Text.prototype.constructor = Elements.Text;
 
 Elements.Text.prototype.destroy = function() {
     Elements.Element.prototype.destroy.call(this);
-    this.btn = null;
+    this.visible_text = null;
     this.properties = null;
 }
 
 Elements.Text.prototype.render = function() {
     if(this.html === null) {
-        this.html = Util.clone_template('#element_button_template');
+        this.html = Util.clone_template('#element_text_template');
         this.html.data('element', this);
-
-        this.btn = this.html.children('button:eq(0)').text(this.text);
+        var currText = this.sentences_array.join(". ");
+        console.log(currText);
+        this.visible_text = this.html.children('div:eq(0)').text(currText);
 
         this.hitarea = this.html.children('.element-hitarea:eq(0)')
             .mousedown(function(e) { return Editor.mousedown_element(this, e); }.bind(this))
             .mouseup(function(e) { return Editor.mouseup_element(this, e); }.bind(this));
 
-        this.properties = [ new Elements.Property.ClickPage(this.btn, null) ];
+        this.properties = [ new Elements.Property.ClickPage(this.visible_text, null) ];
 
         this.set_position(this.x, this.y);
+        this.set_size(this.height, this.width);
+    } else if (this.html.children('div:eq(0)').outerHeight() !== 0) { 
+    //to ensure it is initialized
+        while (this.html.children('div:eq(0)').outerHeight() < this.height){
+            this.sentences_array.push(lorem_ipsum_array[Math.floor(Math.random() * lorem_ipsum_array.length)]);
+            this.visible_text = this.html.children('div:eq(0)').text(this.sentences_array.join(". "));
+        }
+        this.sentences_array.splice(-1,1);
+        this.visible_text = this.html.children('div:eq(0)').text(this.sentences_array.join(". "));
+    } else {
+        pass;
     }
 
     return this.html;
