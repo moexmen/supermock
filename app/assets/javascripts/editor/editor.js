@@ -131,7 +131,6 @@ Editor.mouseup_element = function(element, event) {
 }
 
 Editor.add_element = function(element) {
-    console.log("----->" + element.text + "What do you think is going on?");
     element.set_position(100, 100);
     PageList.curr_page().add_element(element);
 
