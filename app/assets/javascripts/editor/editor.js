@@ -53,7 +53,7 @@ Editor.init_type_to_add = function() {
         { labels: ['Button', 'Btn'], type: Elements.Button },
         { labels: ['Text'], type: Elements.Text }, 
         { labels: ['Textfield', 'Input'], type: Elements.Text_Input },
-        { labels: ['Textarea'], type: null },
+        { labels: ['Textarea'], type: Elements.Text_Area },
         { labels: ['Checkbox', 'Chk'], type: null },
         { labels: ['Radiobutton', 'Rdo'], type: null },
         { labels: ['Box'], type: null },
