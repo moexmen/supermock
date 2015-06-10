@@ -45,9 +45,8 @@ TypeToAdd.parse_input = function() {
 }
 
 TypeToAdd.add_element = function(element_type) {
-    var whatever = Elements.Element.create_default(element_type);
+    Editor.add_element(Elements.Element.create_default(element_type));
     TypeToAdd.hide();
-    Editor.add_element(whatever);
 }
 
 TypeToAdd.update_items = function() {

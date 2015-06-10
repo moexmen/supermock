@@ -282,10 +282,8 @@
     position: absolute;
     width: 100%;
     height: 100%;
-    border: 1px dashed #565656;
 
     > div {
-      text-overflow: ellipsis-word;
       overflow: hidden; 
     }
   }
