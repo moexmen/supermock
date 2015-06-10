@@ -84,6 +84,8 @@ Elements.Element.create_default = function(element_type) {
             return new Elements.Text(50, 50, 300, 100);
         case Elements.Text_Input:
             return new Elements.Text_Input();
+        case Elements.Text_Area:
+            return new Elements.Text_Area();
         default:
             // console.log("No element of useful type has been created");
             return null;
