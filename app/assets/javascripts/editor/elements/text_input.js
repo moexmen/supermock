@@ -2,7 +2,6 @@
 
 Elements.Text_Input = function() {
     Elements.Element.call(this);
-    this.prefill = "Type text here";
 }
 
 Elements.Text_Input.prototype = Object.create(Elements.Element.prototype); 
@@ -17,7 +16,6 @@ Elements.Text_Input.prototype.render = function() {
     if(this.html === null) {
         this.html = Util.clone_template('#element_textinput_template');
         this.html.data('element', this);
-        this.html.children('input:eq(0)').text(this.prefill);
 
         this.hitarea = this.html.children('.element-hitarea:eq(0)')
             .mousedown(function(e) { return Editor.mousedown_element(this, e); }.bind(this))

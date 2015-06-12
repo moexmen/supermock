@@ -45,7 +45,6 @@ Elements.Property.ClickPage.MenuItem.prototype.select_callback = function(page) 
 Elements.Property.ClickPage.MenuItem.prototype.render = function() {
     if(this.html === null) {
         this.html = Util.clone_template('#element_menu_item_expandable_template');
-        this.html
 
         this.hitarea = this.html.children('a:eq(0)');
         this.hitarea.children('span:eq(0)').text('On click go to');
