@@ -81,11 +81,13 @@ Elements.Element.create_default = function(element_type) {
         case Elements.Button:
             return new Elements.Button('Button', 0, 0);
         case Elements.Text:
-            return new Elements.Text(50, 50, 300, 100);
+            return new Elements.Text();
         case Elements.Text_Input:
             return new Elements.Text_Input();
         case Elements.Text_Area:
             return new Elements.Text_Area();
+        case Elements.Checkbox:
+            return new Elements.Checkbox();
         default:
             // console.log("No element of useful type has been created");
             return null;

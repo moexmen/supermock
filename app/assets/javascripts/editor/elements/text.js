@@ -1,11 +1,7 @@
 //= require ./element
 
-Elements.Text = function(x, y, height, width) {
+Elements.Text = function() {
     Elements.Element.call(this);
-    this.x = x;
-    this.y = y;
-    this.height = height;
-    this.width = width;
     this.word_array = ["Lorem", "ipsum", "dolor"];
 }
 
@@ -23,14 +19,19 @@ Elements.Text.prototype.on_resize = function() {
     var text_height = this.html.children('div:eq(0)').outerHeight();
     var box_height = this.html.outerHeight();
     if (text_height >= box_height){
-        while(this.html.children('div:eq(0)').outerHeight() + 20 >= box_height){
+        while(text_height + 20 > box_height && text_height > 40){
             this.word_array.splice(-1, 1);
             this.html.children('div:eq(0)').text(this.word_array.join(" "));
+            var text_height = this.html.children('div:eq(0)').outerHeight();
         }
     } 
     else {
-        this.word_array.push(Elements.Text.lorem_ipsum_array[Math.floor(Math.random() * Elements.Text.lorem_ipsum_array.length)]);
-        this.html.children('div:eq(0)').text(this.word_array.join(" "));
+    	while(text_height + 40 < box_height){
+	    	var random_number = Math.floor(Math.random() * Elements.Text.lorem_ipsum_array.length);
+	        this.word_array.push(Elements.Text.lorem_ipsum_array[random_number]);
+	        this.html.children('div:eq(0)').text(this.word_array.join(" "));
+	    	var text_height = this.html.children('div:eq(0)').outerHeight();
+    	}
     }    
 }
     
@@ -40,16 +41,12 @@ Elements.Text.prototype.render = function() {
         this.html = Util.clone_template('#element_text_template');
         this.html.data('element', this);
         this.set_position(this.x, this.y);
-        this.set_size(this.height, this.width);
-        var curr_text = this.word_array.join(". ");
+        var curr_text = this.word_array.join(" ");
         this.html.children('div:eq(0)').text(curr_text);
 
         this.hitarea = this.html.children('.element-hitarea:eq(0)')
             .mousedown(function(e) { return Editor.mousedown_element(this, e); }.bind(this))
             .mouseup(function(e) { return Editor.mouseup_element(this, e); }.bind(this));
-       
-        this.on_resize();
-
     }
     return this.html;
 }
