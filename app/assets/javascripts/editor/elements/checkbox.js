@@ -27,11 +27,6 @@ Elements.Checkbox.prototype.render = function() {
             .mousedown(function(e) { return Editor.mousedown_element(this, e); }.bind(this))
             .mouseup(function(e) { return Editor.mouseup_element(this, e); }.bind(this));
         this.assign_text();
-        // this.html.children(':checkbox').click(function(e) { 
-        //     console.log($(this).is(":checked"))
-        //     this.text = (this.text == "unchecked") ? "checked" : "unchecked";
-        //     $(this).siblings('label:eq(0)').text(this.text);
-        // });
 
         this.properties = [ new Elements.Property.Check(this.html.children(':checkbox'), null) ];
 

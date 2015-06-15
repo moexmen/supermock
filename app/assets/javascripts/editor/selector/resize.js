@@ -67,7 +67,10 @@ Selector.resize.mouseup_handle = function(e) {
         Selector.stop_mouse_events();
         Selector.show();
     }
-
+    if(Object.getPrototypeOf(Selector.selected_elements[Selector.selected_elements.length-1]) === Elements.Element.prototype) {
+        TypeToAdd.show(); 
+    }
+    
     return false;
 }
 

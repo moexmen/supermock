@@ -269,6 +269,12 @@
     background-color: #666666;
     opacity: 0.2;
   }
+  
+  .element-blank {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+  }
 
   .element-button {
     position: absolute;
@@ -309,5 +315,6 @@
     position: absolute;
 
   }
+
 }
 

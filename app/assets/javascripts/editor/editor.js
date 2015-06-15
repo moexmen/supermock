@@ -109,7 +109,19 @@ Editor.handle_key_events = function() {
 Editor.mousedown_element = function(element, event) {
     switch(event.which) {
         case 1: // left
-            Selector.mousedown_element(element, event);
+            if (event.metaKey == true) {
+                Editor.escape_all();
+                var left = event.pageX - Editor.canvas().offset().left - 10;
+                var top = event.pageY - Editor.canvas().offset().top - 10;
+                Editor.add_element(Elements.Element.create_default(Elements.Element), left, top);
+                Selector.resize.handle_south_east().trigger(jQuery.Event( "mousedown", {which: 1}));
+            }
+            else if (element instanceof Elements.Page) {
+                Selector.unselect_all();
+            }
+            else {
+                Selector.mousedown_element(element, event);
+            }
             return false;
         case 3: // right
             Selector.unselect_all();
@@ -122,17 +134,23 @@ Editor.mousedown_element = function(element, event) {
 }
 
 Editor.mouseup_element = function(element, event) {
-    if(element instanceof Elements.Page)
+    if(element instanceof Elements.Page) {
         Selector.unselect_all();
-    else
+    }
+    else {
         Selector.mouseup_element(element, event);
-
+    }
     return false;
 }
 
-Editor.add_element = function(element) {
+Editor.add_element = function(element, top, left, width, height) {
     PageList.curr_page().add_element(element);
-    element.set_position(100, 100);
+    var position_x = top || 100;
+    var position_y = left || 100;
+    element.set_position(position_x, position_y);
+    if (width !== null) {
+        element.set_size(width, height);
+    }
 
     Selector.unselect_all();
     Selector.select(element);
@@ -146,7 +164,11 @@ Editor.remove_selected_elements = function() {
         PageList.curr_page().remove_element(element);
     });
 }
-
+Editor.remove_last_element = function() {
+    var last_element = Selector.selected_elements[Selector.selected_elements.length-1];
+    Selector.unselect(last_element);
+    PageList.curr_page().remove_element(last_element);
+}
 Editor.escape_all = function() {
     TypeToAdd.hide();
     Selector.unselect_all();
