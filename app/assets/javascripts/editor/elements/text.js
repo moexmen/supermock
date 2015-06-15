@@ -40,7 +40,6 @@ Elements.Text.prototype.render = function() {
     if(this.html === null) {
         this.html = Util.clone_template('#element_text_template');
         this.html.data('element', this);
-        this.set_position(this.x, this.y);
         var curr_text = this.word_array.join(" ");
         this.html.children('div:eq(0)').text(curr_text);
 

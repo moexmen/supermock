@@ -90,7 +90,6 @@ Elements.Page.prototype.render = function() {
         $.each(this.elements, function(idx, element) {
             this.html.append(element.render());
         }.bind(this));
-    
     }
 
     if(this.parent_page != null) {
