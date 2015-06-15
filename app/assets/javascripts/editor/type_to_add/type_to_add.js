@@ -45,7 +45,19 @@ TypeToAdd.parse_input = function() {
 }
 
 TypeToAdd.add_element = function(element_type) {
-    Editor.add_element(Elements.Element.create_default(element_type));
+    var last_element = Selector.selected_elements[Selector.selected_elements.length-1];
+    if(Object.getPrototypeOf(last_element) === Elements.Element.prototype) {
+        var left = last_element.get_position().left;
+        var top = last_element.get_position().top;
+        var width = last_element.get_size().width;
+        var height = last_element.get_size().height;
+        Editor.remove_last_element();
+        last_element.destroy;
+        Editor.add_element(Elements.Element.create_default(element_type), left, top, width, height);
+    }        
+    else {
+        Editor.add_element(Elements.Element.create_default(element_type));
+    }
     TypeToAdd.hide();
 }
 

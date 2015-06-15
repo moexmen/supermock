@@ -63,7 +63,6 @@ Selector.mousedown = function(e) {
 Selector.mouseup = function(e) {
     Selector.stop_mouse_events();
     Selector.show();
-
     return false;
 }
 
@@ -83,6 +82,9 @@ Selector.mousedown_element = function(element, event) {
 }
 
 Selector.mouseup_element = function(element, event) {
+    Editor.escape_all();
+    TypeToAdd.show();
+    Selector.mouseup(event);
 }
 
 Selector.stop_mouse_events = function() {
