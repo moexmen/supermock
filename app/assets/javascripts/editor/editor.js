@@ -25,20 +25,6 @@ Editor.init_buttons = function() {
     Editor.view_btn().click(Editor.view_mode);
 }
 
-Editor.view_mode = function() {
-    Editor.escape_all();
-
-    Editor.sidebar().hide();
-    PageList.curr_page().view_mode();
-
-    Editor.mode = Editor.modes.VIEW;
-}
-
-Editor.init_element_menus = function() {
-    Editor.element_property_menu = new Elements.Property.PropertyMenu();
-    Editor.element_page_menu = new Elements.Property.PageMenu(this.project);
-}
-
 Editor.init_page_list = function() {
     PageList.init(this.project);
     PageList.select_first_item();
@@ -48,16 +34,21 @@ Editor.init_selector = function() {
     Selector.init();
 }
 
+Editor.init_element_menus = function() {
+    Editor.element_property_menu = new Elements.Property.PropertyMenu();
+    Editor.element_page_menu = new Elements.Property.PageMenu(this.project);
+}
+
 Editor.init_type_to_add = function() {
     var element_list = [
         { labels: ['Button', 'Btn'], type: Elements.Button },
         { labels: ['Text'], type: Elements.Text }, 
-        { labels: ['Textfield', 'Input'], type: Elements.Text_Input },
-        { labels: ['Textarea'], type: Elements.Text_Area },
+        { labels: ['Textfield', 'Input'], type: Elements.TextField },
+        { labels: ['Textarea'], type: Elements.TextArea },
         { labels: ['Checkbox', 'Chk'], type: Elements.Checkbox },
-        { labels: ['Radiobutton', 'Rdo'], type: null },
+        { labels: ['Radiobutton', 'Rdo'], type: Elements.Radiobutton },
         { labels: ['Box'], type: null },
-        { labels: ['Table', 'Tbl'], type: null },
+        { labels: ['Table', 'Tbl'], type: Elements.Table },
         { labels: ['Tabs'], type: null },
     ]
 
@@ -69,6 +60,15 @@ Editor.edit_mode = function() {
     PageList.curr_page().edit_mode();
 
     Editor.mode = Editor.modes.EDIT;
+}
+
+Editor.view_mode = function() {
+    Editor.escape_all();
+
+    Editor.sidebar().hide();
+    PageList.curr_page().view_mode();
+
+    Editor.mode = Editor.modes.VIEW;
 }
 
 Editor.is_edit_mode = function() {
@@ -114,7 +114,8 @@ Editor.mousedown_element = function(element, event) {
                 var left = event.pageX - Editor.canvas().offset().left - 10;
                 var top = event.pageY - Editor.canvas().offset().top - 10;
                 Editor.add_element(Elements.Element.create_default(Elements.Element), left, top);
-                Selector.resize.handle_south_east().trigger(jQuery.Event( "mousedown", {which: 1}));
+                Selector.resize.handle_south_east().trigger(
+                    jQuery.Event( "mousedown", {which: 1}));
             }
             else if (element instanceof Elements.Page) {
                 Selector.unselect_all();
@@ -164,11 +165,24 @@ Editor.remove_selected_elements = function() {
         PageList.curr_page().remove_element(element);
     });
 }
-Editor.remove_last_element = function() {
+
+Editor.delete_last_element = function() {
     var last_element = Selector.selected_elements[Selector.selected_elements.length-1];
     Selector.unselect(last_element);
     PageList.curr_page().remove_element(last_element);
+    last_element.destroy();
 }
+
+Editor.delete_blank_elements = function() {
+    $.each(Selector.selected_elements, function(idx, element) {
+        if(Object.getPrototypeOf(element) === Elements.Element.prototype) {
+            PageList.curr_page().remove_element(element);
+            Selector.unselect(element);
+            element.destroy();
+        }
+    });
+}
+
 Editor.escape_all = function() {
     TypeToAdd.hide();
     Selector.unselect_all();

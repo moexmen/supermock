@@ -44,7 +44,6 @@ Elements.Property.Check.MenuItem.prototype.select_callback = function(page) {
 Elements.Property.Check.MenuItem.prototype.render = function() {
     if(this.html === null) {
         this.html = Util.clone_template('#element_menu_item_template');
-        console.log(this.html);
 
         this.hitarea = this.html.children('a:eq(0)');
         this.hitarea.text('Check/Uncheck');
