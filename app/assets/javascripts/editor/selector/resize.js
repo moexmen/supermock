@@ -46,7 +46,7 @@ Selector.resize.mousedown_handle = function(e) {
     if(e.which == 1) { // left
         Selector.resize.save_element_dimensions();
         Selector.resize.update_last_move_position(e);
-        $(window).mousemove($(e.target), Selector.resize.mousemove_handle)
+        $(window).mousemove($(e.target), Selector.resize.mousemove_handle).mouseup(Selector.resize.mouseup_handle);
     }
 
     return false;
