@@ -61,11 +61,9 @@ Selector.mousedown = function(e) {
     return false;
 }
 Selector.mouseup = function(e) {
-    if(Object.getPrototypeOf(Selector.selected_elements[Selector.selected_elements.length-1]) === Elements.Element.prototype) {
-        TypeToAdd.show(); 
-    }
     Selector.stop_mouse_events();
     Selector.show();
+
     return false;
 }
 
@@ -85,9 +83,6 @@ Selector.mousedown_element = function(element, event) {
 }
 
 Selector.mouseup_element = function(element, event) {
-    Editor.escape_all();
-    TypeToAdd.show();
-    Selector.mouseup(event);
 }
 
 Selector.stop_mouse_events = function() {
