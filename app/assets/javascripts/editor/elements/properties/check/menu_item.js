@@ -22,7 +22,6 @@ Elements.Property.Check.MenuItem.prototype.click = function() {
         element.find_property(Elements.Property.Check).value = !checked;
     });
 
-
     this.parent_menu.hide();
     return false;
 }

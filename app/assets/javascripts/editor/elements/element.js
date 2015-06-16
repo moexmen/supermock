@@ -40,7 +40,6 @@ Elements.Element.prototype.set_size = function(width, height) {
 Elements.Element.prototype.on_resize = function() {
 }
 
-
 Elements.Element.prototype.select = function() {
     if(this.hitarea != null) {
         this.hitarea.css('opacity', 0.2);
