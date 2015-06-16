@@ -46,9 +46,7 @@ Selector.resize.mousedown_handle = function(e) {
     if(e.which == 1) { // left
         Selector.resize.save_element_dimensions();
         Selector.resize.update_last_move_position(e);
-        $(window)
-            .mousemove($(e.target), Selector.resize.mousemove_handle)
-            .mouseup(Selector.resize.mouseup_handle);
+        $(window).mousemove($(e.target), Selector.resize.mousemove_handle)
     }
 
     return false;
@@ -69,12 +67,7 @@ Selector.resize.mouseup_handle = function(e) {
         Selector.stop_mouse_events();
         Selector.show();
     }
-    if(Object.getPrototypeOf(
-        Selector.selected_elements[Selector.selected_elements.length-1]) 
-        === Elements.Element.prototype) {
-        TypeToAdd.show(); 
-    }
-    
+
     return false;
 }
 
