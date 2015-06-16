@@ -27,7 +27,9 @@ Elements.Radiobutton.prototype.render = function() {
             .mousedown(function(e) { return Editor.mousedown_element(this, e); }.bind(this))
             .mouseup(function(e) { return Editor.mouseup_element(this, e); }.bind(this));
         this.assign_text();
-        
+
+        this.properties = [ new Elements.Property.Check(this.html.children(':radio'), null) ];
+
     }
     return this.html;
 }
