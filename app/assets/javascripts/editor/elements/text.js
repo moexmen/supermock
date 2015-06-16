@@ -17,20 +17,21 @@ Elements.Text.prototype.destroy = function() {
 
 Elements.Text.prototype.on_resize = function() {
     var text_height = this.html.children('div:eq(0)').outerHeight();
+    var text = this.html.children('div:eq(0)');
     var box_height = this.html.outerHeight();
     if (text_height >= box_height){
         while(text_height + 20 > box_height && text_height > 40){
             this.word_array.splice(-1, 1);
-            this.html.children('div:eq(0)').text(this.word_array.join(" "));
-            var text_height = this.html.children('div:eq(0)').outerHeight();
+            text.text(this.word_array.join(" "));
+            var text_height = text.outerHeight();
         }
     } 
     else {
     	while(text_height + 40 < box_height){
 	    	var random_number = Math.floor(Math.random() * Elements.Text.lorem_ipsum_array.length);
 	        this.word_array.push(Elements.Text.lorem_ipsum_array[random_number]);
-	        this.html.children('div:eq(0)').text(this.word_array.join(" "));
-	    	var text_height = this.html.children('div:eq(0)').outerHeight();
+	        text.text(this.word_array.join(" "));
+	    	var text_height = text.outerHeight();
     	}
     }    
 }
