@@ -81,7 +81,7 @@ Editor.is_view_mode = function() {
 
 Editor.handle_key_events = function() {
     $('body').keyup(function (e) {
-        
+
         if (Editor.is_edit_mode()) {
             switch (e.which) {
                 case 32: // space
