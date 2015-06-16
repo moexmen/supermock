@@ -1,18 +1,5 @@
+//= require ../shared/menu_item
 //= require ./property
-//= require ./shared/menu_item
-
-Elements.Property.Check = function Check(click_obj, value) {
-    this.value = value;
-}
-
-Elements.Property.Check.prototype = Object.create(Elements.Property.prototype);
-Elements.Property.Check.prototype.constructor = Elements.Property.Check;
-
-Elements.Property.Check.menu_items = function(parent_menu, elements) {
-    return [
-        new Elements.Property.Check.MenuItem(parent_menu, elements),
-    ];
-}
 
 Elements.Property.Check.MenuItem = function MenuItem(parent_menu, elements) {
     Elements.Property.MenuItem.call(this, parent_menu, elements);
@@ -26,27 +13,29 @@ Elements.Property.Check.MenuItem.prototype.hide_sub_menus = function() {
 }
 
 Elements.Property.Check.MenuItem.prototype.click = function() {
-    var checkbox = this.elements[0].html.children('input:eq(0)')
-    checkbox.prop('checked', !checkbox.prop('checked'));
-    this.parent_menu.hide();
-    return false;
-}
-
-Elements.Property.Check.MenuItem.prototype.select_callback = function(page) {
-    this.parent_menu.hide();
-    var value = page ? page.id : null;
+    var checked = this.elements[0].find_property(Elements.Property.Check).value;
 
     $.each(this.elements, function(idx, element) {
-        element.find_property(Elements.Property.Check).value = value;
+        var checkbox = element.html.children('input:eq(0)');
+        checkbox.prop('checked', !checked);
+
+        element.find_property(Elements.Property.Check).value = !checked;
     });
+
+
+    this.parent_menu.hide();
+    return false;
 }
 
 Elements.Property.Check.MenuItem.prototype.render = function() {
     if(this.html === null) {
         this.html = Util.clone_template('#element_menu_item_template');
-
         this.hitarea = this.html.children('a:eq(0)');
-        this.hitarea.text('Check/Uncheck');
+
+        var checked = this.elements[0].find_property(Elements.Property.Check).value;
+        var text = checked ? "Uncheck" : "Check";
+        this.hitarea.text(text);
+
         this.hitarea.click(this.click.bind(this));
     }
 

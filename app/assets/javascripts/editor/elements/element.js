@@ -66,14 +66,6 @@ Elements.Element.prototype.view_mode = function() {
 }
 
 Elements.Element.prototype.render = function() {
-    if(this.html === null) {
-        this.html = Util.clone_template('#element_blank_template');
-        this.html.data('element', this);
-
-        this.hitarea = this.html.children('.element-hitarea:eq(0)');
-    }
-
-    return this.html;
 }
 
 Elements.Element.prototype.unrender = function() {
@@ -86,8 +78,6 @@ Elements.Element.create_default = function(element_type) {
     switch(element_type) {
         case Elements.Page:
             return new Elements.Page(Util.uuid(), '', [], null, []);
-        case Elements.Element:
-            return new Elements.Element();
         case Elements.Button:
             return new Elements.Button('Button', 0, 0);
         case Elements.Text:
