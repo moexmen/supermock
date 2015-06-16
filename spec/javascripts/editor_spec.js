@@ -16,7 +16,6 @@ describe('projects/show.js', function() {
     describe('property menus', property_menu_spec);
     describe('type to add', type_to_add_spec);
     describe('view_mode', view_mode_spec);
-
 });
 
 function page_list_spec() {
@@ -612,6 +611,13 @@ function type_to_add_spec() {
         expect($(Editor.canvas().children()[0]).children('.element-button:eq(0)').length).toBe(1);
     });
 
+    describe('elements', function() {
+        it('should add checkbox', function() {
+            add_element('Checkbox');
+            expect(Editor.canvas().children().children('.element-checkboxarea:eq(0)').length).toBe(1);
+        });
+    });
+
     function show_type_to_add() {
         trigger_key_event('body', KEY_EVENTS.UP, KEY_CODES.SPACE);
     }
@@ -694,6 +700,7 @@ function view_mode_spec() {
 function add_element(name) {
     TypeToAdd.show();
     TypeToAdd.input().val(name);
+    TypeToAdd.update_items();
     TypeToAdd.parse_input();
 }
 

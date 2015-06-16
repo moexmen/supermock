@@ -109,20 +109,7 @@ Editor.handle_key_events = function() {
 Editor.mousedown_element = function(element, event) {
     switch(event.which) {
         case 1: // left
-            if (event.metaKey == true) {
-                Editor.escape_all();
-                var left = event.pageX - Editor.canvas().offset().left - 10;
-                var top = event.pageY - Editor.canvas().offset().top - 10;
-                Editor.add_element(Elements.Element.create_default(Elements.Element), left, top);
-                Selector.resize.handle_south_east().trigger(
-                    jQuery.Event( "mousedown", {which: 1}));
-            }
-            else if (element instanceof Elements.Page) {
-                Selector.unselect_all();
-            }
-            else {
-                Selector.mousedown_element(element, event);
-            }
+            Selector.mousedown_element(element, event);
             return false;
         case 3: // right
             Selector.unselect_all();
@@ -135,12 +122,11 @@ Editor.mousedown_element = function(element, event) {
 }
 
 Editor.mouseup_element = function(element, event) {
-    if(element instanceof Elements.Page) {
+    if(element instanceof Elements.Page)
         Selector.unselect_all();
-    }
-    else {
+    else
         Selector.mouseup_element(element, event);
-    }
+
     return false;
 }
 
@@ -163,23 +149,6 @@ Editor.remove_selected_elements = function() {
 
     $.each(selected_elements, function(idx, element) {
         PageList.curr_page().remove_element(element);
-    });
-}
-
-Editor.delete_last_element = function() {
-    var last_element = Selector.selected_elements[Selector.selected_elements.length-1];
-    Selector.unselect(last_element);
-    PageList.curr_page().remove_element(last_element);
-    last_element.destroy();
-}
-
-Editor.delete_blank_elements = function() {
-    $.each(Selector.selected_elements, function(idx, element) {
-        if(Object.getPrototypeOf(element) === Elements.Element.prototype) {
-            PageList.curr_page().remove_element(element);
-            Selector.unselect(element);
-            element.destroy();
-        }
     });
 }
 

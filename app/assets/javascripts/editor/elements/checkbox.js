@@ -28,7 +28,7 @@ Elements.Checkbox.prototype.render = function() {
             .mouseup(function(e) { return Editor.mouseup_element(this, e); }.bind(this));
         this.assign_text();
 
-        this.properties = [ new Elements.Property.Check(this.html.children(':checkbox'), null) ];
+        this.properties = [ new Elements.Property.Check(this.html.children(':checkbox'), true) ];
 
     }
     return this.html;
