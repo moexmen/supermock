@@ -28,7 +28,7 @@ Elements.Radiobutton.prototype.render = function() {
             .mouseup(function(e) { return Editor.mouseup_element(this, e); }.bind(this));
         this.assign_text();
 
-        this.properties = [ new Elements.Property.Check(this.html.children(':radio'), null) ];
+        this.properties = [ new Elements.Property.Check(this.html.children(':radio'), true) ];
 
     }
     return this.html;
