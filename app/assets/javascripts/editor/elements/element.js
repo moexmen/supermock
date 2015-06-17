@@ -83,7 +83,7 @@ Elements.Element.create_default = function(element_type) {
             return new Elements.Text();
         case Elements.TextField:
             return new Elements.TextField();
-        case Elements.Text_Area:
+        case Elements.TextArea:
             return new Elements.TextArea();
         case Elements.Checkbox:
             return new Elements.Checkbox();

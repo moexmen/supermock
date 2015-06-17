@@ -18,8 +18,8 @@ Elements.TextField.prototype.render = function() {
         this.html.data('element', this);
 
         this.hitarea = this.html.children('.element-hitarea:eq(0)')
-            .mousedown(function(e) { return Editor.mousedown_element(this, e); }.bind(this))
-            .mouseup(function(e) { return Editor.mouseup_element(this, e); }.bind(this));
+        .mousedown(function(e) { return Editor.mousedown_element(this, e); }.bind(this))
+        .mouseup(function(e) { return Editor.mouseup_element(this, e); }.bind(this));
     }
     return this.html;
 }

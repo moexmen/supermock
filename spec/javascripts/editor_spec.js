@@ -12,10 +12,13 @@ describe('projects/show.js', function() {
     });
 
     describe('page list', page_list_spec);
-    describe('selector', selector_spec);
+    $.each(['Btn', 'Text', 'Textfield', 'Textarea', 'Checkbox', 'Radiobutton'], function(idx, element) {
+        describe('selector for ' + element, selector_spec, element);
+    });
     describe('property menus', property_menu_spec);
     describe('type to add', type_to_add_spec);
     describe('view_mode', view_mode_spec);
+
 });
 
 function page_list_spec() {
@@ -98,9 +101,9 @@ function page_list_spec() {
     });
 }
 
-function selector_spec() {
+function selector_spec(element) {
     beforeEach(function () {
-        add_element('Btn');
+        add_element(element);
     });
 
     it('should show when adding element', function () {
@@ -146,7 +149,7 @@ function selector_spec() {
 
     function shift_select_spec() {
         beforeEach(function () {
-            add_element('Btn');
+            add_element(element);
             PageList.curr_page().render_hitarea().mouseup();
             trigger_mouse_event(PageList.curr_page().elements[0].hitarea, MOUSE_EVENTS.DOWN, null, null, MOUSE_BTNS.LEFT);
         });
@@ -188,13 +191,13 @@ function selector_spec() {
     function resize_spec() {
         beforeEach(function () {
             // add 2 more elements
-            add_element('Btn');
+            add_element(element);
             PageList.curr_page().elements[1].set_position(200, 200);
             var position = PageList.curr_page().elements[1].get_position();
             expect(position.left).toBe(200);
             expect(position.top).toBe(200);
 
-            add_element('Btn');
+            add_element(element);
             PageList.curr_page().elements[2].set_position(300, 300);
             position = PageList.curr_page().elements[2].get_position();
             expect(position.left).toBe(300);
@@ -459,6 +462,8 @@ function selector_spec() {
 
 function property_menu_spec() {
     describe('click page', click_page_spec);
+    describe('checkbox check property', checkbox_toggle_spec);
+
 
     function click_page_spec() {
         beforeEach(function () {
@@ -566,7 +571,68 @@ function property_menu_spec() {
 
         function mouseenter_click_page_item() {
             var click_page_menu_item = Editor.element_property_menu.find_item(Elements.Property.ClickPage.MenuItem);
-            trigger_mouse_event(click_page_menu_item, MOUSE_EVENTS.ENTER, null, null, MOUSE_BTNS.LEFT);
+            trigger_mouse_event(click_page_menu_item.hitarea, MOUSE_EVENTS.ENTER, null, null, MOUSE_BTNS.LEFT);
+        }
+    }
+
+    function checkbox_toggle_spec() {
+        beforeEach(function () {
+            add_element('Checkbox');
+
+            expect(Editor.element_property_menu.visible()).toBe(false);
+            trigger_mouse_event(Selector.render(), MOUSE_EVENTS.DOWN, null, null, MOUSE_BTNS.RIGHT);
+        });
+
+        describe('single elements', function() {
+            it('should show "click item" when right clicking element', function () {
+                expect(Editor.element_property_menu.visible()).toBe(true);
+                expect(Editor.element_property_menu.find_item(Elements.Property.Check.MenuItem)).not.toBe(null);
+            });
+
+            it('should no longer show once clicked out of', function () {
+                trigger_mouse_event(Selector.selected_elements[0].hitarea, MOUSE_EVENTS.UP, null, null, MOUSE_BTNS.LEFT);
+                expect(Editor.element_property_menu.visible()).toBe(false);
+            });
+
+        //     it('should toggle check option when clicked', function () {
+        //         var checked = PageList.curr_page().elements[0].find_property(Elements.Property.Check).value;
+        //         console.log(checked);
+        //         mouseclick_check_uncheck_option();
+        //         // expect().toBe();
+        //     });
+
+        });
+
+        // describe('multiple elements', function() {
+        //     beforeEach(function () {
+        //         add_element('Checkbox');
+
+        //         //Selector.select(PageList.curr_page().elements[0]);
+        //         trigger_mouse_event(Selector.render(), MOUSE_EVENTS.DOWN, null, null, MOUSE_BTNS.RIGHT);
+        //     });
+
+        //     it('should change properties of checkboxes uniformly', function () {
+        //         mouseclick_check_uncheck_option();
+        //         // // one has been checked, other has not.
+        //         // Selector.select(PageList.curr_page().elements[1]);
+        //         // // Selector.select(PageList.curr_page().elements[0]);
+        //         // trigger_mouse_event(PageList.curr_page().elements[0], MOUSE_EVENTS.DOWN, null, true, MOUSE_BTNS.LEFT);
+        //         // mouseclick_check_uncheck_option();
+
+        //         // var checked = PageList.curr_page().elements[0].find_property(Elements.Property.Check).value;
+        //         // console.log(checked, "HEHEHEHEHEHEHEHEHEHEHEHEHEHEHEHEHEHEHE");
+        //         // $.each(PageList.curr_page().elements, function(idx, element){
+        //         //     expect(element.find_property(Elements.Property.Check).value).toBe(checked);
+        //         // });
+        //         expect(true).toBe(true);
+        //     });
+        // });
+
+        function mouseclick_check_uncheck_option() {
+            var click_page_menu_item = Editor.element_property_menu.find_item(
+                Elements.Property.Check.MenuItem);
+            trigger_mouse_event(click_page_menu_item.hitarea, MOUSE_EVENTS.CLICK, null, null, MOUSE_BTNS.LEFT);
+
         }
     }
 }
@@ -725,7 +791,8 @@ var MOUSE_EVENTS = {
     DOWN: 'mousedown',
     UP: 'mouseup',
     MOVE: 'mousemove',
-    ENTER: 'mouseenter'
+    ENTER: 'mouseenter',
+    CLICK: 'click'
 }
 
 var MOUSE_BTNS = {
