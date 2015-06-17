@@ -664,7 +664,6 @@ function type_to_add_spec() {
             expect($(item).is(':visible')).toBe(($(item).text() === 'Button / Btn'));
         });
 
-
         type_to_add_trigger_enter();
         expect(TypeToAdd.visible()).toBe(false);
         expect($(Editor.canvas().children()[0]).children('.element-button:eq(0)').length).toBe(1);
