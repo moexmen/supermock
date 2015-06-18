@@ -12,6 +12,7 @@ Elements.Page = function(id, name, element_models, parent_model, child_page_mode
         var child_page = Elements.Element.parse_json(child_page_json);
         this.add_child_page(child_page);
     }.bind(this));
+
 }
 
 Elements.Page.prototype.destroy = function() {

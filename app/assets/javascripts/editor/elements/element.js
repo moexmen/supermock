@@ -1,8 +1,20 @@
+//= require ../selector/resize.js
+
 var Elements = Elements || {};
 
 Elements.Element = function() {
     this.properties = [];
     this.html = null;
+    this.possible_resize_directions = [
+        "handle_north",
+        "handle_east",
+        "handle_south",
+        "handle_west",
+        "handle_north_east",
+        "handle_south_east",
+        "handle_south_west",
+        "handle_north_west",
+    ];
 }
 
 Elements.Element.prototype.destroy = function() {
@@ -77,6 +89,8 @@ Elements.Element.create_default = function(element_type) {
     switch(element_type) {
         case Elements.Page:
             return new Elements.Page(Util.uuid(), '', [], null, []);
+        case Elements.ModalPage:
+            return new Elements.ModalPage();
         case Elements.Button:
             return new Elements.Button('Button', 0, 0);
         case Elements.Text:

@@ -4,7 +4,7 @@ Selector.resize = {};
 Selector.resize.init = function() {
     Selector.resize.element_dimensions = []
 
-    var handles = [
+    Selector.handles = [
         Selector.resize.handle_north(),
         Selector.resize.handle_east(),
         Selector.resize.handle_south(),
@@ -15,7 +15,7 @@ Selector.resize.init = function() {
         Selector.resize.handle_north_west(),
     ];
 
-    $.each(handles, function(idx, handle) {
+    $.each(Selector.handles, function(idx, handle) {
        handle.mousedown(Selector.resize.mousedown_handle).mouseup(Selector.resize.mouseup_handle);
     });
 }
@@ -142,6 +142,12 @@ Selector.resize.calc_min_delta = function(delta) {
     }
 
     return delta;
+}
+
+Selector.resize.hide_disallowed_elements = function(possible_handles){
+    $.each(possible_handles, function(idx, handle) {
+        
+    });
 }
 
 Selector.resize.handle_north = function() {

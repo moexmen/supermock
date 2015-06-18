@@ -11,8 +11,7 @@ Elements.Property.PageMenu.CreateModalItem.prototype = Object.create(Elements.Pr
 Elements.Property.PageMenu.CreateModalItem.prototype.constructor = Elements.Property.PageMenu.CreateModalItem;
 
 Elements.Property.PageMenu.CreateModalItem.prototype.click = function(e) {
-    var page = Elements.Element.create_default(Elements.Page);
-    page.name = 'Modal';
+    var page = Elements.Element.create_default(Elements.ModalPage);
 
     Editor.add_child_page(page);
 
