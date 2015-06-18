@@ -624,8 +624,8 @@ function property_menu_spec() {
 
                     mouseclick_check_uncheck_option();
 
-                    expect(element_1_check.value).not.toBe(element_1_check);
-                    expect(element_2_check.value).not.toBe(element_1_check);
+                    expect(element_1_check.value).toBe(false);
+                    expect(element_2_check.value).toBe(false);
                 });
             });
 
