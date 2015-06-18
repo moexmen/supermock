@@ -34,6 +34,10 @@ Elements.Element.prototype.get_size = function() {
 
 Elements.Element.prototype.set_size = function(width, height) {
     this.render().outerWidth(width).outerHeight(height);
+    this.on_resize();
+}
+
+Elements.Element.prototype.on_resize = function() {
 }
 
 Elements.Element.prototype.select = function() {
@@ -75,6 +79,18 @@ Elements.Element.create_default = function(element_type) {
             return new Elements.Page(Util.uuid(), '', [], null, []);
         case Elements.Button:
             return new Elements.Button('Button', 0, 0);
+        case Elements.Text:
+            return new Elements.Text();
+        case Elements.TextField:
+            return new Elements.TextField();
+        case Elements.TextArea:
+            return new Elements.TextArea();
+        case Elements.Checkbox:
+            return new Elements.Checkbox();
+        case Elements.Radiobutton:
+            return new Elements.Radiobutton();
+        case Elements.Table:
+            return new Elements.Table();
         default:
             return null;
     }
