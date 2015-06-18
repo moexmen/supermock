@@ -42,13 +42,13 @@ Editor.init_element_menus = function() {
 Editor.init_type_to_add = function() {
     var element_list = [
         { labels: ['Button', 'Btn'], type: Elements.Button },
-        { labels: ['Text'], type: null },
-        { labels: ['Textfield', 'Input'], type: null },
-        { labels: ['Textarea'], type: null },
-        { labels: ['Checkbox', 'Chk'], type: null },
-        { labels: ['Radiobutton', 'Rdo'], type: null },
+        { labels: ['Text'], type: Elements.Text }, 
+        { labels: ['Textfield', 'Input'], type: Elements.TextField },
+        { labels: ['Textarea'], type: Elements.TextArea },
+        { labels: ['Checkbox', 'Chk'], type: Elements.Checkbox },
+        { labels: ['Radiobutton', 'Rdo'], type: Elements.Radiobutton },
         { labels: ['Box'], type: null },
-        { labels: ['Table', 'Tbl'], type: null },
+        { labels: ['Table', 'Tbl'], type: Elements.Table },
         { labels: ['Tabs'], type: null },
     ]
 
@@ -131,9 +131,14 @@ Editor.mouseup_element = function(element, event) {
     return false;
 }
 
-Editor.add_element = function(element) {
+Editor.add_element = function(element, top, left, width, height) {
     PageList.curr_page().add_element(element);
-    element.set_position(100, 100);
+    var position_x = top || 100;
+    var position_y = left || 100;
+    element.set_position(position_x, position_y);
+    if (width !== null) {
+        element.set_size(width, height);
+    }
 
     Selector.unselect_all();
     Selector.select(element);

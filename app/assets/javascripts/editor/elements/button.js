@@ -27,7 +27,7 @@ Elements.Button.prototype.render = function() {
         this.hitarea = this.html.children('.element-hitarea:eq(0)')
             .mousedown(function(e) { return Editor.mousedown_element(this, e); }.bind(this))
             .mouseup(function(e) { return Editor.mouseup_element(this, e); }.bind(this));
-
+      
         this.properties = [ new Elements.Property.ClickPage(this.btn, null) ];
 
         this.set_position(this.x, this.y);

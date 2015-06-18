@@ -278,5 +278,47 @@
       height: 100%;
     }
   }
+  .element-text {
+    position: absolute;
+
+    > div {
+      overflow: hidden; 
+    }
+  }
+  .element-textinput {
+    position: absolute;
+
+    > input {
+      overflow: hidden; 
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  .element-textarea {
+    position: absolute;
+
+    > textarea {
+      overflow: hidden; 
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  .element-checkboxarea {
+    position: absolute;
+
+  }
+
+  .element-radiobutton {
+    position: absolute;
+
+  }
+
+  .element-table {
+    position: absolute;
+    border: 1px solid black;
+
+  }
 }
 

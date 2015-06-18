@@ -82,7 +82,7 @@ Elements.Page.prototype.render = function() {
         this.html = Util.clone_template('#element_page_template');
 
         this.hitarea = this.html.children('.element-page-hitarea:eq(0)')
-            .mouseup(function(e) { return Editor.mouseup_element(this, e); }.bind(this));
+            .mouseup(function(e) { return Editor.mouseup_element(this, e); }.bind(this))
 
         this.parent_html = this.html.children('.element-page-parent:eq(0)');
 
