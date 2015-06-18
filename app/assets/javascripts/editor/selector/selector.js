@@ -5,16 +5,6 @@ Selector.init = function() {
 
     Selector.move.init();
     Selector.resize.init();
-    Selector.directions = [
-        "handle_north",
-        "handle_east",
-        "handle_south",
-        "handle_west",
-        "handle_north_east",
-        "handle_south_east",
-        "handle_south_west",
-        "handle_north_west",
-    ];
 
     Selector.render().mousedown(Selector.mousedown).mouseup(Selector.mouseup);
     Selector.hide();
@@ -158,7 +148,6 @@ Selector.show = function() {
     var min_y = Number.MAX_VALUE;
     var max_x = 0;
     var max_y = 0;
-    var possible_handles = Selector.directions;
 
     $.each(Selector.selected_elements, function(idx, element) {
         var position = element.get_position();
@@ -170,21 +159,10 @@ Selector.show = function() {
         max_y = Math.max(max_y, position.top + size.height);
     });
 
-    $.each(Selector.selected_elements, function(idx, element) {
-        var new_array_of_possible_handles = [];
-        $.each(possible_handles, function(idx, handle) {
-            var direction_allowed_for_element = ($.inArray(handle, element.possible_resize_directions) != -1);
-            if(direction_allowed_for_element)
-                new_array_of_possible_handles.push(handle);
-        });
-        possible_handles = new_array_of_possible_handles;
-    });
-
-
     Selector.set_position(min_x, min_y);
     Selector.set_size(max_x - min_x, max_y - min_y);
     Selector.render().show();
-    Selector.resize.hide_disallowed_elements(possible_handles);
+    Selector.resize.update_handles_cursor();
        
 }
 

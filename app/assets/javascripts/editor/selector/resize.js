@@ -4,6 +4,19 @@ Selector.resize = {};
 Selector.resize.init = function() {
     Selector.resize.element_dimensions = []
 
+    Selector.resize.cursor_directions = {
+        "#handle_north": 'n-resize',
+        "#handle_east": 'e-resize',
+        "#handle_south": 's-resize' ,
+        "#handle_west": 'w-resize',
+        "#handle_north_east": 'ne-resize',
+        "#handle_south_east": 'se-resize',
+        "#handle_south_west": 'sw-resize',
+        "#handle_north_west": 'nw-resize',
+    }
+
+    Selector.resize.directions = Object.keys(Selector.resize.cursor_directions);
+
     Selector.handles = [
         Selector.resize.handle_north(),
         Selector.resize.handle_east(),
@@ -144,9 +157,28 @@ Selector.resize.calc_min_delta = function(delta) {
     return delta;
 }
 
-Selector.resize.hide_disallowed_elements = function(possible_handles){
-    $.each(possible_handles, function(idx, handle) {
-        
+Selector.resize.update_handles_cursor = function(){
+    var possible_handles = Selector.resize.directions;
+
+    $.each(Selector.selected_elements, function(idx, element) {
+        var new_array_of_possible_handles = [];
+        $.each(possible_handles, function(idx, handle) {
+            var direction_allowed_for_element = $.inArray(handle, element.possible_resize_directions) != -1;
+            if(direction_allowed_for_element)
+                new_array_of_possible_handles.push(handle);
+        });
+        possible_handles = new_array_of_possible_handles;
+    });
+
+    $.each(Selector.resize.directions, function(idx, direction) {
+        if ($.inArray(direction, possible_handles) == -1) {
+            $(direction).css('cursor', 'not-allowed');
+            $(direction).off();
+        }
+        else {
+            $(direction).css('cursor', Selector.resize.cursor_directions[direction]);
+            $(direction).mousedown(Selector.resize.mousedown_handle).mouseup(Selector.resize.mouseup_handle);
+        }
     });
 }
 

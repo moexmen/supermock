@@ -2,7 +2,6 @@
 
 Elements.Button = function(text, x, y) {
     Elements.Element.call(this);
-    this.possible_resize_directions = ["handle_north_west"];
 
     this.text = text;
     this.x = x;

@@ -5,16 +5,7 @@ var Elements = Elements || {};
 Elements.Element = function() {
     this.properties = [];
     this.html = null;
-    this.possible_resize_directions = [
-        "handle_north",
-        "handle_east",
-        "handle_south",
-        "handle_west",
-        "handle_north_east",
-        "handle_south_east",
-        "handle_south_west",
-        "handle_north_west",
-    ];
+    this.possible_resize_directions = Selector.resize.directions;
 }
 
 Elements.Element.prototype.destroy = function() {
