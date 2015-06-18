@@ -462,7 +462,6 @@ function property_menu_spec() {
     describe('click page', click_page_spec);
     describe('check property', check_spec);
 
-
     function click_page_spec() {
         beforeEach(function () {
             add_element('Btn');
@@ -574,63 +573,69 @@ function property_menu_spec() {
     }
 
     function check_spec() {
-        beforeEach(function () {
-            add_element('Checkbox');
-
-            expect(Editor.element_property_menu.visible()).toBe(false);
-            trigger_mouse_event(Selector.render(), MOUSE_EVENTS.DOWN, null, null, MOUSE_BTNS.RIGHT);
-        });
-
-        describe('single elements', function() {
-            it('should show "uncheck" when right clicking element', function () {
-                expect(Editor.element_property_menu.visible()).toBe(true);
-                expect(Editor.element_property_menu.find_item(Elements.Property.Check.MenuItem)).not.toBe(null);
-                var checkbox = Selector.selected_elements[0];
-                var checked = checkbox.find_property(Elements.Property.Check).value;
-                expect(checked).toBe(true);
-                expect(checkbox.html.children('input:eq(0)').prop('checked')).toBe(checked);
-
-                var check_property_menu = Editor.element_property_menu.find_item(Elements.Property.Check.MenuItem);
-                expect(check_property_menu.render().find('a:eq(0)').text()).toBe("Uncheck");
-
-                mouseclick_check_uncheck_option();
-                checked = checkbox.find_property(Elements.Property.Check).value;
-                expect(checked).not.toBe(true);
-                expect(checkbox.html.children('input:eq(0)').prop('checked')).toBe(checked);
-
-                trigger_mouse_event(Selector.render(), MOUSE_EVENTS.DOWN, null, null, MOUSE_BTNS.RIGHT);
-                expect(check_property_menu.render().find('a:eq(0)').text()).toBe("Check");
-            });
-
-            it('should no longer show once check is clicked', function () {
-                mouseclick_check_uncheck_option();
-                expect(Editor.element_property_menu.visible()).toBe(false);
-            });
-        });
-
-        describe('multiple elements', function() {
+        $.each(['Checkbox', 'Radiobutton'], function(idx, element) {
             beforeEach(function () {
-                add_element('Checkbox');
-                trigger_mouse_event(PageList.curr_page().elements[0].hitarea, MOUSE_EVENTS.DOWN, null, null, MOUSE_BTNS.LEFT, true);
+                add_element(element);
 
+                expect(Editor.element_property_menu.visible()).toBe(false);
                 trigger_mouse_event(Selector.render(), MOUSE_EVENTS.DOWN, null, null, MOUSE_BTNS.RIGHT);
             });
 
-            it('should change properties of checkboxes uniformly', function () {
-                var checked = PageList.curr_page().elements[0].find_property(Elements.Property.Check).value;
+            describe('single elements', function() {
+                it('should show "uncheck" when right clicking' + element, function () {
+                    expect(Editor.element_property_menu.visible()).toBe(true);
+                    expect(Editor.element_property_menu.find_item(Elements.Property.Check.MenuItem)).not.toBe(null);
+                    var checkbox = Selector.selected_elements[0];
+                    var checked = checkbox.find_property(Elements.Property.Check).value;
+                    expect(checked).toBe(true);
+                    expect(checkbox.html.children('input:eq(0)').prop('checked')).toBe(checked);
 
-                mouseclick_check_uncheck_option();
-                $.each(PageList.curr_page().elements, function(idx, element){
-                    expect(element.find_property(Elements.Property.Check).value).not.toBe(checked);
+                    var check_property_menu = Editor.element_property_menu.find_item(Elements.Property.Check.MenuItem);
+                    expect(check_property_menu.render().find('a:eq(0)').text()).toBe("Uncheck");
+
+                    mouseclick_check_uncheck_option();
+                    checked = checkbox.find_property(Elements.Property.Check).value;
+                    expect(checked).not.toBe(true);
+                    expect(checkbox.html.children('input:eq(0)').prop('checked')).toBe(checked);
+
+                    trigger_mouse_event(Selector.render(), MOUSE_EVENTS.DOWN, null, null, MOUSE_BTNS.RIGHT);
+                    expect(check_property_menu.render().find('a:eq(0)').text()).toBe("Check");
+                });
+
+                it('should no longer show once check is clicked', function () {
+                    mouseclick_check_uncheck_option();
+                    expect(Editor.element_property_menu.visible()).toBe(false);
                 });
             });
+
+            describe('multiple elements', function() {
+                beforeEach(function () {
+                    add_element(element);
+                    $.each(PageList.curr_page().elements, function(idx, element) {
+                        Selector.select(element);
+                    });
+
+                    trigger_mouse_event(Selector.render(), MOUSE_EVENTS.DOWN, null, null, MOUSE_BTNS.RIGHT);
+                });
+
+                it('should change properties of' + element + 'uniformly', function () {
+                    var element_1_check = PageList.curr_page().elements[0].find_property(Elements.Property.Check);
+                    var element_2_check = PageList.curr_page().elements[1].find_property(Elements.Property.Check);
+
+                    mouseclick_check_uncheck_option();
+
+                    expect(element_1_check.value).not.toBe(element_1_check);
+                    expect(element_2_check.value).not.toBe(element_1_check);
+                });
+            });
+
+            function mouseclick_check_uncheck_option() {
+                var click_page_menu_item = Editor.element_property_menu.find_item(
+                    Elements.Property.Check.MenuItem);
+                trigger_mouse_event(click_page_menu_item.hitarea, MOUSE_EVENTS.CLICK, null, null, MOUSE_BTNS.LEFT);
+            }
         });
 
-        function mouseclick_check_uncheck_option() {
-            var click_page_menu_item = Editor.element_property_menu.find_item(
-                Elements.Property.Check.MenuItem);
-            trigger_mouse_event(click_page_menu_item.hitarea, MOUSE_EVENTS.CLICK, null, null, MOUSE_BTNS.LEFT);
-        }
     }
 }
 
@@ -677,8 +682,6 @@ function type_to_add_spec() {
     it('should add text', function () {
         TypeToAdd.input().val('Text').keyup();
 
-        expect(TypeToAdd.visible()).toBe(true);
-        expect(TypeToAdd.no_such_item_msg().is(':visible')).toBe(false);
         $.each(TypeToAdd.list().children(), function(idx, item) {
             expect($(item).is(':visible')).toBe(
                 ($(item).text() === 'Text') ||
@@ -688,67 +691,54 @@ function type_to_add_spec() {
 
 
         type_to_add_trigger_enter();
-        expect(TypeToAdd.visible()).toBe(false);
         expect($(Editor.canvas().children()[0]).children('.element-text:eq(0)').length).toBe(1);
     });
     
     it('should add textfield', function () {
         TypeToAdd.input().val('textfield').keyup();
 
-        expect(TypeToAdd.visible()).toBe(true);
-        expect(TypeToAdd.no_such_item_msg().is(':visible')).toBe(false);
         $.each(TypeToAdd.list().children(), function(idx, item) {
             expect($(item).is(':visible')).toBe(($(item).text() === 'Textfield / Input'));
         });
 
 
         type_to_add_trigger_enter();
-        expect(TypeToAdd.visible()).toBe(false);
         expect($(Editor.canvas().children()[0]).children('.element-textinput:eq(0)').length).toBe(1);
     });
 
     it('should add textarea', function () {
         TypeToAdd.input().val('textarea').keyup();
 
-        expect(TypeToAdd.visible()).toBe(true);
-        expect(TypeToAdd.no_such_item_msg().is(':visible')).toBe(false);
         $.each(TypeToAdd.list().children(), function(idx, item) {
             expect($(item).is(':visible')).toBe(($(item).text() === 'Textarea'));
         });
 
 
         type_to_add_trigger_enter();
-        expect(TypeToAdd.visible()).toBe(false);
         expect($(Editor.canvas().children()[0]).children('.element-textarea:eq(0)').length).toBe(1);
     });
 
     it('should add checkbox', function () {
         TypeToAdd.input().val('Checkbox').keyup();
 
-        expect(TypeToAdd.visible()).toBe(true);
-        expect(TypeToAdd.no_such_item_msg().is(':visible')).toBe(false);
         $.each(TypeToAdd.list().children(), function(idx, item) {
             expect($(item).is(':visible')).toBe(($(item).text() === 'Checkbox / Chk'));
         });
 
 
         type_to_add_trigger_enter();
-        expect(TypeToAdd.visible()).toBe(false);
         expect($(Editor.canvas().children()[0]).children('.element-checkboxarea:eq(0)').length).toBe(1);
     });
 
     it('should add radiobutton', function () {
         TypeToAdd.input().val('Radiobutton').keyup();
 
-        expect(TypeToAdd.visible()).toBe(true);
-        expect(TypeToAdd.no_such_item_msg().is(':visible')).toBe(false);
         $.each(TypeToAdd.list().children(), function(idx, item) {
             expect($(item).is(':visible')).toBe(($(item).text() === 'Radiobutton / Rdo'));
         });
 
 
         type_to_add_trigger_enter();
-        expect(TypeToAdd.visible()).toBe(false);
         expect($(Editor.canvas().children()[0]).children('.element-radiobutton:eq(0)').length).toBe(1);
     });
 
