@@ -15,7 +15,7 @@ Elements.Radiobutton.prototype.destroy = function() {
 }
 
 Elements.Radiobutton.prototype.assign_text = function() {
-    this.html.children(":radio").siblings('label:eq(0)').text(this.text);
+    this.html.find('label:eq(0)').text(this.text);
 }
 
 Elements.Radiobutton.prototype.render = function() {

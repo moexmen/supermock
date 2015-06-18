@@ -15,7 +15,7 @@ Elements.Checkbox.prototype.destroy = function() {
 }
 
 Elements.Checkbox.prototype.assign_text = function() {
-    this.html.children('label:eq(0)').text(this.text);
+    this.html.find('label:eq(0)').text(this.text);
 }
 
 Elements.Checkbox.prototype.render = function() {
