@@ -1,11 +1,29 @@
-//= require ../selector/resize.js
-
 var Elements = Elements || {};
 
 Elements.Element = function() {
     this.properties = [];
     this.html = null;
-    this.possible_resize_directions = Selector.resize.directions;
+    this.possible_resize_directions = [
+        Elements.Element.resize_directions.NORTH,
+        Elements.Element.resize_directions.SOUTH,
+        Elements.Element.resize_directions.EAST,
+        Elements.Element.resize_directions.WEST,
+        Elements.Element.resize_directions.NORTHEAST,
+        Elements.Element.resize_directions.NORTHWEST,
+        Elements.Element.resize_directions.SOUTHEAST,
+        Elements.Element.resize_directions.SOUTHWEST
+    ];
+}
+
+Elements.Element.resize_directions = {
+    NORTH: 'so?',
+    SOUTH: '2',
+    EAST: '3',
+    WEST: 'asdf',
+    NORTHEAST: "sdfg",
+    NORTHWEST: 'asdfa',
+    SOUTHEAST: 'asd',
+    SOUTHWEST: 'yoohoooo'
 }
 
 Elements.Element.prototype.destroy = function() {
@@ -41,6 +59,10 @@ Elements.Element.prototype.set_size = function(width, height) {
 }
 
 Elements.Element.prototype.on_resize = function() {
+}
+
+Elements.Element.has_direction = function(direction, element){
+    return $.inArray(direction, element.possible_resize_directions) != -1;
 }
 
 Elements.Element.prototype.select = function() {

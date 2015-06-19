@@ -4,20 +4,17 @@ Selector.resize = {};
 Selector.resize.init = function() {
     Selector.resize.element_dimensions = []
 
-    Selector.resize.cursor_directions = {
-        "#handle_north": 'n-resize',
-        "#handle_east": 'e-resize',
-        "#handle_south": 's-resize' ,
-        "#handle_west": 'w-resize',
-        "#handle_north_east": 'ne-resize',
-        "#handle_south_east": 'se-resize',
-        "#handle_south_west": 'sw-resize',
-        "#handle_north_west": 'nw-resize',
-    }
+    Selector.resize.cursor_directions = {};
+    Selector.resize.cursor_directions[Elements.Element.resize_directions.NORTH] = 'n-resize';
+    Selector.resize.cursor_directions[Elements.Element.resize_directions.EAST] = 'e-resize';
+    Selector.resize.cursor_directions[Elements.Element.resize_directions.SOUTH] = 's-resize';
+    Selector.resize.cursor_directions[Elements.Element.resize_directions.WEST] = 'w-resize';
+    Selector.resize.cursor_directions[Elements.Element.resize_directions.NORTHEAST] = 'ne-resize';
+    Selector.resize.cursor_directions[Elements.Element.resize_directions.SOUTHEAST] ='se-resize';
+    Selector.resize.cursor_directions[Elements.Element.resize_directions.SOUTHWEST] = 'sw-resize';
+    Selector.resize.cursor_directions[Elements.Element.resize_directions.NORTHWEST] = 'nw-resize';
 
-    Selector.resize.directions = Object.keys(Selector.resize.cursor_directions);
-
-    Selector.handles = [
+    Selector.resize.handles = [
         Selector.resize.handle_north(),
         Selector.resize.handle_east(),
         Selector.resize.handle_south(),
@@ -28,7 +25,7 @@ Selector.resize.init = function() {
         Selector.resize.handle_north_west(),
     ];
 
-    $.each(Selector.handles, function(idx, handle) {
+    $.each(Selector.resize.handles, function(idx, handle) {
        handle.mousedown(Selector.resize.mousedown_handle).mouseup(Selector.resize.mouseup_handle);
     });
 }
@@ -127,6 +124,28 @@ Selector.resize.resize_selector = function(handle, delta_left, delta_top) {
     Selector.delta_position(delta.left, delta.top);
 }
 
+Selector.resize.direction_handle_mapping = function(dir) {
+    switch (dir) {
+        case Elements.Element.resize_directions.NORTH:
+            return Selector.resize.handle_north();
+        case Elements.Element.resize_directions.SOUTH:
+            return Selector.resize.handle_south();
+        case Elements.Element.resize_directions.EAST:
+            return Selector.resize.handle_east();
+        case Elements.Element.resize_directions.WEST:
+            return Selector.resize.handle_west();
+        case Elements.Element.resize_directions.NORTHEAST:
+            return Selector.resize.handle_north_east();
+        case Elements.Element.resize_directions.NORTHWEST:
+            return Selector.resize.handle_north_west();
+        case Elements.Element.resize_directions.SOUTHEAST:
+            return Selector.resize.handle_south_east();
+        case Elements.Element.resize_directions.SOUTHWEST:
+            return Selector.resize.handle_south_west();
+        default:
+            return null
+    }
+}
 Selector.resize.resize_elements = function(new_size, new_position) {
     $.each(Selector.selected_elements, function(idx, element) {
         var element_ratio = Selector.resize.element_dimensions[idx];
@@ -158,28 +177,29 @@ Selector.resize.calc_min_delta = function(delta) {
 }
 
 Selector.resize.update_handles_cursor = function(){
-    var possible_handles = Selector.resize.directions;
+    directions_possible = Selector.selected_elements[0].possible_resize_directions;
 
     $.each(Selector.selected_elements, function(idx, element) {
-        var new_array_of_possible_handles = [];
-        $.each(possible_handles, function(idx, handle) {
-            var direction_allowed_for_element = $.inArray(handle, element.possible_resize_directions) != -1;
-            if(direction_allowed_for_element)
-                new_array_of_possible_handles.push(handle);
+        var new_array_of_possible_directions = [];
+        $.each(directions_possible, function(idx, direction) {
+            if(Elements.Element.has_direction(direction, element))
+                new_array_of_possible_directions.push(direction);
         });
-        possible_handles = new_array_of_possible_handles;
+        directions_possible = new_array_of_possible_directions;
     });
 
-    $.each(Selector.resize.directions, function(idx, direction) {
-        if ($.inArray(direction, possible_handles) == -1) {
-            $(direction).css('cursor', 'not-allowed');
-            $(direction).off();
+    for(var key in Elements.Element.resize_directions){
+        var direction = Elements.Element.resize_directions[key];
+        var handle = Selector.resize.direction_handle_mapping(direction);
+        if ($.inArray(direction, directions_possible) == -1) {
+            handle.css('cursor', 'not-allowed');
+            handle.off();
         }
         else {
-            $(direction).css('cursor', Selector.resize.cursor_directions[direction]);
-            $(direction).mousedown(Selector.resize.mousedown_handle).mouseup(Selector.resize.mouseup_handle);
+            handle.css('cursor', Selector.resize.cursor_directions.direction);
+            handle.mousedown(Selector.resize.mousedown_handle).mouseup(Selector.resize.mouseup_handle);
         }
-    });
+    }
 }
 
 Selector.resize.handle_north = function() {
