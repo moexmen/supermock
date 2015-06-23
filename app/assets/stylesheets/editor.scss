@@ -320,6 +320,17 @@
     border: 1px solid black;
 
   }
+  
+  .element-box {
+    position: absolute;
+
+    > div {
+      border-style: solid;
+      border-color: black;
+      width: 100%;
+      height: 100%;
+    }
+  }
 
   .element-modal {
     position: absolute;
