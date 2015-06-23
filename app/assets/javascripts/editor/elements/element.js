@@ -13,17 +13,18 @@ Elements.Element = function() {
         Elements.Element.resize_directions.SOUTHEAST,
         Elements.Element.resize_directions.SOUTHWEST
     ];
+    this.movable = true;
 }
 
 Elements.Element.resize_directions = {
-    NORTH: 'so?',
-    SOUTH: '2',
-    EAST: '3',
-    WEST: 'asdf',
-    NORTHEAST: "sdfg",
-    NORTHWEST: 'asdfa',
-    SOUTHEAST: 'asd',
-    SOUTHWEST: 'yoohoooo'
+    NORTH: '0',
+    SOUTH: '1',
+    EAST: '2',
+    WEST: '3',
+    NORTHEAST: "4",
+    NORTHWEST: '5',
+    SOUTHEAST: '6',
+    SOUTHWEST: '7'
 }
 
 Elements.Element.prototype.destroy = function() {
@@ -118,6 +119,10 @@ Elements.Element.create_default = function(element_type) {
             return new Elements.Radiobutton();
         case Elements.Table:
             return new Elements.Table();
+        case Elements.Box:
+            return new Elements.Box();
+        case Elements.Modal:
+            return new Elements.Modal();
         default:
             return null;
     }

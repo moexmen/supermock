@@ -163,7 +163,7 @@ Selector.show = function() {
     Selector.set_size(max_x - min_x, max_y - min_y);
     Selector.render().show();
     Selector.resize.update_handles_cursor();
-       
+    Selector.move.update_move_allowed();
 }
 
 Selector.hide = function() {

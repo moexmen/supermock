@@ -47,7 +47,7 @@ Editor.init_type_to_add = function() {
         { labels: ['Textarea'], type: Elements.TextArea },
         { labels: ['Checkbox', 'Chk'], type: Elements.Checkbox },
         { labels: ['Radiobutton', 'Rdo'], type: Elements.Radiobutton },
-        { labels: ['Box'], type: null },
+        { labels: ['Box'], type: Elements.Box },
         { labels: ['Table', 'Tbl'], type: Elements.Table },
         { labels: ['Tabs'], type: null },
     ]
@@ -174,7 +174,8 @@ Editor.render_curr_page = function() {
 }
 
 Editor.add_child_page = function(page) {
-    PageList.add_item(page, PageList.curr_page_item());
+    PageList.curr_page().add_child_page(page);
+    return PageList.add_item(page, PageList.curr_page_item());
 }
 
 Editor.canvas = function() {
