@@ -67,6 +67,9 @@ body#editor
     #element_page_menu
       ul.dropdown-menu [role='menu']
 
+    #element_modal_button_menu
+      ul.dropdown-menu [role='menu']
+
     li#element_menu_item_template.hidden [role='presentation']
       a [role='menuitem' tabindex='-1']
 
@@ -123,13 +126,14 @@ body#editor
       .modal-dialog role="document"
         .modal-content
           .modal-header
-            button.close aria-label="Close" data-dismiss="modal" type="button" 
+            #closebutton.button.close aria-label="Close" type="button" 
               span aria-hidden="true"  &times;
-            h4.modal-title Modal title
+            h4.modal-title
           .modal-body
           .modal-footer
-            button.btn.btn-default data-dismiss="modal" type="button"  Close
-            button.btn.btn-primary type="button"  Save changes
+            #button3.button.btn.btn-default type="button"
+            #button2.button.btn.btn-default type="button"
+            #button1.button.btn.btn-default type="button"
           .element-hitarea
 
     #element_table_template.element.element-table.hidden

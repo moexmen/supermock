@@ -16,6 +16,7 @@ Elements.Property.ClickPage.MenuItem.CreateModal.prototype.render = function() {
     if(!this.html) {
         this.html = Util.clone_template('#element_menu_item_template');
         this.hitarea = this.html.children('a').text('Create Modal');
+        this.html.addClass('disabled'); // temporary measure
 
         this.hitarea.click(this.click.bind(this));
         this.hitarea.mouseenter(this.mouseenter.bind(this));

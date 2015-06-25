@@ -5,6 +5,7 @@ var Elements = Elements || {};
 Elements.ModalPage = function() {
 	Elements.Page.call(this, Util.uuid(), 'Modal', [], null, []);
 	this.elements.push(Elements.Element.create_default(Elements.Modal));
+	Elements.ModalPage.modal_button_menu = new Elements.Property.ButtonEditOptions();
 }
 
 Elements.ModalPage.prototype = Object.create(Elements.Page.prototype);
@@ -25,6 +26,12 @@ Elements.ModalPage.prototype.render = function() {
 	}
 
 	if(this.parent_page != null) {
+        this.elements[0].render().find('#closebutton:eq(0)').click(function() {
+            Editor.set_curr_page_with_id(this.parent_page.id);
+        }.bind(this));
+        
+        this.elements[0].btn_2.find_property(Elements.Property.ClickPage).value = this.parent_page.id;
+		
 		this.parent_html.append(this.parent_page.render());
 	}
 

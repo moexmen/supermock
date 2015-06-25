@@ -1,4 +1,5 @@
 //= require ./element
+//= require ./properties/modal_button/property
 
 Elements.Modal = function() {
     Elements.Element.call(this);
@@ -11,7 +12,6 @@ Elements.Modal.prototype.constructor = Elements.Modal;
 
 Elements.Modal.prototype.destroy = function() {
     Elements.Element.prototype.destroy.call(this);
-    this.btn = null;
     this.properties = null;
 }
 
@@ -24,8 +24,34 @@ Elements.Modal.prototype.render = function() {
             .mousedown(function(e) { return Editor.mousedown_element(this, e); }.bind(this))
             .mouseup(function(e) { return Editor.mouseup_element(this, e); }.bind(this));
 
+        this.make_three_buttons();
+        this.properties = [ new Elements.Property.ModalButton(this.btn_1, this.btn_2, this.btn_3),
+                            new Elements.Property.ModalTitle()
+                            ];
+                            
+        this.set_modal_title('Modal Title');
     }
+
     return this.html;
+}
+
+Elements.Modal.prototype.set_modal_title = function(text) {
+    this.html.find('.modal-title').text(text);
+}
+
+Elements.Modal.prototype.get_modal_title = function(text) {
+    return this.html.find('.modal-title').text();
+}
+
+Elements.Modal.prototype.make_three_buttons = function() {
+    this.btn_1 = new Elements.ModalButton('Okay', this.render().find('#button1:eq(0)'));
+    this.btn_2 = new Elements.ModalButton('Cancel', this.render().find('#button2:eq(0)'));
+    this.btn_3 = new Elements.ModalButton('Button 3', this.render().find('#button3:eq(0)'));
+
+    this.btn_1.set_text();
+    this.btn_2.set_text();
+    this.btn_3.set_text();
+       
 }
 
 Elements.Modal.prototype.get_position = function() {
@@ -35,6 +61,7 @@ Elements.Modal.prototype.get_position = function() {
 }
 
 Elements.Modal.prototype.set_position = function(left, top) {
+    //moving not allowed for modal.
 }
 
 Elements.Modal.prototype.get_size = function() {

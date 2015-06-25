@@ -23,6 +23,9 @@ Elements.Property.PropertyMenu.prototype.show = function(target, elements) {
         }
     });
 
+    if(common_properties.length == 0) {
+        this.add_item(new Elements.Property.MenuItem(this, elements)); 
+    }
     // add common properties items
     $.each(common_properties, function(idx, property) {
         this.add_items(property.constructor.menu_items(this, elements));

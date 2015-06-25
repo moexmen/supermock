@@ -10,6 +10,7 @@ Selector.move.update_last_move_position = function(e) {
 }
 
 Selector.move.update_move_allowed = function() {
+    Selector.move.mousedown_disabled = false;
     $.each(Selector.selected_elements, function(idx, element) {
         if(!element.movable) 
             Selector.move.mousedown_disabled = true;
