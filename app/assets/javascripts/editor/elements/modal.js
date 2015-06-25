@@ -25,8 +25,8 @@ Elements.Modal.prototype.render = function() {
             .mouseup(function(e) { return Editor.mouseup_element(this, e); }.bind(this));
 
         this.make_three_buttons();
-        this.properties = [ new Elements.Property.ModalButton(this.btn_1, this.btn_2, this.btn_3),
-                            new Elements.Property.ModalTitle()
+        this.properties = [ new Elements.Property.ModalTitle(),
+                            new Elements.Property.ModalButton(this.btn_1, this.btn_2, this.btn_3)
                             ];
                             
         this.set_modal_title('Modal Title');

@@ -148,8 +148,10 @@ Selector.show = function() {
     var min_y = Number.MAX_VALUE;
     var max_x = 0;
     var max_y = 0;
+    var adjustment_tolerance = 20;
 
     $.each(Selector.selected_elements, function(idx, element) {
+        element.position_adjustment(adjustment_tolerance);
         var position = element.get_position();
         var size = element.get_size();
 
