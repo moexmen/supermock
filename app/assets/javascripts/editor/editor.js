@@ -37,6 +37,14 @@ Editor.init_selector = function() {
 Editor.init_element_menus = function() {
     Editor.element_property_menu = new Elements.Property.PropertyMenu();
     Editor.element_page_menu = new Elements.Property.PageMenu(this.project);
+    Editor.modal_button_menu = new Elements.Property.ButtonEditOptions();
+}
+
+Editor.hide_all_menus = function() {
+    $.each([Editor.element_property_menu, Editor.element_page_menu, Editor.modal_button_menu], 
+        function(idx, menu) {
+            menu.hide();
+        });
 }
 
 Editor.init_type_to_add = function() {

@@ -5,7 +5,6 @@ var Elements = Elements || {};
 Elements.ModalPage = function() {
 	Elements.Page.call(this, Util.uuid(), 'Modal', [], null, []);
 	this.elements.push(Elements.Element.create_default(Elements.Modal));
-	Elements.ModalPage.modal_button_menu = new Elements.Property.ButtonEditOptions();
 }
 
 Elements.ModalPage.prototype = Object.create(Elements.Page.prototype);

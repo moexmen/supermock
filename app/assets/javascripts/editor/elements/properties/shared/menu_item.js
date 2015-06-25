@@ -21,7 +21,7 @@ Elements.Property.MenuItem.prototype.hide_sub_menus = function() {
 }
 
 Elements.Property.MenuItem.prototype.click = function() {
-    this.parent_menu.hide();
+    Editor.hide_all_menus();
     return false;
 }
 

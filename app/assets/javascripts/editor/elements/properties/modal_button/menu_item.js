@@ -11,26 +11,23 @@ Elements.Property.ModalButton.MenuItem.prototype.constructor = Elements.Property
 
 Elements.Property.ModalButton.MenuItem.prototype.mouseenter = function() {
     this.parent_menu.hide_sub_menus();
-    Elements.ModalPage.modal_button_menu.show(this.render(), this.show_hide_callback.bind(this), 
+    Editor.modal_button_menu.show(this.render(), this.show_hide_callback.bind(this), 
         this.edit_text_callback.bind(this), this.elements);
 
     return false;
 }
 
 Elements.Property.ModalButton.MenuItem.prototype.hide_sub_menus = function() {
-    Elements.ModalPage.modal_button_menu.hide();
+    Editor.modal_button_menu.hide();
 }
 
 Elements.Property.ModalButton.MenuItem.prototype.show_hide_callback = function(show) {
     this.parent_menu.hide();
     this.elements[0].toggle_visibility();
-    //don't jump around, go through editor if can. fire event so that the selector ends up getting called?
-    Selector.show();
 }
 
 Elements.Property.ModalButton.MenuItem.prototype.edit_text_callback = function(show) {
     this.parent_menu.hide();
-    
 
     this.elements[0].text = prompt("Please enter new name for button", this.elements[0].text);
     this.elements[0].set_text();
