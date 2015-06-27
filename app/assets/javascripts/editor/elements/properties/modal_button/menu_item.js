@@ -11,6 +11,7 @@ Elements.Property.ModalButton.MenuItem.prototype.constructor = Elements.Property
 
 Elements.Property.ModalButton.MenuItem.prototype.mouseenter = function() {
     this.parent_menu.hide_sub_menus();
+    
     Editor.modal_button_menu.show(this.render(), this.show_hide_callback.bind(this), 
         this.edit_text_callback.bind(this), this.elements);
 
@@ -40,8 +41,8 @@ Elements.Property.ModalButton.MenuItem.prototype.render = function() {
         this.hitarea = this.html.children('a:eq(0)');
         this.hitarea.children('span:eq(0)').text('Edit ' + this.elements[0].text);
         this.hitarea
-        .mouseenter(this.mouseenter.bind(this))
-        .click(this.click.bind(this));
+            .mouseenter(this.mouseenter.bind(this))
+            .click(this.click.bind(this));
     }
 
     return this.html;

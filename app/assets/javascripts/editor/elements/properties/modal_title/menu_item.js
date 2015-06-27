@@ -23,7 +23,11 @@ Elements.Property.ModalTitle.MenuItem.prototype.render = function() {
 }
 
 Elements.Property.ModalTitle.MenuItem.prototype.click = function() {
-    this.elements[0].set_modal_title(prompt("Enter title for modal", this.elements[0].get_modal_title()));
+    var modal = this.elements[0];
+    var old_title = modal.find_property(Elements.Property.ModalTitle).value;
+
+    var new_title = prompt("Enter title for modal", old_title);
+    modal.find_property(Elements.Property.ModalTitle).set_modal_title(new_title);
 
     this.parent_menu.hide();
     return false;

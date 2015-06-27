@@ -1,7 +1,8 @@
 //= require ../property
 
-Elements.Property.Border = function Border(click_obj, value) {
+Elements.Property.Border = function Border(border_to_adjust ,value) {
 	this.value = value;
+	this.border_to_adjust = border_to_adjust;
 }
 
 Elements.Property.Border.prototype = Object.create(Elements.Property.prototype);
@@ -12,4 +13,8 @@ Elements.Property.Border.menu_items = function(parent_menu, elements) {
 			new Elements.Property.Border.MenuItem(parent_menu, elements, "Increase border size"),
 			new Elements.Property.Border.MenuItem(parent_menu, elements, "Decrease border size"),
 			];
+}
+
+Elements.Property.Border.prototype.readjust_border = function() {
+    this.border_to_adjust.css('border-width', this.value);
 }

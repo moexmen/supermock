@@ -41,10 +41,9 @@ Editor.init_element_menus = function() {
 }
 
 Editor.hide_all_menus = function() {
-    $.each([Editor.element_property_menu, Editor.element_page_menu, Editor.modal_button_menu], 
-        function(idx, menu) {
-            menu.hide();
-        });
+    Editor.element_page_menu.hide();
+    Editor.modal_button_menu.hide();
+    Editor.element_property_menu.hide();
 }
 
 Editor.init_type_to_add = function() {

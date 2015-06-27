@@ -2,29 +2,35 @@ var Selector = Selector || {};
 Selector.move = {};
 
 Selector.move.init = function() {
-    Selector.move.mousedown_disabled = false;
+    Selector.move.update_cursor();
 }
 
 Selector.move.update_last_move_position = function(e) {
     Selector.move.last_move_position = { left: e.pageX, top: e.pageY };
 }
 
-Selector.move.update_move_allowed = function() {
-    Selector.move.mousedown_disabled = false;
+Selector.move.elements_movable = function() {
+    var all_elements_movable = true;
+
     $.each(Selector.selected_elements, function(idx, element) {
         if(!element.movable) 
-            Selector.move.mousedown_disabled = true;
+            all_elements_movable = false;
     });
-    if(Selector.move.mousedown_disabled) {
-        Selector.render().css('cursor', 'not-allowed');
+
+    return all_elements_movable;
+}
+
+Selector.move.update_cursor = function() {
+    if(Selector.move.elements_movable()) {
+        Selector.render().css('cursor', 'move');
     }
     else {
-        Selector.render().css('cursor', 'move');
+        Selector.render().css('cursor', 'not-allowed');
     }
 }
 
 Selector.move.mousedown = function(e) {
-    if(Selector.move.mousedown_disabled) {
+    if(!Selector.move.elements_movable()) {
         return;
     }
     else if(e.which == 1) { // left

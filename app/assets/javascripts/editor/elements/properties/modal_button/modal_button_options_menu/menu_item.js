@@ -22,9 +22,8 @@ Elements.Property.ButtonEditItem.prototype.render = function() {
 		this.hitarea = this.html.children('a');
 		this.hitarea
 			.mouseenter(this.mouseenter.bind(this))
-			.click(this.click.bind(this));
-
-		this.hitarea.children('span:eq(0)').text(this.text);
+			.click(this.click.bind(this))
+			.children('span:eq(0)').text(this.text);
 	}
 
 	return this.html;

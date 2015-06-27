@@ -93,18 +93,6 @@ Elements.Element.prototype.view_mode = function() {
 Elements.Element.prototype.render = function() {
 }
 
-Elements.Element.prototype.position_adjustment = function(tolerance) {
-    var position = this.get_position();
-    var size = this.get_size();
-
-    var left = Math.round(position.left/tolerance) * tolerance;
-    var top = Math.round(position.top/tolerance) * tolerance;
-    var width = Math.round(size.width/tolerance) * tolerance;
-    var height = Math.round(size.height/tolerance) * tolerance;
-
-    this.set_size(width, height);
-    this.set_position(left, top);
-}
 Elements.Element.prototype.unrender = function() {
     if(this.html != null) {
         this.render().remove();

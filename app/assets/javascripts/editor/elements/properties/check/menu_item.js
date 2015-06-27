@@ -8,10 +8,6 @@ Elements.Property.Check.MenuItem = function MenuItem(parent_menu, elements) {
 Elements.Property.Check.MenuItem.prototype = Object.create(Elements.Property.MenuItem.prototype);
 Elements.Property.Check.MenuItem.prototype.constructor = Elements.Property.Check.MenuItem;
 
-Elements.Property.Check.MenuItem.prototype.hide_sub_menus = function() {
-    Editor.element_page_menu.hide();
-}
-
 Elements.Property.Check.MenuItem.prototype.click = function() {
     var checked = this.elements[0].find_property(Elements.Property.Check).value;
 

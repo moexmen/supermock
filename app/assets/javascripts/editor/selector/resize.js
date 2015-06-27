@@ -143,7 +143,7 @@ Selector.resize.direction_handle_mapping = function(dir) {
         case Elements.Element.resize_directions.SOUTHWEST:
             return Selector.resize.handle_south_west();
         default:
-            return null
+            return null;
     }
 }
 Selector.resize.resize_elements = function(new_size, new_position) {
@@ -176,21 +176,23 @@ Selector.resize.calc_min_delta = function(delta) {
     return delta;
 }
 
-Selector.resize.update_handles_cursor = function(){
-    directions_possible = Selector.selected_elements[0].possible_resize_directions;
+Selector.resize.update_cursor = function(){
+    var directions_possible = Selector.selected_elements[0].possible_resize_directions;
 
     $.each(Selector.selected_elements, function(idx, element) {
         var new_array_of_possible_directions = [];
         $.each(directions_possible, function(idx, direction) {
-            if(Elements.Element.has_direction(direction, element))
+            if(Elements.Element.has_direction(direction, element)) {
                 new_array_of_possible_directions.push(direction);
+            }
         });
         directions_possible = new_array_of_possible_directions;
     });
 
-    for(var key in Elements.Element.resize_directions){
+    $.each(Object.keys(Elements.Element.resize_directions), function(idx, key) {
         var direction = Elements.Element.resize_directions[key];
         var handle = Selector.resize.direction_handle_mapping(direction);
+
         if ($.inArray(direction, directions_possible) == -1) {
             handle.css('cursor', 'not-allowed');
             handle.off();
@@ -199,7 +201,7 @@ Selector.resize.update_handles_cursor = function(){
             handle.css('cursor', Selector.resize.cursor_directions.direction);
             handle.mousedown(Selector.resize.mousedown_handle).mouseup(Selector.resize.mouseup_handle);
         }
-    }
+    });
 }
 
 Selector.resize.handle_north = function() {

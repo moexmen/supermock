@@ -148,10 +148,10 @@ Selector.show = function() {
     var min_y = Number.MAX_VALUE;
     var max_x = 0;
     var max_y = 0;
-    var adjustment_tolerance = 20;
+    Selector.grid_delta = 20;
 
     $.each(Selector.selected_elements, function(idx, element) {
-        element.position_adjustment(adjustment_tolerance);
+        Selector.position_adjustment(element);
         var position = element.get_position();
         var size = element.get_size();
 
@@ -164,8 +164,21 @@ Selector.show = function() {
     Selector.set_position(min_x, min_y);
     Selector.set_size(max_x - min_x, max_y - min_y);
     Selector.render().show();
-    Selector.resize.update_handles_cursor();
-    Selector.move.update_move_allowed();
+    Selector.resize.update_cursor();
+    Selector.move.update_cursor();
+}
+
+Selector.position_adjustment = function(delta) {
+    var position = this.get_position();
+    var size = this.get_size();
+
+    var left = Math.round(position.left/delta) * delta;
+    var top = Math.round(position.top/delta) * delta;
+    var width = Math.round(size.width/delta) * delta;
+    var height = Math.round(size.height/delta) * delta;
+
+    this.set_size(width, height);
+    this.set_position(left, top);
 }
 
 Selector.hide = function() {

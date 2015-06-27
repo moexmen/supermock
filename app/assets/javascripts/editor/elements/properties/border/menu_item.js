@@ -10,15 +10,13 @@ Elements.Property.Border.MenuItem = function MenuItem(parent_menu, elements, inc
 Elements.Property.Border.MenuItem.prototype = Object.create(Elements.Property.MenuItem.prototype);
 Elements.Property.Border.MenuItem.prototype.constructor = Elements.Property.Border.MenuItem;
 
-Elements.Property.Border.MenuItem.prototype.hide_sub_menus = function() {
-    Editor.element_page_menu.hide();
-}
-
 Elements.Property.Border.MenuItem.prototype.click = function() {
     $.each(this.elements, function(idx, element) {
-        element.border_width = Math.round(element.border_width * this.resize_dimension);
-        element.find_property(Elements.Property.Border).value = element.border_width;
-        element.resize_width();
+        var curr_width = element.find_property(Elements.Property.Border).value;
+        var new_width = Math.round(curr_width * this.resize_dimension);
+        element.find_property(Elements.Property.Border).value = new_width;
+
+        element.find_property(Elements.Property.Border).readjust_border();
     }.bind(this));
 
     this.parent_menu.hide();
