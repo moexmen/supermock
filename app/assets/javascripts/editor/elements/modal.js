@@ -63,7 +63,8 @@ Elements.Modal.prototype.set_size = function(width, height) {
     if(height < 150) { //to guard against too small a modal
         return;
     }
-    this.render().find('.modal-content:eq(0)').outerWidth(width).outerHeight(height);
+
+    this.render().find('.modal-content:eq(0)').outerWidth(width);
     var excess_height = this.render().find('.modal-header:eq(0)').outerHeight() + this.render().find('.modal-footer:eq(0)').outerHeight();
     this.render().find('.modal-body:eq(0)').outerHeight(height - excess_height);
 }

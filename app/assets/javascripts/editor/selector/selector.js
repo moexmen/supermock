@@ -168,17 +168,17 @@ Selector.show = function() {
     Selector.move.update_cursor();
 }
 
-Selector.position_adjustment = function(delta) {
-    var position = this.get_position();
-    var size = this.get_size();
+Selector.position_adjustment = function(element) {
+    var position = element.get_position();
+    var size = element.get_size();
 
-    var left = Math.round(position.left/delta) * delta;
-    var top = Math.round(position.top/delta) * delta;
-    var width = Math.round(size.width/delta) * delta;
-    var height = Math.round(size.height/delta) * delta;
+    var left = Math.round(position.left/Selector.grid_delta) * Selector.grid_delta;
+    var top = Math.round(position.top/Selector.grid_delta) * Selector.grid_delta;
+    var width = Math.round(size.width/Selector.grid_delta) * Selector.grid_delta;
+    var height = Math.round(size.height/Selector.grid_delta) * Selector.grid_delta;
 
-    this.set_size(width, height);
-    this.set_position(left, top);
+    element.set_size(width, height);
+    element.set_position(left, top);
 }
 
 Selector.hide = function() {
