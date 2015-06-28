@@ -10,7 +10,7 @@ Elements.Property.ButtonHideItem.prototype = Object.create(Elements.Property.Men
 Elements.Property.ButtonHideItem.prototype.constructor = Elements.Property.ButtonHideItem;
 
 Elements.Property.ButtonHideItem.prototype.click = function(e) {
-    this.hide_callback(); //some useful argument in here
+    this.hide_callback();
     return Elements.Property.MenuItem.prototype.click.call(this, e);
 }
 

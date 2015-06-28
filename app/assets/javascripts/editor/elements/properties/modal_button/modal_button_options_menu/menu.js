@@ -26,9 +26,7 @@ Elements.Property.ButtonEditOptions.prototype.add_button_native_click_page_prope
 Elements.Property.ButtonEditOptions.prototype.show = function(target, show_callback, hide_callback, edit_text_callback, elements) {
 	this.remove_all_items();
 
-	console.log(this.elements);
-	//need to decide which property to show. Based on the value?
-	if(true) {
+	if(show_callback !== null) {
 		this.add_show(show_callback);
 	}
 	else {
@@ -43,4 +41,3 @@ Elements.Property.ButtonEditOptions.prototype.show = function(target, show_callb
 Elements.Property.ButtonEditOptions.prototype.render = function() {
 	return $('#element_modal_button_menu');
 }
-

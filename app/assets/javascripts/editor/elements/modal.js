@@ -24,25 +24,24 @@ Elements.Modal.prototype.render = function() {
             .mousedown(function(e) { return Editor.mousedown_element(this, e); }.bind(this))
             .mouseup(function(e) { return Editor.mouseup_element(this, e); }.bind(this));
 
-        this.make_footer_buttons();
+        this.btn_1 = new Elements.Button('Okay', 0, 0);
+        this.btn_2 = new Elements.Button('Cancel', 0, 0);
+        this.btn_3 = new Elements.Button('Button 3', 0, 0);
+
+        this.html.find('.modal-footer').append(this.btn_1.render(), this.btn_2.render(), this.btn_3.render());
+
+        $.each([this.btn_1, this.btn_2, this.btn_3], function(idx, button){
+            console.log(button);
+            button.render().css('display', 'inline-block').css('position', 'relative');
+            button.hitarea.remove();
+        });
+
         this.properties = [ new Elements.Property.ModalTitle(this.html.find('.modal-title')),
                             new Elements.Property.ModalButtons(this.btn_1, this.btn_2, this.btn_3)
                             ];
     }
 
     return this.html;
-}
-
-
-Elements.Modal.prototype.make_footer_buttons = function() {
-    this.btn_1 = new Elements.ModalButton('Okay', this.render().find('#button1:eq(0)'));
-    this.btn_2 = new Elements.ModalButton('Cancel', this.render().find('#button2:eq(0)'));
-    this.btn_3 = new Elements.ModalButton('Button 3', this.render().find('#button3:eq(0)'));
-
-    // this.btn_1.set_text();
-    // this.btn_2.set_text();
-    // this.btn_3.set_text();
-       
 }
 
 Elements.Modal.prototype.get_position = function() {

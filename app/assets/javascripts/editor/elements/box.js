@@ -1,7 +1,6 @@
 //= require ./element
 //= require ./properties/border/property
 
-
 Elements.Box = function() {
     Elements.Element.call(this);
 }

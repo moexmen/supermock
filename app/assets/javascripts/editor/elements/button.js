@@ -29,8 +29,6 @@ Elements.Button.prototype.render = function() {
             .mouseup(function(e) { return Editor.mouseup_element(this, e); }.bind(this));
       
         this.properties = [ new Elements.Property.ClickPage(this.btn, null) ];
-
-        this.set_position(this.x, this.y);
     }
 
     return this.html;

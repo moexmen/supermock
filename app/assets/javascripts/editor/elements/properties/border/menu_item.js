@@ -28,9 +28,7 @@ Elements.Property.Border.MenuItem.prototype.render = function() {
         this.html = Util.clone_template('#element_menu_item_template');
         this.hitarea = this.html.children('a:eq(0)');
 
-        this.hitarea.text(this.text);
-
-        this.hitarea.click(this.click.bind(this));
+        this.hitarea.text(this.text).click(this.click.bind(this));
     }
 
     return this.html;

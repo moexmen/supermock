@@ -1,5 +1,4 @@
 //= require ./page
-
 var Elements = Elements || {};
 
 Elements.ModalPage = function() {
