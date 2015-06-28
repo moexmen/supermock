@@ -148,7 +148,8 @@ Selector.show = function() {
     var min_y = Number.MAX_VALUE;
     var max_x = 0;
     var max_y = 0;
-    Selector.grid_delta = 20;
+    Selector.position_delta = 25;
+    Selector.size_delta = 5;
 
     $.each(Selector.selected_elements, function(idx, element) {
         Selector.position_adjustment(element);
@@ -163,22 +164,23 @@ Selector.show = function() {
 
     Selector.set_position(min_x, min_y);
     Selector.set_size(max_x - min_x, max_y - min_y);
-    Selector.render().show();
     Selector.resize.update_cursor();
     Selector.move.update_cursor();
+    Selector.render().show();
 }
 
 Selector.position_adjustment = function(element) {
     var position = element.get_position();
     var size = element.get_size();
+    var position_delta
 
-    var left = Math.round(position.left/Selector.grid_delta) * Selector.grid_delta;
-    var top = Math.round(position.top/Selector.grid_delta) * Selector.grid_delta;
-    var width = Math.round(size.width/Selector.grid_delta) * Selector.grid_delta;
-    var height = Math.round(size.height/Selector.grid_delta) * Selector.grid_delta;
-
-    element.set_size(width, height);
+    var left = Math.round(position.left/Selector.position_delta) * Selector.position_delta;
+    var top = Math.round(position.top/Selector.position_delta) * Selector.position_delta;
+    var width = Math.round(size.width/Selector.size_delta) * Selector.size_delta;
+    var height = Math.round(size.height/Selector.size_delta) * Selector.size_delta;
+   
     element.set_position(left, top);
+    element.set_size(width, height);
 }
 
 Selector.hide = function() {

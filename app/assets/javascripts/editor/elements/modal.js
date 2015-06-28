@@ -31,8 +31,10 @@ Elements.Modal.prototype.render = function() {
         this.html.find('.modal-footer').append(this.btn_1.render(), this.btn_2.render(), this.btn_3.render());
 
         $.each([this.btn_1, this.btn_2, this.btn_3], function(idx, button){
-            console.log(button);
-            button.render().css('display', 'inline-block').css('position', 'relative');
+            button.render().css({   'display': 'inline-block',
+                                    'position': 'relative',
+                                    'margin-left': 10
+                            });
             button.hitarea.remove();
         });
 
@@ -59,7 +61,7 @@ Elements.Modal.prototype.get_size = function() {
 }
 
 Elements.Modal.prototype.set_size = function(width, height) {
-    if(height < 150) { //to guard against too small a modal
+    if(height < 150) { //to prevent getting too small a modal
         return;
     }
 
