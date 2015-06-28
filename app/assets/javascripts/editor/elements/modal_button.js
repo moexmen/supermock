@@ -15,25 +15,3 @@ Elements.ModalButton.prototype.destroy = function() {
     this.btn = null;
     this.properties = null;
 }
-
-Elements.ModalButton.prototype.toggle_visibility = function() {
-    if(this.btn.css('display') == 'none'){
-        this.btn.css('display', 'inline');
-    }
-    else {
-        this.btn.css('display', 'none');
-    }
-}
-
-Elements.ModalButton.prototype.set_text = function() {
-    this.btn.text(this.text);
-}
-
-Elements.ModalButton.prototype.show_or_hide = function() {
-    if(this.btn.css('display') == 'none') {
-        return "Show";
-    }
-    else {
-        return "Hide";
-    }
-}

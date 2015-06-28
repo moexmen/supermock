@@ -26,7 +26,7 @@ Elements.Modal.prototype.render = function() {
 
         this.make_footer_buttons();
         this.properties = [ new Elements.Property.ModalTitle(this.html.find('.modal-title')),
-                            new Elements.Property.ModalButton(this.btn_1, this.btn_2, this.btn_3)
+                            new Elements.Property.ModalButtons(this.btn_1, this.btn_2, this.btn_3)
                             ];
     }
 
@@ -39,9 +39,9 @@ Elements.Modal.prototype.make_footer_buttons = function() {
     this.btn_2 = new Elements.ModalButton('Cancel', this.render().find('#button2:eq(0)'));
     this.btn_3 = new Elements.ModalButton('Button 3', this.render().find('#button3:eq(0)'));
 
-    this.btn_1.set_text();
-    this.btn_2.set_text();
-    this.btn_3.set_text();
+    // this.btn_1.set_text();
+    // this.btn_2.set_text();
+    // this.btn_3.set_text();
        
 }
 
