@@ -23,7 +23,7 @@ Elements.Property.PropertyMenu.prototype.show = function(target, elements) {
         }
     });
 
-    if(common_properties.length == 0) {
+    if(common_properties.length == 2) {
         this.add_item(new Elements.Property.NoPropertyMenuItem(this, elements)); 
     }
     else { // add common properties items

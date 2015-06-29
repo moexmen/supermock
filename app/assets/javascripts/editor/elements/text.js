@@ -34,6 +34,9 @@ Elements.Text.prototype.on_resize = function() {
 	    	var text_height = text.outerHeight();
     	}
     }    
+    if(text.text().charAt(text.text().length-1) != "."){
+    	text.text(text.text() + ".");
+	}
 }
     
 
