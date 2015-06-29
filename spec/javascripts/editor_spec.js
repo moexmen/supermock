@@ -461,6 +461,10 @@ function selector_spec() {
 function property_menu_spec() {
     describe('click page', click_page_spec);
     describe('check property', check_spec);
+    // describe('border property', border_spec);
+    // describe('create modal', modal_spec);
+    // describe('modal buttons property', modal_buttons_spec);
+    // describe('modal title property', modal_title_spec);
 
     function click_page_spec() {
         beforeEach(function () {
@@ -481,16 +485,15 @@ function property_menu_spec() {
                 mouseenter_click_page_item();
                 expect(Editor.element_page_menu.visible()).toBe(true);
 
-                // minus 1 for "< No Where >"
-                // expect(Editor.element_page_menu.items.length - 1).toBe(Editor.project.pages.length);
-                // this test is no longer reliable - it needs to accomodate the divider and < Create Modal >
+                // minus 3 for "< No Where >", Divider, and "< Create Modal >"
+                expect(Editor.element_page_menu.items.length - 3).toBe(Editor.project.pages.length);
             });
 
             it('should hide "pages" when mouse enter on other items', function () {
                 mouseenter_click_page_item();
 
                 expect(Editor.element_page_menu.visible()).toBe(true);
-                Editor.element_property_menu.find_item(Elements.Property.ClickPage.MenuItem.CreateModal).mouseenter();
+                Editor.element_property_menu.find_item(Elements.Property.ClickPage.MenuItem.CreateModal).mouseenter(); // dummy create modal button 
                 expect(Editor.element_page_menu.visible()).toBe(false);
             });
 
@@ -505,14 +508,15 @@ function property_menu_spec() {
                 mouseenter_click_page_item();
 
                 var click_page_property = PageList.curr_page().elements[0].find_property(Elements.Property.ClickPage);
-                expect(click_page_property.value).toBe(null);
-                expect(Editor.element_page_menu.items[0].selected).toBe(true);
+                expect(click_page_property.value).toBe(null); 
+                // the first element is create modal, the second is divider, the third is No Where
+                expect(Editor.element_page_menu.items[2].selected).toBe(true);
 
-                Editor.element_page_menu.items[0].hitarea.click();
+                Editor.element_page_menu.items[2].hitarea.click();
                 expect(click_page_property.value).toBe(null);
 
                 mouseenter_click_page_item();
-                expect(Editor.element_page_menu.items[0].selected).toBe(true);
+                expect(Editor.element_page_menu.items[2].selected).toBe(true);
             });
 
             it('should set click page id (single element)', function () {
@@ -520,13 +524,13 @@ function property_menu_spec() {
 
                 var click_page_property = PageList.curr_page().elements[0].find_property(Elements.Property.ClickPage);
                 expect(click_page_property.value).toBe(null);
-                expect(Editor.element_page_menu.items[0].selected).toBe(true);
+                expect(Editor.element_page_menu.items[2].selected).toBe(true); 
 
-                Editor.element_page_menu.items[1].hitarea.click();
+                Editor.element_page_menu.items[3].hitarea.click(); //clicking on the homepage option
                 expect(click_page_property.value).toBe(Editor.project.pages[0].id);
 
                 mouseenter_click_page_item();
-                expect(Editor.element_page_menu.items[1].selected).toBe(true);
+                expect(Editor.element_page_menu.items[3].selected).toBe(true);
             });
         });
 
@@ -540,14 +544,14 @@ function property_menu_spec() {
 
             it('should show "No Where" as selected (multiple elements)', function () {
                 mouseenter_click_page_item();
-                expect(Editor.element_page_menu.items[0].selected).toBe(true);
+                expect(Editor.element_page_menu.items[2].selected).toBe(true);
             });
 
             it('should show nothing as selected (multiple elements)', function () {
                 PageList.curr_page().elements[0].find_property(Elements.Property.ClickPage).value = 'something else';
 
                 mouseenter_click_page_item();
-                expect(Editor.element_page_menu.items[0].selected).toBe(false);
+                expect(Editor.element_page_menu.items[2].selected).toBe(false);
             });
 
             it('should set click page id (multiple element)', function () {
@@ -558,12 +562,12 @@ function property_menu_spec() {
 
                 expect(click_page_property_1.value).toBe(null);
                 expect(click_page_property_2.value).toBe(null);
-                Editor.element_page_menu.items[1].hitarea.click();
+                Editor.element_page_menu.items[3].hitarea.click(); 
                 expect(click_page_property_1.value).toBe(Editor.project.pages[0].id);
                 expect(click_page_property_2.value).toBe(Editor.project.pages[0].id);
 
                 mouseenter_click_page_item();
-                expect(Editor.element_page_menu.items[1].selected).toBe(true);
+                expect(Editor.element_page_menu.items[3].selected).toBe(true);
             });
         });
 
@@ -741,6 +745,20 @@ function type_to_add_spec() {
 
         type_to_add_trigger_enter();
         expect($(Editor.canvas().children()[0]).children('.element-radiobutton:eq(0)').length).toBe(1);
+    });
+
+    it('should add box', function () {
+        TypeToAdd.input().val('Box').keyup();
+
+        $.each(TypeToAdd.list().children(), function(idx, item) {
+            expect($(item).is(':visible')).toBe(
+                ($(item).text() === 'Checkbox / Chk') ||
+                ($(item).text() === 'Box'));
+        });
+
+
+        type_to_add_trigger_enter();
+        expect($(Editor.canvas().children()[0]).children('.element-box:eq(0)').length).toBe(1);
     });
 
     function show_type_to_add() {
