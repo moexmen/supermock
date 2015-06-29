@@ -13,7 +13,7 @@ Selector.move.elements_movable = function() {
     var all_elements_movable = true;
 
     $.each(Selector.selected_elements, function(idx, element) {
-        if(!element.movable) 
+        if(!element.find_property(Elements.Property.Position).movable) 
             all_elements_movable = false;
     });
 

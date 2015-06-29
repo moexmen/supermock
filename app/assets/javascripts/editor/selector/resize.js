@@ -177,7 +177,7 @@ Selector.resize.calc_min_delta = function(delta) {
 }
 
 Selector.resize.update_cursor = function(){
-    var directions_possible = Selector.selected_elements[0].possible_resize_directions;
+    var directions_possible = Selector.selected_elements[0].find_property(Elements.Property.Dimensions).resizeable_directions;
 
     $.each(Selector.selected_elements, function(idx, element) {
         var new_array_of_possible_directions = [];

@@ -16,7 +16,12 @@ Elements.Box.prototype.render = function() {
     if(this.html === null) {
         this.html = Util.clone_template('#element_box_template');
         this.html.data('element', this);
-        this.properties = [ new Elements.Property.Border(this.html.find('div:eq(0)'), 5) ];
+        this.properties = [ new Elements.Property.Border(this.html.find('div:eq(0)'), 5),
+                            new Elements.Property.Dimensions(this.html.outerWidth(), this.html.outerHeight(), 
+                                Object.keys(Elements.Element.resize_directions).map(function(key){ 
+                                    return Elements.Element.resize_directions[key]; 
+                                })),
+                            new Elements.Property.Position(0, 0, true) ];
 
         this.hitarea = this.html.children('.element-hitarea:eq(0)')
             .mousedown(function(e) { return Editor.mousedown_element(this, e); }.bind(this))

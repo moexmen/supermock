@@ -3,17 +3,6 @@ var Elements = Elements || {};
 Elements.Element = function() {
     this.properties = [];
     this.html = null;
-    this.possible_resize_directions = [
-        Elements.Element.resize_directions.NORTH,
-        Elements.Element.resize_directions.SOUTH,
-        Elements.Element.resize_directions.EAST,
-        Elements.Element.resize_directions.WEST,
-        Elements.Element.resize_directions.NORTHEAST,
-        Elements.Element.resize_directions.NORTHWEST,
-        Elements.Element.resize_directions.SOUTHEAST,
-        Elements.Element.resize_directions.SOUTHWEST
-    ];
-    this.movable = true;
 }
 
 Elements.Element.resize_directions = {
@@ -63,7 +52,7 @@ Elements.Element.prototype.on_resize = function() {
 }
 
 Elements.Element.has_direction = function(direction, element){
-    return $.inArray(direction, element.possible_resize_directions) != -1;
+    return $.inArray(direction, element.find_property(Elements.Property.Dimensions).resizeable_directions) != -1;
 }
 
 Elements.Element.prototype.select = function() {
@@ -106,7 +95,7 @@ Elements.Element.create_default = function(element_type) {
         case Elements.ModalPage:
             return new Elements.ModalPage();
         case Elements.Button:
-            return new Elements.Button('Button', 0, 0);
+            return new Elements.Button('Button');
         case Elements.Text:
             return new Elements.Text();
         case Elements.TextField:

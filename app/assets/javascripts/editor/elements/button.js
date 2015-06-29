@@ -2,10 +2,7 @@
 
 Elements.Button = function(text, x, y) {
     Elements.Element.call(this);
-
     this.text = text;
-    this.x = x;
-    this.y = y;
 }
 
 Elements.Button.prototype = Object.create(Elements.Element.prototype);
@@ -27,8 +24,13 @@ Elements.Button.prototype.render = function() {
         this.hitarea = this.html.children('.element-hitarea:eq(0)')
             .mousedown(function(e) { return Editor.mousedown_element(this, e); }.bind(this))
             .mouseup(function(e) { return Editor.mouseup_element(this, e); }.bind(this));
-      
-        this.properties = [ new Elements.Property.ClickPage(this.btn, null) ];
+
+        this.properties = [ new Elements.Property.ClickPage(this.btn, null), 
+                            new Elements.Property.Dimensions(this.html.outerWidth(), this.html.outerHeight(), 
+                                Object.keys(Elements.Element.resize_directions).map(function(key){ 
+                                    return Elements.Element.resize_directions[key]; 
+                                })),
+                            new Elements.Property.Position(0, 0, true) ];
     }
 
     return this.html;

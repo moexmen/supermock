@@ -3,8 +3,6 @@
 
 Elements.Modal = function() {
     Elements.Element.call(this);
-    this.possible_resize_directions = [Elements.Element.resize_directions.SOUTH];
-    this.movable = false;
 }
 
 Elements.Modal.prototype = Object.create(Elements.Element.prototype);
@@ -24,9 +22,9 @@ Elements.Modal.prototype.render = function() {
             .mousedown(function(e) { return Editor.mousedown_element(this, e); }.bind(this))
             .mouseup(function(e) { return Editor.mouseup_element(this, e); }.bind(this));
 
-        this.btn_1 = new Elements.Button('Okay', 0, 0);
-        this.btn_2 = new Elements.Button('Cancel', 0, 0);
-        this.btn_3 = new Elements.Button('Button 3', 0, 0);
+        this.btn_1 = new Elements.Button('Okay');
+        this.btn_2 = new Elements.Button('Cancel');
+        this.btn_3 = new Elements.Button('Button 3');
 
         this.html.find('.modal-footer').append(this.btn_1.render(), this.btn_2.render(), this.btn_3.render());
 
@@ -39,7 +37,10 @@ Elements.Modal.prototype.render = function() {
         });
 
         this.properties = [ new Elements.Property.ModalTitle(this.html.find('.modal-title')),
-                            new Elements.Property.ModalButtons(this.btn_1, this.btn_2, this.btn_3)
+                            new Elements.Property.ModalButtons(this.btn_1, this.btn_2, this.btn_3),
+                            new Elements.Property.Dimensions(this.html.outerWidth(), this.html.outerHeight(), 
+                                [Elements.Element.resize_directions.SOUTH]),
+                            new Elements.Property.Position(0, 0, false)
                             ];
     }
 

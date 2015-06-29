@@ -28,8 +28,12 @@ Elements.Radiobutton.prototype.render = function() {
             .mouseup(function(e) { return Editor.mouseup_element(this, e); }.bind(this));
         this.assign_text();
 
-        this.properties = [ new Elements.Property.Check(this.html.children(':radio'), true) ];
-
+        this.properties = [ new Elements.Property.Check(this.html.children(':radio'), true),
+                            new Elements.Property.Dimensions(this.html.outerWidth(), this.html.outerHeight(), 
+                                Object.keys(Elements.Element.resize_directions).map(function(key){ 
+                                    return Elements.Element.resize_directions[key]; 
+                                })),
+                            new Elements.Property.Position(0, 0, true) ];
     }
     return this.html;
 }
