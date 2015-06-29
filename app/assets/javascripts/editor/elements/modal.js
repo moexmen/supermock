@@ -36,7 +36,7 @@ Elements.Modal.prototype.render = function() {
             button.hitarea.remove();
         });
 
-        this.properties = [ new Elements.Property.ModalTitle(this.html.find('.modal-title')),
+        this.properties = [ new Elements.Property.EditText(this.html.find('.modal-title'), "Modal Title"),
                             new Elements.Property.ModalButtons(this.btn_1, this.btn_2, this.btn_3),
                             new Elements.Property.Dimensions(this.html.outerWidth(), this.html.outerHeight(), 
                                 [Elements.Element.resize_directions.SOUTH]),

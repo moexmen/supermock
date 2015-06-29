@@ -14,10 +14,6 @@ Elements.Radiobutton.prototype.destroy = function() {
     this.properties = [];
 }
 
-Elements.Radiobutton.prototype.assign_text = function() {
-    this.html.find('label:eq(0)').text(this.text);
-}
-
 Elements.Radiobutton.prototype.render = function() {
     if(this.html === null) {
         this.html = Util.clone_template('#element_radiobutton_template');
@@ -26,9 +22,9 @@ Elements.Radiobutton.prototype.render = function() {
         this.hitarea = this.html.children('.element-hitarea:eq(0)')
             .mousedown(function(e) { return Editor.mousedown_element(this, e); }.bind(this))
             .mouseup(function(e) { return Editor.mouseup_element(this, e); }.bind(this));
-        this.assign_text();
 
-        this.properties = [ new Elements.Property.Check(this.html.children(':radio'), true),
+        this.properties = [ new Elements.Property.EditText(this.html.find('label:eq(0)'), this.text),
+                            new Elements.Property.Check(this.html.children(':radio'), true),
                             new Elements.Property.Dimensions(this.html.outerWidth(), this.html.outerHeight(), 
                                 Object.keys(Elements.Element.resize_directions).map(function(key){ 
                                     return Elements.Element.resize_directions[key]; 

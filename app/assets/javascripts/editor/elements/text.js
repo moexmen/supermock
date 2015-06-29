@@ -40,18 +40,21 @@ Elements.Text.prototype.on_resize = function() {
 }
     
 
+Elements.Text.prototype.text = function() {
+	return this.word_array.join(" ");
+} 
+
 Elements.Text.prototype.render = function() {
     if(this.html === null) {
         this.html = Util.clone_template('#element_text_template');
         this.html.data('element', this);
-        var curr_text = this.word_array.join(" ");
-        this.html.children('div:eq(0)').text(curr_text);
 
         this.hitarea = this.html.children('.element-hitarea:eq(0)')
             .mousedown(function(e) { return Editor.mousedown_element(this, e); }.bind(this))
             .mouseup(function(e) { return Editor.mouseup_element(this, e); }.bind(this));
 
-	    this.properties = [ new Elements.Property.Dimensions(this.html.outerWidth(), this.html.outerHeight(), 
+	    this.properties = [ new Elements.Property.EditText(this.html.children('div:eq(0)'), "Text"),
+	    					new Elements.Property.Dimensions(this.html.outerWidth(), this.html.outerHeight(), 
                                 Object.keys(Elements.Element.resize_directions).map(function(key){ 
                                     return Elements.Element.resize_directions[key]; 
                                 })),
