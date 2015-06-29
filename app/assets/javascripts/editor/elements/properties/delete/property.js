@@ -1,12 +1,11 @@
 //= require ../property
 
-Elements.Property.Check = function Check(click_obj, value) {
-    this.value = value;
+Elements.Property.Delete = function Delete() {
 }
 
-Elements.Property.Check.prototype = Object.create(Elements.Property.prototype);
-Elements.Property.Check.prototype.constructor = Elements.Property.Check;
+Elements.Property.Delete.prototype = Object.create(Elements.Property.prototype);
+Elements.Property.Delete.prototype.constructor = Elements.Property.Delete;
 
-Elements.Property.Check.menu_items = function(parent_menu, elements) {
-    return [new Elements.Property.Check.MenuItem(parent_menu, elements)];
+Elements.Property.Delete.menu_items = function(parent_menu, elements) {
+    return [new Elements.Property.Delete.MenuItem(parent_menu, elements)];
 }

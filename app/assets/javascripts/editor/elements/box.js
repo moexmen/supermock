@@ -21,7 +21,8 @@ Elements.Box.prototype.render = function() {
                                 Object.keys(Elements.Element.resize_directions).map(function(key){ 
                                     return Elements.Element.resize_directions[key]; 
                                 })),
-                            new Elements.Property.Position(0, 0, true) ];
+                            new Elements.Property.Position(0, 0, true),
+                            new Elements.Property.Delete() ];
 
         this.hitarea = this.html.children('.element-hitarea:eq(0)')
             .mousedown(function(e) { return Editor.mousedown_element(this, e); }.bind(this))

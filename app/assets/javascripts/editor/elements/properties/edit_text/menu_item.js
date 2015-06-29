@@ -25,8 +25,9 @@ Elements.Property.EditText.MenuItem.prototype.render = function() {
 Elements.Property.EditText.MenuItem.prototype.click = function() {
     var curr_element = this.elements[0];
     var curr_text = curr_element.find_property(Elements.Property.EditText).value;
+    var item = curr_element.find_property(Elements.Property.EditText).item;
 
-    var new_text = prompt("Enter new text for " + this.item, curr_text);
+    var new_text = prompt("Enter new text for " + item, curr_text);
     curr_element.find_property(Elements.Property.EditText).set_text(new_text);
 
     this.parent_menu.hide();

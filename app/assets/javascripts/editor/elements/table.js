@@ -28,7 +28,8 @@ Elements.Table.prototype.render = function() {
                                 Object.keys(Elements.Element.resize_directions).map(function(key){ 
                                     return Elements.Element.resize_directions[key]; 
                                 })),
-                            new Elements.Property.Position(0, 0, true) ];       
+                            new Elements.Property.Position(0, 0, true),
+                            new Elements.Property.Delete() ];     
     }
     return this.html;
 }

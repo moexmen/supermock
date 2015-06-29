@@ -3,6 +3,7 @@
 Elements.Text = function() {
     Elements.Element.call(this);
     this.word_array = ["Lorem", "ipsum", "dolor"];
+    this.resized = false;
 }
 
 Elements.Text.prototype = Object.create(Elements.Element.prototype); 
@@ -16,31 +17,34 @@ Elements.Text.prototype.destroy = function() {
 }
 
 Elements.Text.prototype.on_resize = function() {
+    var text_html = this.html.children('div:eq(0)');
     var text_height = this.html.children('div:eq(0)').outerHeight();
-    var text = this.html.children('div:eq(0)');
     var box_height = this.html.outerHeight();
-    if (text_height >= box_height){
+    if(text_html.text().indexOf("Lorem") == -1 && text_html.text().indexOf("Text") == -1) {
+		return;
+	}
+    else if (text_height >= box_height){
         while(text_height + 20 > box_height && text_height > 40){
             this.word_array.splice(-1, 1);
-            text.text(this.word_array.join(" "));
-            var text_height = text.outerHeight();
+            text_html.text(this.text_string());
+            var text_height = text_html.outerHeight();
         }
     } 
     else {
     	while(text_height + 40 < box_height){
 	    	var random_number = Math.floor(Math.random() * Elements.Text.lorem_ipsum_array.length);
 	        this.word_array.push(Elements.Text.lorem_ipsum_array[random_number]);
-	        text.text(this.word_array.join(" "));
-	    	var text_height = text.outerHeight();
+	        text_html.text(this.text_string());
+	    	var text_height = text_html.outerHeight();
     	}
     }    
-    if(text.text().charAt(text.text().length-1) != "."){
-    	text.text(text.text() + ".");
+    if(text_html.text().charAt(text_html.text().length - 1) != "."){
+    	text_html.text(text_html.text() + ".");
 	}
 }
     
 
-Elements.Text.prototype.text = function() {
+Elements.Text.prototype.text_string = function() {
 	return this.word_array.join(" ");
 } 
 
@@ -58,7 +62,8 @@ Elements.Text.prototype.render = function() {
                                 Object.keys(Elements.Element.resize_directions).map(function(key){ 
                                     return Elements.Element.resize_directions[key]; 
                                 })),
-                            new Elements.Property.Position(0, 0, true) ];
+                            new Elements.Property.Position(0, 0, true),
+                            new Elements.Property.Delete() ];
 
     }
     return this.html;
