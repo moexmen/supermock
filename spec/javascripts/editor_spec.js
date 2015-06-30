@@ -464,7 +464,7 @@ function property_menu_spec() {
     // describe('border property', border_spec);
     // describe('create modal', modal_spec);
     // describe('modal buttons property', modal_buttons_spec);
-    // describe('modal title property', modal_title_spec);
+    // describe('edit text property', edit_text_spec);
 
     function click_page_spec() {
         beforeEach(function () {
@@ -487,14 +487,6 @@ function property_menu_spec() {
 
                 // minus 3 for "< No Where >", Divider, and "< Create Modal >"
                 expect(Editor.element_page_menu.items.length - 3).toBe(Editor.project.pages.length);
-            });
-
-            it('should hide "pages" when mouse enter on other items', function () {
-                mouseenter_click_page_item();
-
-                expect(Editor.element_page_menu.visible()).toBe(true);
-                Editor.element_property_menu.find_item(Elements.Property.ClickPage.MenuItem.CreateModal).mouseenter(); // dummy create modal button 
-                expect(Editor.element_page_menu.visible()).toBe(false);
             });
 
             it('should hide "pages" when clicked', function () {

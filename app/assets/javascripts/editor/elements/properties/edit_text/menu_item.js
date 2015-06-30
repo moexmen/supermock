@@ -22,13 +22,18 @@ Elements.Property.EditText.MenuItem.prototype.render = function() {
     return this.html;
 }
 
-Elements.Property.EditText.MenuItem.prototype.click = function() {
-    var curr_element = this.elements[0];
-    var curr_text = curr_element.find_property(Elements.Property.EditText).value;
-    var item = curr_element.find_property(Elements.Property.EditText).item;
+Elements.Property.EditText.MenuItem.prototype.click = function() {   
+    var element = this.elements[0];
 
-    var new_text = prompt("Enter new text for " + item, curr_text);
-    curr_element.find_property(Elements.Property.EditText).set_text(new_text);
+    if(element.make_content_editable) {
+        return element.make_content_editable();
+    }
+
+    var curr_text = element.find_property(Elements.Property.EditText).get_text();
+    var item = element.find_property(Elements.Property.EditText).item;
+    var new_text = prompt("Enter new text for " + item, curr_text) || curr_text;
+
+    element.find_property(Elements.Property.EditText).set_text(new_text);
 
     this.parent_menu.hide();
     return false;

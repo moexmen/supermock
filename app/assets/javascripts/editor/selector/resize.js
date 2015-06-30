@@ -198,7 +198,7 @@ Selector.resize.update_cursor = function(){
             handle.off();
         }
         else {
-            handle.css('cursor', Selector.resize.cursor_directions.direction);
+            handle.css('cursor', Selector.resize.cursor_directions[direction]);
             handle.mousedown(Selector.resize.mousedown_handle).mouseup(Selector.resize.mouseup_handle);
         }
     });

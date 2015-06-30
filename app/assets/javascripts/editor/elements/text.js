@@ -58,6 +58,7 @@ Elements.Text.prototype.render = function() {
             .mouseup(function(e) { return Editor.mouseup_element(this, e); }.bind(this));
 
 	    this.properties = [ new Elements.Property.EditText(this.html.children('div:eq(0)'), "Text"),
+						    new Elements.Property.TextSize(this.html.children('div:eq(0)'), 12),
 	    					new Elements.Property.Dimensions(this.html.outerWidth(), this.html.outerHeight(), 
                                 Object.keys(Elements.Element.resize_directions).map(function(key){ 
                                     return Elements.Element.resize_directions[key]; 
@@ -68,3 +69,10 @@ Elements.Text.prototype.render = function() {
     }
     return this.html;
 }
+
+Elements.Text.prototype.make_content_editable = function() {
+	var editable_html = $(this.html.find('div:eq(0)'));
+	editable_html.attr('contenteditable', true)
+		.focus()
+		.dblclick();
+};

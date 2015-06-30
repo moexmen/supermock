@@ -25,8 +25,8 @@ Elements.Button.prototype.render = function() {
             .mousedown(function(e) { return Editor.mousedown_element(this, e); }.bind(this))
             .mouseup(function(e) { return Editor.mouseup_element(this, e); }.bind(this));
 
-        this.properties = [ new Elements.Property.EditText(this.btn, this.text),
-                            new Elements.Property.ClickPage(this.btn, null), 
+        this.properties = [ new Elements.Property.ClickPage(this.btn, null), 
+                            new Elements.Property.EditText(this.btn, this.text),
                             new Elements.Property.Dimensions(this.html.outerWidth(), this.html.outerHeight(), 
                                 Object.keys(Elements.Element.resize_directions).map(function(key){ 
                                     return Elements.Element.resize_directions[key]; 

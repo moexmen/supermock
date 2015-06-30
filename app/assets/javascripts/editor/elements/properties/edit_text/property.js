@@ -2,7 +2,7 @@
 
 Elements.Property.EditText = function EditText(html_to_edit, item) {
 	this.value = item;
-	this.item = item;
+	this.item = item.toLowerCase();
 	this.html_to_edit = html_to_edit;
 	this.set_text(this.value);
 }

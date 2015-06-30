@@ -19,7 +19,8 @@ Elements.Property.Delete.MenuItem.prototype.render = function() {
         this.html = Util.clone_template('#element_menu_item_template');
         this.hitarea = this.html.children('a:eq(0)')
             .text('Delete')
-            .click(this.click.bind(this));
+            .click(this.click.bind(this))
+            .mouseenter(this.mouseenter.bind(this));
     }
 
     return this.html;

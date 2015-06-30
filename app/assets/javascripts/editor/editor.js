@@ -89,7 +89,7 @@ Editor.is_view_mode = function() {
 Editor.handle_key_events = function() {
     $('body').keyup(function (e) {
 
-        if (Editor.is_edit_mode()) {
+        if (Editor.is_edit_mode() && $("[contenteditable='true']").length == 0) {
             switch (e.which) {
                 case 32: // space
                     Editor.escape_all();
@@ -104,6 +104,7 @@ Editor.handle_key_events = function() {
             }
         }
         else if (Editor.is_view_mode()) {
+            $("[contenteditable='true']").attr('contenteditable', false);
             switch (e.which) {
                 case 27: // escape
                     Editor.edit_mode();
@@ -115,6 +116,7 @@ Editor.handle_key_events = function() {
 }
 
 Editor.mousedown_element = function(element, event) {
+    $("[contenteditable='true']").attr('contenteditable', false);
     switch(event.which) {
         case 1: // left
             Selector.mousedown_element(element, event);
