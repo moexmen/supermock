@@ -24,7 +24,6 @@ Elements.Property.EditText.MenuItem.prototype.render = function() {
 
 Elements.Property.EditText.MenuItem.prototype.click = function() {   
     var element = this.elements[0];
-
     if(element.make_content_editable) {
         return element.make_content_editable();
     }

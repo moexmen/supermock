@@ -26,7 +26,7 @@ Selector.resize.init = function() {
     ];
 
     $.each(Selector.resize.handles, function(idx, handle) {
-       handle.mousedown(Selector.resize.mousedown_handle).mouseup(Selector.resize.mouseup_handle);
+       handle.mousedown(Selector.resize.mousedown_handle);
     });
 }
 
@@ -56,6 +56,7 @@ Selector.resize.mousedown_handle = function(e) {
     if(e.which == 1) { // left
         Selector.resize.save_element_dimensions();
         Selector.resize.update_last_move_position(e);
+        console.log("I'm being called again", e);
         $(window).mousemove($(e.target), Selector.resize.mousemove_handle).mouseup(Selector.resize.mouseup_handle);
     }
 
@@ -192,15 +193,14 @@ Selector.resize.update_cursor = function(){
     $.each(Object.keys(Elements.Element.resize_directions), function(idx, key) {
         var direction = Elements.Element.resize_directions[key];
         var handle = Selector.resize.direction_handle_mapping(direction);
+        handle.css('cursor', 'not-allowed').unbind();
+    });
 
-        if ($.inArray(direction, directions_possible) == -1) {
-            handle.css('cursor', 'not-allowed');
-            handle.off();
-        }
-        else {
-            handle.css('cursor', Selector.resize.cursor_directions[direction]);
-            handle.mousedown(Selector.resize.mousedown_handle).mouseup(Selector.resize.mouseup_handle);
-        }
+    $.each(directions_possible, function(idx, direction) {
+        var handle = Selector.resize.direction_handle_mapping(direction);
+        handle.css('cursor', Selector.resize.cursor_directions[direction]);
+        handle.mousedown(Selector.resize.mousedown_handle).mouseup(Selector.resize.mouseup_handle);
+
     });
 }
 

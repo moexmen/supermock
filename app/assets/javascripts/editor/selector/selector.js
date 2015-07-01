@@ -6,6 +6,9 @@ Selector.init = function() {
     Selector.move.init();
     Selector.resize.init();
 
+    Selector.position_delta = 25;
+    Selector.size_delta = 5;
+
     Selector.render().mousedown(Selector.mousedown).mouseup(Selector.mouseup);
     Selector.hide();
 }
@@ -21,6 +24,10 @@ Selector.any_selected = function() {
 Selector.select = function(element) {
     element.select();
     Selector.selected_elements.push(element);
+    
+    Selector.move.update_cursor();
+    Selector.resize.update_cursor();
+
     Selector.show();
 }
 
@@ -148,11 +155,9 @@ Selector.show = function() {
     var min_y = Number.MAX_VALUE;
     var max_x = 0;
     var max_y = 0;
-    Selector.position_delta = 25;
-    Selector.size_delta = 5;
 
     $.each(Selector.selected_elements, function(idx, element) {
-        Selector.position_adjustment(element);
+        // Selector.position_adjustment(element);
         var position = element.get_position();
         var size = element.get_size();
 
@@ -164,8 +169,6 @@ Selector.show = function() {
 
     Selector.set_position(min_x, min_y);
     Selector.set_size(max_x - min_x, max_y - min_y);
-    Selector.resize.update_cursor();
-    Selector.move.update_cursor();
     Selector.render().show();
 }
 
