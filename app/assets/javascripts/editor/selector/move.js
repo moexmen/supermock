@@ -66,6 +66,7 @@ Selector.move.move = function(delta_left, delta_top) {
 Selector.move.mouseup = function(e) {
     if(e.which == 1) { // left
         Selector.stop_mouse_events();
+        Selector.position_snap_to_grid();
         Selector.show();
     }
 

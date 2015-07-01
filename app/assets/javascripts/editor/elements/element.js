@@ -33,7 +33,6 @@ Elements.Element.prototype.has_property = function(property_constructor) {
 
 Elements.Element.prototype.set_position = function(left, top) {
     this.render().css({ left: left, top: top });
-    // to amend the property also
 }
 
 Elements.Element.prototype.get_position = function() {
@@ -46,7 +45,6 @@ Elements.Element.prototype.get_size = function() {
 
 Elements.Element.prototype.set_size = function(width, height) {
     this.render().outerWidth(width).outerHeight(height);
-    //to amend the related property too!
     this.on_resize();
 }
 

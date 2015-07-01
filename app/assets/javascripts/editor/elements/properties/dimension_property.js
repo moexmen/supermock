@@ -12,3 +12,8 @@ Elements.Property.Dimensions.prototype.constructor = Elements.Property.Dimension
 Elements.Property.Dimensions.menu_items = function(parent_menu, elements) {
 	return [];
 }
+
+Elements.Property.Dimensions.prototype.resize = function(width, height) {
+    this.width = width;
+    this.height = height;
+}

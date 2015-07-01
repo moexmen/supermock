@@ -69,6 +69,7 @@ Selector.mousedown = function(e) {
 }
 Selector.mouseup = function(e) {
     Selector.stop_mouse_events();
+    Selector.position_snap_to_grid();
     Selector.show();
 
     return false;
@@ -157,7 +158,6 @@ Selector.show = function() {
     var max_y = 0;
 
     $.each(Selector.selected_elements, function(idx, element) {
-        // Selector.position_adjustment(element);
         var position = element.get_position();
         var size = element.get_size();
 
@@ -172,18 +172,23 @@ Selector.show = function() {
     Selector.render().show();
 }
 
-Selector.position_adjustment = function(element) {
-    var position = element.get_position();
-    var size = element.get_size();
-    var position_delta
+Selector.position_snap_to_grid = function() {
+    $.each(Selector.selected_elements, function(idx, element) {
+        var position = element.get_position();
+        var size = element.get_size();
 
-    var left = Math.round(position.left/Selector.position_delta) * Selector.position_delta;
-    var top = Math.round(position.top/Selector.position_delta) * Selector.position_delta;
-    var width = Math.round(size.width/Selector.size_delta) * Selector.size_delta;
-    var height = Math.round(size.height/Selector.size_delta) * Selector.size_delta;
-   
-    element.set_position(left, top);
-    element.set_size(width, height);
+        var left = Math.round(position.left/Selector.position_delta) * Selector.position_delta;
+        var top = Math.round(position.top/Selector.position_delta) * Selector.position_delta;
+        var width = Math.round(size.width/Selector.size_delta) * Selector.size_delta;
+        var height = Math.round(size.height/Selector.size_delta) * Selector.size_delta;
+        
+        element.set_position(left, top);
+        this.find_property(Elements.Property.Position).set_position(left, top);
+
+        element.set_size(width, height);
+        this.find_property(Elements.Property.Dimensions).resize(width, height);
+
+    });
 }
 
 Selector.hide = function() {

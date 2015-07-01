@@ -12,3 +12,8 @@ Elements.Property.Position.prototype.constructor = Elements.Property.Position;
 Elements.Property.Position.menu_items = function(parent_menu, elements) {
     return [];
 }
+
+Elements.Property.Position.prototype.set_position = function(x, y) {
+    this.x = x;
+    this.y = y;
+}

@@ -56,7 +56,6 @@ Selector.resize.mousedown_handle = function(e) {
     if(e.which == 1) { // left
         Selector.resize.save_element_dimensions();
         Selector.resize.update_last_move_position(e);
-        console.log("I'm being called again", e);
         $(window).mousemove($(e.target), Selector.resize.mousemove_handle).mouseup(Selector.resize.mouseup_handle);
     }
 
@@ -76,6 +75,7 @@ Selector.resize.mousemove_handle = function(e) {
 Selector.resize.mouseup_handle = function(e) {
     if(e.which == 1) { // left
         Selector.stop_mouse_events();
+        Selector.position_snap_to_grid();
         Selector.show();
     }
 
