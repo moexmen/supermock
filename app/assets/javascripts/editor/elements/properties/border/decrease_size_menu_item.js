@@ -1,16 +1,15 @@
 //= require ../shared/menu_item
 //= require ./property
 
-Elements.Property.Border.MenuItem = function MenuItem(parent_menu, elements, increase_or_decrease) {
+Elements.Property.Border.DecreaseMenuItem = function DecreaseMenuItem(parent_menu, elements) {
     Elements.Property.MenuItem.call(this, parent_menu, elements);
-    this.text = increase_or_decrease;
-    increase_or_decrease.localeCompare("Increase border size") == 0  ? this.resize_dimension = 1.25 : this.resize_dimension = 0.75;
+    this.resize_dimension = 0.8;
 }
     
-Elements.Property.Border.MenuItem.prototype = Object.create(Elements.Property.MenuItem.prototype);
-Elements.Property.Border.MenuItem.prototype.constructor = Elements.Property.Border.MenuItem;
+Elements.Property.Border.DecreaseMenuItem.prototype = Object.create(Elements.Property.MenuItem.prototype);
+Elements.Property.Border.DecreaseMenuItem.prototype.constructor = Elements.Property.Border.DecreaseMenuItem;
 
-Elements.Property.Border.MenuItem.prototype.click = function() {
+Elements.Property.Border.DecreaseMenuItem.prototype.click = function() {
     $.each(this.elements, function(idx, element) {
         var curr_width = element.find_property(Elements.Property.Border).value;
         var new_width = Math.round(curr_width * this.resize_dimension);
@@ -23,12 +22,12 @@ Elements.Property.Border.MenuItem.prototype.click = function() {
     return false;
 }
 
-Elements.Property.Border.MenuItem.prototype.render = function() {
+Elements.Property.Border.DecreaseMenuItem.prototype.render = function() {
     if(this.html === null) {
         this.html = Util.clone_template('#element_menu_item_template');
         this.hitarea = this.html.children('a:eq(0)');
 
-        this.hitarea.text(this.text).click(this.click.bind(this));
+        this.hitarea.text("Decrease border size").click(this.click.bind(this));
     }
 
     return this.html;

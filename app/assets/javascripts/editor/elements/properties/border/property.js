@@ -10,8 +10,8 @@ Elements.Property.Border.prototype.constructor = Elements.Property.Border;
 
 Elements.Property.Border.menu_items = function(parent_menu, elements) {
 	return [
-			new Elements.Property.Border.MenuItem(parent_menu, elements, "Increase border size"),
-			new Elements.Property.Border.MenuItem(parent_menu, elements, "Decrease border size"),
+			new Elements.Property.Border.IncreaseMenuItem(parent_menu, elements),
+			new Elements.Property.Border.DecreaseMenuItem(parent_menu, elements),
 			];
 }
 
