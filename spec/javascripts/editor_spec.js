@@ -15,7 +15,7 @@ describe('projects/show.js', function() {
     describe('selector', selector_spec);
     describe('property menus', property_menu_spec);
     describe('type to add', type_to_add_spec);
-    describe('view_mode', view_mode_spec);
+    describe('view mode', view_mode_spec);
 
 });
 
@@ -169,7 +169,7 @@ function selector_spec() {
     }
 
     function move_spec() {
-        it('should move', function () {
+        it('should move movable elements', function () {
             PageList.curr_page().render_hitarea().mouseup();
 
             var position = PageList.curr_page().elements[0].get_position();
@@ -177,6 +177,24 @@ function selector_spec() {
             expect(position.top).toBe(100);
 
             trigger_mouse_event(PageList.curr_page().elements[0].hitarea, MOUSE_EVENTS.DOWN, 100, 100, MOUSE_BTNS.LEFT);
+            trigger_mouse_event(window, MOUSE_EVENTS.MOVE, 150, 200);
+            trigger_mouse_event(window, MOUSE_EVENTS.UP, 0, 0, MOUSE_BTNS.LEFT);
+
+            position = PageList.curr_page().elements[0].get_position();
+            expect(position.left).toBe(150);
+            expect(position.top).toBe(200);
+        });
+
+        it('should not move unmovable elements', function () {
+            trigger_mouse_event(PageList.curr_page().elements[0].hitarea, MOUSE_EVENTS.DOWN, 100, 100, MOUSE_BTNS.RIGHT);
+            var click_page_menu_item = Editor.element_property_menu.find_item(Elements.Property.ClickPage.MenuItem);
+            trigger_mouse_event(click_page_menu_item.hitarea, MOUSE_EVENTS.ENTER, null, null, MOUSE_BTNS.LEFT);
+            
+            trigger_mouse_event(click_page_menu_item.hitarea, MOUSE_EVENTS.ENTER, null, null, MOUSE_BTNS.LEFT);
+            Editor.element_page_menu.items[3].hitarea.click(); //clicking on the homepage option
+
+            var position = PageList.curr_page().elements[0].get_position();
+
             trigger_mouse_event(window, MOUSE_EVENTS.MOVE, 150, 200);
             trigger_mouse_event(window, MOUSE_EVENTS.UP, 0, 0, MOUSE_BTNS.LEFT);
 

@@ -21,6 +21,10 @@ Selector.any_selected = function() {
     return Selector.selected_elements.length > 0;
 }
 
+Selector.any_text_editting = function() {
+    return Selector.element_text_edit != null;
+}
+
 Selector.select = function(element) {
     element.select();
     Selector.selected_elements.push(element);

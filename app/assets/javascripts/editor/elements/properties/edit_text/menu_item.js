@@ -22,17 +22,8 @@ Elements.Property.EditText.MenuItem.prototype.render = function() {
     return this.html;
 }
 
-Elements.Property.EditText.MenuItem.prototype.click = function() {   
-    var element = this.elements[0];
-    if(element.make_content_editable) {
-        return element.make_content_editable();
-    }
-
-    var curr_text = element.find_property(Elements.Property.EditText).get_text();
-    var item = element.find_property(Elements.Property.EditText).item;
-    var new_text = prompt("Enter new text for " + item, curr_text) || curr_text;
-
-    element.find_property(Elements.Property.EditText).set_text(new_text);
+Elements.Property.EditText.MenuItem.prototype.click = function() {
+    this.elements[0].find_property(Elements.Property.EditText).edit_text();
 
     this.parent_menu.hide();
     return false;

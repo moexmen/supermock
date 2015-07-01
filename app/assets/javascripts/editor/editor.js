@@ -89,7 +89,7 @@ Editor.is_view_mode = function() {
 Editor.handle_key_events = function() {
     $('body').keyup(function (e) {
 
-        if (Editor.is_edit_mode() && $("[contenteditable='true']").length == 0) {
+        if (Editor.is_edit_mode() && !Selector.any_text_editting()) {
             switch (e.which) {
                 case 32: // space
                     Editor.escape_all();
@@ -104,7 +104,6 @@ Editor.handle_key_events = function() {
             }
         }
         else if (Editor.is_view_mode()) {
-            $("[contenteditable='true']").attr('contenteditable', false);
             switch (e.which) {
                 case 27: // escape
                     Editor.edit_mode();
@@ -116,7 +115,6 @@ Editor.handle_key_events = function() {
 }
 
 Editor.mousedown_element = function(element, event) {
-    $("[contenteditable='true']").attr('contenteditable', false);
     switch(event.which) {
         case 1: // left
             Selector.mousedown_element(element, event);
@@ -145,7 +143,7 @@ Editor.add_element = function(element, top, left, width, height) {
     var position_x = top || 100;
     var position_y = left || 100;
     element.set_position(position_x, position_y);
-    if (width !== null) {
+    if (width !== null && height != null) {
         element.set_size(width, height);
     }
 

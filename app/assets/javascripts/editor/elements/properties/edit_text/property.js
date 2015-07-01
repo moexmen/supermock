@@ -22,3 +22,16 @@ Elements.Property.EditText.prototype.set_text = function(new_text) {
 Elements.Property.EditText.prototype.get_text = function() {
 	return this.html_to_edit.text();
 }
+
+Elements.Property.EditText.prototype.edit_text = function() {
+    Selector.element_text_edit = this.html_to_edit
+        .attr('contenteditable', true)
+        .focus()
+        .dblclick()
+        .focusout(function() {
+            Selector.element_text_edit.attr('contenteditable', false);
+            Selector.element_text_edit = null;
+            this.html_to_edit.off('blur');
+        }.bind(this));
+    
+}

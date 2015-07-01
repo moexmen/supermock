@@ -69,10 +69,3 @@ Elements.Text.prototype.render = function() {
     }
     return this.html;
 }
-
-Elements.Text.prototype.make_content_editable = function() {
-	var editable_html = $(this.html.find('div:eq(0)'));
-	editable_html.attr('contenteditable', true)
-		.focus()
-		.dblclick();
-};
