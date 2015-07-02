@@ -5,10 +5,9 @@ Parser.init = function() {
 };
 
 Parser.parse = function(line) {
-    var args = line.trim().split(' ');
+    var args = Parser.split_line(line);
     var element_type = Parser.parse_element_type(args);
     var modifiers = Parser.parse_modifiers(args);
-
     var element = null;
 
     $.each(Parser.mappers, function(index, mapper) {
@@ -23,7 +22,35 @@ Parser.parse = function(line) {
 };
 
 Parser.split_line = function(line) {
+    line = line.trim();
 
+    if(line.length == 0) {
+        return [];
+    }
+
+
+    var temp = line.split(' ');
+    var args = [];
+
+    for(var i=0; i<temp.length; i++) {
+        var arg = temp[i];
+
+        // Starting quote
+        if(arg.indexOf("'") != -1) {
+            for(i++; i<temp.length; i++) {
+                arg = arg + ' ' + temp[i];
+
+                // Ending quote
+                if(temp[i].slice(-1) == "'") {
+                    break;
+                }
+            }
+        }
+
+        args.push(arg);
+    }
+
+    return args;
 };
 
 Parser.parse_element_type = function(args) {
