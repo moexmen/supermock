@@ -1,232 +1,106 @@
-#editor {
+#project_show {
   background-color: #2E2F30;
-  height: 100%;
   padding-top: 0px;
+  height: 100%;
 
-  #stage {
-    width: 960px;
+  > table {
+    width: 100%;
     height: 100%;
+  }
+
+  .stage {
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+  }
+
+  #canvas {
+    width: 960px;
+    min-height: 100%;
     background-color: white;
     margin-left: auto;
     margin-right: auto;
     position: relative;
+  }
 
-    #canvas {
+  .editor_row {
+    background-color: #676767;
+    height: 300px;
+  }
+
+  #editor {
+    width: 100%;
+    height: 100%;
+
+    .left_group {
+      width: 220px;
+
+      > table {
+        width: 100%;
+        height: 100%;
+      }
+    }
+
+    .button_group {
+      height: 54px;
+
+      button {
+        width: 33.33%;
+      }
+    }
+
+    .right_group {
+      > table {
+        width: 100%;
+        height: 100%;
+      }
+    }
+
+    #console {
       width: 100%;
       height: 100%;
-      position: absolute;
-      left: 0px;
-      top: 0px;
+      resize: none;
+      background-color: black;
+      color: white;
+      font-family: monospace;
     }
 
-    #selector {
-      display: none;
-      position: absolute;
-      left: 0px;
-      top: 0px;
-      border: 1px solid #489cff;
-      width: 300px;
-      height: 40px;
-      overflow: visible;
-      cursor: move;
-
-      .handle {
-        position: absolute;
-      }
-
-      #handle_north {
-        top: -6px;
-        width: 100%;
-        height: 10px;
-        cursor: n-resize;
-      }
-
-      #handle_south {
-        bottom: -4px;
-        width: 100%;
-        height: 10px;
-        cursor: s-resize;
-      }
-
-      #handle_east {
-        right: -6px;
-        width: 10px;
-        height: 100%;
-        cursor: e-resize;
-      }
-
-      #handle_west {
-        left: -6px;
-        width: 10px;
-        height: 100%;
-        cursor: w-resize;
-      }
-
-      .handle-diagonal {
-        background-color: white;
-        border: 1px solid black;
-        width: 10px;
-        height: 10px;
-      }
-
-      #handle_north_west {
-        top: -6px;
-        left: -6px;
-        cursor: nw-resize;
-      }
-
-      #handle_north_east {
-        top: -6px;
-        right: -6px;
-        cursor: ne-resize;
-      }
-
-      #handle_south_east {
-        bottom: -6px;
-        right: -6px;
-        cursor: se-resize;
-      }
-
-      #handle_south_west {
-        bottom: -6px;
-        left: -6px;
-        cursor: sw-resize;
-      }
+    #console_status {
+      height: 22px;
+      color: red;
+      background-color: #2E2F30;
     }
   }
 
-  #sidebar {
-    width: 220px;
-    height: 100%;
-    position: fixed;
-    top: 0px;
-    left: 0px;
-    display: table;
+  #page_list {
     font-size: 12px;
+    overflow: auto;
+    width: 100%;
+    height: 80%;
+    color: white;
 
-    > div {
-      display: table-cell;
-      vertical-align: middle;
-
-      > div {
-        display: block;
-        height: 90%;
-        background-color: #565656;
-        color: white;
-        padding: 6px;
-        border-radius: 4px;
-
-        > .btn-group {
-          width: 100%;
-          margin-top: 5px;
-
-          button {
-            width: 33.33%;
-            background-color: #2E2F30;
-            color: white;
-            border-color: #565656;
-            font-size: 12px;
-          }
-        }
-
-        > div:nth-child(2) {
-          margin-top: 20px;
-          background-color: transparent;
-          position: relative;
-          height: 100%;
-
-          > div {
-            font-size: 14px;
-
-            a {
-              text-decoration: underline;
-              color: #489cff;
-            }
-          }
-
-          #page_list {
-            font-size: 12px;
-            overflow: auto;
-            position: absolute;
-            width: 100%;
-            height: 80%;
-
-            > ul {
-              margin-top: 5px;
-              padding-left: 0px !important;
-            }
-
-            ul {
-              list-style-type: none;
-              padding-left: 15px;
-
-              li {
-                padding: 0px;
-
-                div {
-                  background-color: #2E2F30;
-                  border: 1px solid #565656;
-                  padding: 4px 7px;
-                  cursor: pointer;
-                }
-              }
-
-              .page_list_item_selected {
-                background-color: #489cff;
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-
-  #type_to_add {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    margin-top: -200px;
-    margin-left: -400px;
-    display: none;
-
-    > div:first-child {
-      background-color: #565656;
-      border-radius: 50px;
-      width: 800px;
-      display: flex;
-      justify-content: center;
-
-      #type_to_add_input {
-        margin: 20px 0px;
-        width: 720px;
-      }
+    > ul {
+      margin-top: 5px;
+      padding-left: 0px !important;
     }
 
-    #type_to_add_list {
-      left: 40px;
-      top: -15px;
-      width: 720px;
-      max-height: 400px;
-      overflow-y: auto;
-      position: relative;
-      background-color: white;
-      padding: 5px;
-      border: 1px solid gray;
-      border-radius: 4px;
+    ul {
+      list-style-type: none;
+      padding-left: 15px;
 
-      div {
-        background-color: #dedede;
-        border-radius: 4px;
-        padding: 10px;
-        margin: 5px;
-        cursor: pointer;
+      li {
+        padding: 0px;
+
+        div {
+          background-color: #2E2F30;
+          border: 1px solid #565656;
+          padding: 4px 7px;
+          cursor: pointer;
+        }
       }
 
-      em {
-        display: block;
-        padding: 10px;
-        margin: 5px;
-        color: #666666;
+      .page_list_item_selected {
+        background-color: #489cff;
       }
     }
   }
@@ -237,37 +111,10 @@
     position: absolute;
     left: 0px;
     top: 0px;
-
-    .element-page-hitarea {
-      position: absolute;
-      left: 0px;
-      top: 0px;
-      width: 100%;
-      height: 100%;
-    }
-
-    .element-page-parent {
-      position: absolute;
-      left: 0px;
-      top: 0px;
-      width: 100%;
-      height: 100%;
-    }
   }
-  
+
   .element {
     overflow: hidden;
-  }
-
-  .element-hitarea {
-    position: absolute;
-    left: 0px;
-    top: 0px;
-    width: 100%;
-    height: 100%;
-    cursor: pointer;
-    background-color: #666666;
-    opacity: 0.2;
   }
 
   .element-button {
@@ -278,47 +125,91 @@
       height: 100%;
     }
   }
-  .element-text {
-    position: absolute;
-
-    > div {
-      overflow: hidden; 
-    }
-  }
-  .element-textinput {
-    position: absolute;
-
-    > input {
-      overflow: hidden; 
-      width: 100%;
-      height: 100%;
-    }
-  }
-
-  .element-textarea {
-    position: absolute;
-
-    > textarea {
-      overflow: hidden; 
-      width: 100%;
-      height: 100%;
-    }
-  }
-
-  .element-checkboxarea {
-    position: absolute;
-
-  }
-
-  .element-radiobutton {
-    position: absolute;
-
-  }
-
-  .element-table {
-    position: absolute;
-    border: 1px solid black;
-
-  }
 }
+
+
+//
+//    .element-page-hitarea {
+//      position: absolute;
+//      left: 0px;
+//      top: 0px;
+//      width: 100%;
+//      height: 100%;
+//    }
+//
+//    .element-page-parent {
+//      position: absolute;
+//      left: 0px;
+//      top: 0px;
+//      width: 100%;
+//      height: 100%;
+//    }
+//  }
+//
+//  .element {
+//    overflow: hidden;
+//  }
+//
+//  .element-hitarea {
+//    position: absolute;
+//    left: 0px;
+//    top: 0px;
+//    width: 100%;
+//    height: 100%;
+//    cursor: pointer;
+//    background-color: #666666;
+//    opacity: 0.2;
+//  }
+//
+//  .element-button {
+//    position: absolute;
+//
+//    > button {
+//      width: 100%;
+//      height: 100%;
+//    }
+//  }
+//  .element-text {
+//    position: absolute;
+//
+//    > div {
+//      overflow: hidden;
+//    }
+//  }
+//  .element-textinput {
+//    position: absolute;
+//
+//    > input {
+//      overflow: hidden;
+//      width: 100%;
+//      height: 100%;
+//    }
+//  }
+//
+//  .element-textarea {
+//    position: absolute;
+//
+//    > textarea {
+//      overflow: hidden;
+//      width: 100%;
+//      height: 100%;
+//    }
+//  }
+//
+//  .element-checkboxarea {
+//    position: absolute;
+//
+//  }
+//
+//  .element-radiobutton {
+//    position: absolute;
+//
+//  }
+//
+//  .element-table {
+//    position: absolute;
+//    border: 1px solid black;
+//
+//  }
+//}
 

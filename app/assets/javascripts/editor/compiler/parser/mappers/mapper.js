@@ -1,0 +1,3 @@
+//= require ../parser
+
+Parser.Mappers = {};

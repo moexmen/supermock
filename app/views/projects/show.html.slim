@@ -1,51 +1,50 @@
 - provide(:no_body, true)
 
-body#editor
-  #data [data-project=@project.to_json ]
+body#project_show
 
-  #stage
-    #canvas
+  table
+    tr
+      td
+        .stage
+          #canvas
+            div style='height: 500px' A
 
-    #selector
-      #handle_north.handle
-      #handle_east.handle
-      #handle_south.handle
-      #handle_west.handle
-      #handle_north_west.handle.handle-diagonal
-      #handle_north_east.handle.handle-diagonal
-      #handle_south_east.handle.handle-diagonal
-      #handle_south_west.handle.handle-diagonal
+    tr.editor_row
+      td
+        table#editor [ data-project=@project.to_json ]
+          tr
+            td.left_group
+              table
+                tr
+                  td.button_group
+                    .btn-group [ role='group' ]
+                      button#exit_btn.btn
+                        div.glyphicon.glyphicon-log-out
+                        div Exit
+                      button#save_btn.btn
+                        div.glyphicon.glyphicon-floppy-disk
+                        div Save
+                      button#view_btn.btn
+                        div.glyphicon.glyphicon-triangle-right
+                        div View
+                tr
+                  td
+                    div
+                      span Pages
+                      span.pull-right
+                        a#new_page_btn add
+                    #page_list
+                      ul
 
-  #sidebar
-    div
-      div
-        .btn-group [role='group']
-          button#exit_btn.btn [type='button']
-            div.glyphicon.glyphicon-log-out
-            div Exit
-          button#save_btn.btn [type='button']
-            div.glyphicon.glyphicon-floppy-disk
-            div Save
-          button#view_btn.btn [type='button']
-            div.glyphicon.glyphicon-triangle-right
-            div View
-
-        div
-          div
-            span Pages
-            span.pull-right
-              a#new_page_btn add
-          #page_list
-            ul
+            td.right_group
+              table
+                tr
+                  td
+                    textarea#console
+                tr
+                  td#console_status
 
 
-  #type_to_add
-    div
-      input#type_to_add_input.form-control [type='text' placeholder='type to add']
-    div#type_to_add_list
-      em#type_to_add_no_item No such elements found.
-
-    #type_to_add_list_item_template.hidden
 
 
   #page_list_item_menu
@@ -59,36 +58,12 @@ body#editor
       div [ data-toggle="context" ]
       ul
 
-
-  #element_menus
-    #element_property_menu
-      ul.dropdown-menu [role='menu']
-
-    #element_page_menu
-      ul.dropdown-menu [role='menu']
-
-    li#element_menu_item_template.hidden [role='presentation']
-      a [role='menuitem' tabindex='-1']
-
-    li#element_menu_item_expandable_template.hidden [role='presentation']
-      a [role='menuitem' tabindex='-1']
-        span
-        span.pull-right.glyphicon.glyphicon-chevron-right
-
-    li#element_menu_page_item_template.hidden [role='presentation']
-      a [role='menuitem' tabindex='-1']
-        span
-        span.pull-right.glyphicon.glyphicon-ok.hidden
-
-
   #element_templates
     #element_page_template.element-page.hidden
       .element-page-parent
-      .element-page-hitarea
 
     #element_button_template.element.element-button.hidden
-      button.btn.btn-default [type='button']
-      .element-hitarea
+      button.btn.btn-default
 
     #element_text_template.element.element-text.hidden
       div

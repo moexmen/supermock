@@ -41,7 +41,7 @@ PageList.select_item = function(item) {
     PageList.curr_item = item;
     PageList.curr_item.select();
 
-    Editor.render_curr_page();
+    Editor.open_page(PageList.curr_item.page);
 }
 
 PageList.add_item = function(page, parent_item) {
