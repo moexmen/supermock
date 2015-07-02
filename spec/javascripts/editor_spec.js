@@ -186,21 +186,16 @@ function selector_spec() {
         });
 
         it('should not move unmovable elements', function () {
-            trigger_mouse_event(PageList.curr_page().elements[0].hitarea, MOUSE_EVENTS.DOWN, 100, 100, MOUSE_BTNS.RIGHT);
-            var click_page_menu_item = Editor.element_property_menu.find_item(Elements.Property.ClickPage.MenuItem);
-            trigger_mouse_event(click_page_menu_item.hitarea, MOUSE_EVENTS.ENTER, null, null, MOUSE_BTNS.LEFT);
-            
-            trigger_mouse_event(click_page_menu_item.hitarea, MOUSE_EVENTS.ENTER, null, null, MOUSE_BTNS.LEFT);
-            Editor.element_page_menu.items[3].hitarea.click(); //clicking on the homepage option
-
+            add_modal();
             var position = PageList.curr_page().elements[0].get_position();
 
-            trigger_mouse_event(window, MOUSE_EVENTS.MOVE, 150, 200);
+            trigger_mouse_event(PageList.curr_page().elements[0].hitarea, MOUSE_EVENTS.DOWN, 200, 200, MOUSE_BTNS.LEFT);
+            trigger_mouse_event(window, MOUSE_EVENTS.MOVE, 400, 400);
             trigger_mouse_event(window, MOUSE_EVENTS.UP, 0, 0, MOUSE_BTNS.LEFT);
 
-            position = PageList.curr_page().elements[0].get_position();
-            expect(position.left).toBe(150);
-            expect(position.top).toBe(200);
+            new_position = PageList.curr_page().elements[0].get_position();
+            expect(position.left).toBe(new_position.left);
+            expect(position.top).toBe(new_position.top);
         });
     }
 
@@ -436,6 +431,58 @@ function selector_spec() {
             test_resize(selector_resized, elements_resized);
         });
 
+        it('should not resize if not allowed', function () {
+            add_modal();
+
+            expect(Selector.selected_elements.length).toBe(1);
+
+            this.selector_dimension = {
+                left: Selector.get_position().left,
+                top: Selector.get_position().top,
+                width: Selector.get_size().width,
+                height: Selector.get_size().height
+            }
+
+            this.element_dimensions = [];
+            $.each(PageList.curr_page().elements, function(idx, element) {
+                this.element_dimensions.push({
+                    left: element.get_position().left,
+                    top: element.get_position().top,
+                    width: element.get_size().width,
+                    height: element.get_size().height
+                });
+            }.bind(this));
+
+            //do multiple resizes in directions that are not allowed
+            do_resize(Selector.resize.handle_north(), this.selector_dimension.width, -this.selector_dimension.height);
+            do_resize(Selector.resize.handle_east(), this.selector_dimension.width, this.selector_dimension.height);
+            do_resize(Selector.resize.handle_west(), -this.selector_dimension.width, this.selector_dimension.height);
+
+            do_resize(Selector.resize.handle_north_east(), this.selector_dimension.width, -this.selector_dimension.height);
+            do_resize(Selector.resize.handle_north_west(), -this.selector_dimension.width, -this.selector_dimension.height);
+            do_resize(Selector.resize.handle_south_east(), this.selector_dimension.width, this.selector_dimension.height);
+            do_resize(Selector.resize.handle_south_west(), -this.selector_dimension.width, this.selector_dimension.height);
+
+            var selector_resized = {
+                left: this.selector_dimension.left,
+                top: this.selector_dimension.top,
+                width: this.selector_dimension.width,
+                height: this.selector_dimension.height
+            };
+
+            var elements_resized = calc_elements_resized(
+                function(idx, new_selector_position) {
+                    return {
+                        left: this.element_dimensions[idx].left,
+                        top: this.element_dimensions[idx].top,
+                        width: this.element_dimensions[idx].width,
+                        height: this.element_dimensions[idx].height
+                    }
+                }.bind(this));
+
+            test_resize(selector_resized, elements_resized);
+        });
+
         function do_resize(handle, left, top) {
             trigger_mouse_event(handle, MOUSE_EVENTS.DOWN, 0, 0, MOUSE_BTNS.LEFT);
             trigger_mouse_event(window, MOUSE_EVENTS.MOVE, left, top, MOUSE_BTNS.LEFT, false, handle);
@@ -479,10 +526,10 @@ function selector_spec() {
 function property_menu_spec() {
     describe('click page', click_page_spec);
     describe('check property', check_spec);
-    // describe('border property', border_spec);
-    // describe('create modal', modal_spec);
-    // describe('modal buttons property', modal_buttons_spec);
-    // describe('edit text property', edit_text_spec);
+    describe('border property', border_spec);
+    describe('create modal', modal_spec);
+    describe('modal buttons property', modal_buttons_spec);
+    describe('edit text property', edit_text_spec);
 
     function click_page_spec() {
         beforeEach(function () {
@@ -650,7 +697,147 @@ function property_menu_spec() {
                 trigger_mouse_event(click_page_menu_item.hitarea, MOUSE_EVENTS.CLICK, null, null, MOUSE_BTNS.LEFT);
             }
         });
+    }
 
+    function border_spec() {
+        beforeEach(function () {
+            add_element('Box');
+
+            expect(Editor.element_property_menu.visible()).toBe(false);
+            trigger_mouse_event(Selector.render(), MOUSE_EVENTS.DOWN, null, null, MOUSE_BTNS.RIGHT);
+        });
+
+        describe('single elements', function() {
+            it('should show on right click and no longer show once menuitem is clicked', function () {
+                expect(Editor.element_property_menu.visible()).toBe(true);
+
+                mouseclick_option(Elements.Property.Border.IncreaseMenuItem);
+                expect(Editor.element_property_menu.visible()).toBe(false);
+            });
+            
+            it('should increase border size', function () {
+                expect(Editor.element_property_menu.find_item(Elements.Property.Border.IncreaseMenuItem)).not.toBe(null);
+
+                var curr_element = Selector.selected_elements[0];
+                var curr_element_border_property = curr_element.find_property(Elements.Property.Border);
+               
+                var border_size_property_value = curr_element_border_property.value;
+                mouseclick_option(Elements.Property.Border.IncreaseMenuItem);
+                
+                var new_border_size_property_value = curr_element_border_property.value;
+                
+                expect(new_border_size_property_value).toBeGreaterThan(border_size_property_value);
+
+            });
+
+            it('should decrease border size', function() {
+                expect(Editor.element_property_menu.find_item(Elements.Property.Border.DecreaseMenuItem)).not.toBe(null);
+
+                var curr_element = Selector.selected_elements[0];
+                var curr_element_border_property = curr_element.find_property(Elements.Property.Border)
+                
+                var border_size_property_value = curr_element_border_property.value;
+
+                mouseclick_option(Elements.Property.Border.DecreaseMenuItem);
+                
+                var new_border_size_property_value = curr_element_border_property.value;
+                
+                expect(new_border_size_property_value).toBeLessThan(border_size_property_value);
+            });
+        });
+
+        describe('multiple elements', function() {
+            beforeEach(function () {
+                add_element('Box');
+                $.each(PageList.curr_page().elements, function(idx, element) {
+                    Selector.select(element);
+                });
+
+                trigger_mouse_event(Selector.render(), MOUSE_EVENTS.DOWN, null, null, MOUSE_BTNS.RIGHT);
+            });
+
+            it('should change properties of boxes uniformly', function () {
+                var box_1_border_property = Selector.selected_elements[0].find_property(Elements.Property.Border);
+                var box_2_border_property = Selector.selected_elements[1].find_property(Elements.Property.Border);
+
+                var box_1_initial_border_size = box_1_border_property.value;
+                var box_2_initial_border_size = box_2_border_property.value;
+                
+                mouseclick_option(Elements.Property.Border.IncreaseMenuItem);
+
+                expect(box_1_border_property.value).toBeGreaterThan(box_1_initial_border_size);
+                expect(box_2_border_property.value).toBeGreaterThan(box_1_initial_border_size);
+            });
+        });
+
+        function mouseclick_option(menu_item) {
+            var click_page_menu_item = Editor.element_property_menu.find_item(menu_item);
+            trigger_mouse_event(click_page_menu_item.hitarea, MOUSE_EVENTS.CLICK, null, null, MOUSE_BTNS.LEFT);
+        }
+    }
+
+    function modal_spec() {
+        beforeEach(function () {
+            add_modal();
+        });
+
+        it('should have an instance of a modal on a modalpage', function() {
+            expect(Selector.selected_elements[0] instanceof Elements.Modal).toBe(true);
+            expect(PageList.curr_page() instanceof Elements.ModalPage).toBe(true);
+        });
+    }
+
+    function modal_buttons_spec() {
+        beforeEach(function () {
+            add_modal();
+
+            trigger_mouse_event(Selector.render(), MOUSE_EVENTS.DOWN, null, null, MOUSE_BTNS.RIGHT);
+        });
+
+        it('should show when right clicking modal', function () {
+            expect(Editor.element_property_menu.visible()).toBe(true);
+            expect(Editor.element_property_menu.find_item(Elements.Property.ModalButtons.MenuItem)).not.toBe(null);
+        });
+
+        it('should hide "properties" when clicked', function () {
+            var edit_text_item = Editor.element_property_menu.find_item(Elements.Property.EditText.MenuItem);
+            trigger_mouse_event(edit_text_item.hitarea, MOUSE_EVENTS.CLICK, null, null, MOUSE_BTNS.LEFT);
+            expect(Editor.element_property_menu.visible()).toBe(false);
+        });
+
+        it('should toggle visibility of buttons', function() {
+            var property_menu = Editor.element_property_menu;
+            trigger_mouse_event(property_menu.items[1].hitarea, MOUSE_EVENTS.ENTER, null, null, MOUSE_BTNS.LEFT);
+            var visibility = Selector.selected_elements[0].btn_1.btn.css('display');
+
+            var modal_menu = Editor.modal_button_menu;
+            trigger_mouse_event(modal_menu.items[0].hitarea, MOUSE_EVENTS.CLICK, null, null, MOUSE_BTNS.LEFT);
+
+            expect(visibility).not.toBe(Selector.selected_elements[0].btn_1.btn.css('display'));
+        });
+    }
+
+    function edit_text_spec() {
+        beforeEach(function () {
+            add_element('Btn');
+            trigger_mouse_event(Selector.render(), MOUSE_EVENTS.DOWN, null, null, MOUSE_BTNS.RIGHT);
+        });
+
+        it('should change the text of element', function () {
+            var button_element = Selector.selected_elements[0];
+            var edit_text_menu_item = Editor.element_property_menu.find_item(Elements.Property.EditText.MenuItem);
+            
+            expect(button_element.btn.attr('contenteditable')).toBe(undefined);
+            trigger_mouse_event(edit_text_menu_item.hitarea, MOUSE_EVENTS.CLICK, null, null, MOUSE_BTNS.LEFT);
+            expect(button_element.btn.attr('contenteditable')).toBe('true');
+
+            button_element.btn.text('Click');
+
+            button_element.btn.focusout();
+
+            expect(button_element.btn.attr('contenteditable')).toBe('false');
+            expect(button_element.btn.text()).toBe('Click');
+        });
     }
 }
 
@@ -857,6 +1044,26 @@ function add_element(name) {
     TypeToAdd.parse_input();
 }
 
+function add_modal() {
+    add_element('Btn');
+
+    expect(Selector.visible()).toBe(true);
+    trigger_mouse_event(Selector.render(), MOUSE_EVENTS.DOWN, null, null, MOUSE_BTNS.RIGHT);
+ 
+    expect(Editor.element_property_menu.visible()).toBe(true);
+
+    var click_page_menu_item = Editor.element_property_menu.find_item(Elements.Property.ClickPage.MenuItem);
+    trigger_mouse_event(click_page_menu_item.hitarea, MOUSE_EVENTS.ENTER, null, null, MOUSE_BTNS.LEFT);
+
+    expect(Editor.element_page_menu.visible()).toBe(true);
+
+    var modal_option = Editor.element_page_menu.find_item(Elements.Property.PageMenu.CreateModalItem);
+    expect(modal_option).not.toBe(null);
+
+    trigger_mouse_event(modal_option.hitarea, MOUSE_EVENTS.CLICK, null, null, MOUSE_BTNS.LEFT);
+    expect(Selector.selected_elements.length).toBe(1);
+}
+
 var KEY_EVENTS = {
     UP: 'keyup'
 }
@@ -865,7 +1072,8 @@ var KEY_CODES = {
     ENTER: 13,
     ESCAPE: 27,
     SPACE: 32,
-    DELETE: 46
+    DELETE: 46,
+    BACKSPACE: 8,
 }
 
 function trigger_key_event(target, event, key_code) {

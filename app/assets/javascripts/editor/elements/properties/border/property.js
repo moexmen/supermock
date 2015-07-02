@@ -1,8 +1,9 @@
 //= require ../property
 
-Elements.Property.Border = function Border(border_to_adjust ,value) {
+Elements.Property.Border = function Border(border_to_adjust, value) {
 	this.value = value;
 	this.border_to_adjust = border_to_adjust;
+    this.readjust_border();
 }
 
 Elements.Property.Border.prototype = Object.create(Elements.Property.prototype);

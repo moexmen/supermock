@@ -1,6 +1,6 @@
 //= require ./element
 
-Elements.Button = function(text, x, y) {
+Elements.Button = function(text) {
     Elements.Element.call(this);
     this.text = text;
 }

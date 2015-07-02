@@ -24,7 +24,6 @@ Elements.Property.EditText.MenuItem.prototype.render = function() {
 
 Elements.Property.EditText.MenuItem.prototype.click = function() {
     this.elements[0].find_property(Elements.Property.EditText).edit_text();
-
     this.parent_menu.hide();
     return false;
 }

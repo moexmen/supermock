@@ -24,14 +24,13 @@ Elements.Property.EditText.prototype.get_text = function() {
 }
 
 Elements.Property.EditText.prototype.edit_text = function() {
-    Selector.element_text_edit = this.html_to_edit
+    this.html_to_edit
         .attr('contenteditable', true)
         .focus()
         .dblclick()
         .focusout(function() {
-            Selector.element_text_edit.attr('contenteditable', false);
-            Selector.element_text_edit = null;
-            this.html_to_edit.off('blur');
+            this.html_to_edit.attr('contenteditable', false);
+            this.html_to_edit.off('focusout');
         }.bind(this));
     
 }
