@@ -7,5 +7,5 @@ Parser.Mappers.Button.map = function(element_type, properties) {
         return null;
     }
 
-    return Elements.Button.render(properties);
+    return new Elements.Button(properties);
 };

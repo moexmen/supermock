@@ -1,17 +1,22 @@
 //= require ./element
 
-Elements.Modal = {};
+Elements.Modal = function(properties) {
+    this.properties = properties;
+    this.html = null;
+};
 
-Elements.Modal.properties = [
+Elements.Modal.PROPERTIES = [
     { type: Elements.Properties.ModalClose, target: function(html) { return html.find('.modal-header .close'); } }
 ];
 
-Elements.Modal.render = function(properties) {
-    var html = Util.clone_template('#element_modal_template');
+Elements.Modal.prototype.render = function() {
+    if(this.html == null) {
+        this.html = Util.clone_template('#element_modal_template');
 
-    $.each(Elements.Modal.properties, function(index, property) {
-        property.type.apply(property.target(html), properties);
-    });
+        $.each(Elements.Modal.PROPERTIES, function(index, property) {
+            property.type.apply(property.target(this.html), this.properties);
+        }.bind(this));
+    }
 
-    return html;
+    return this.html;
 };

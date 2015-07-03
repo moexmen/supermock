@@ -25,7 +25,7 @@ Compiler.compile = function(code) {
         var element = Parser.parse(line);
 
         if (element != null) {
-            elements.push(element);
+            elements.push(element.render());
         }
 
     });

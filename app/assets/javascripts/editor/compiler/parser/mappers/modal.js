@@ -7,5 +7,5 @@ Parser.Mappers.Modal.map = function(element_type, properties) {
         return null;
     }
 
-    return Elements.Modal.render(properties);
+    return new Elements.Modal(properties);
 };
