@@ -63,6 +63,11 @@ Editor.set_curr_page_with_id = function(page_id) {
 
 Editor.open_page = function(page) {
     Console.open_page(page);
+    Editor.render_page(page);
+};
+
+Editor.render_page = function(page) {
+    Editor.canvas().empty().append(page.render());
 };
 
 Editor.canvas = function() {

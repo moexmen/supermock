@@ -7,22 +7,30 @@ Console.init = function() {
 };
 
 Console.keyup = function(e) {
-    Console.page.content = Console.render().val();
+    if(Console.page.content == Console.render().val()) {
+        return;
+    }
 
+    Console.page.content = Console.render().val();
     Console.compile();
-}
+};
 
 Console.open_page = function(page) {
     Console.page = page;
 
     Console.render().val(Console.page.content);
-    Console.compile();
 };
 
 Console.compile = function() {
-    var status = Compiler.try_compile(Console.page.content);
+    var result = Compiler.try_compile(Console.page.content);
 
-    Console.render_status().text( status ? 'Error: ' + status : '' );
+    if(result.success) {
+        Editor.render_page(Console.page);
+        Console.render_status().text('');
+    }
+    else {
+        Console.render_status().text('Error: ' + result.error);
+    }
 };
 
 Console.render = function() {
@@ -31,4 +39,4 @@ Console.render = function() {
 
 Console.render_status = function() {
     return $('#console_status');
-}
+};

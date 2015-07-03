@@ -8,14 +8,12 @@ Compiler.init = function() {
 
 Compiler.try_compile = function(code) {
     try {
-        Compiler.compile(code);
-
-        return null;
+        return { success: true, elements: Compiler.compile(code) };
     }
     catch(e) {
         console.log(e);
 
-        return e.message;
+        return { success: false, error: e.message };
     }
 };
 
@@ -32,9 +30,6 @@ Compiler.compile = function(code) {
 
     });
 
-    Editor.canvas().empty();
-    $.each(elements, function(index, element) {
-        Editor.canvas().append(element);
-    });
+    return elements;
 };
 

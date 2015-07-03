@@ -1,7 +1,7 @@
 var Elements = Elements || {};
 
 Elements.Page = function(id, name) {
-    this.id = id;
+    this.id = id || Util.uuid();
     this.name = name;
     this.parent_page = null;
     this.child_pages = [];
@@ -30,6 +30,11 @@ Elements.Page.prototype.render = function() {
     if(this.parent_page != null) {
         var parent_html = html.children('.element-page-parent:eq(0)');
         parent_html.append(this.parent_page.render());
+    }
+
+    var result = Compiler.try_compile(this.content);
+    if(result.success) {
+        html.append(result.elements);
     }
 
     return html;

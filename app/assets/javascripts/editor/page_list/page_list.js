@@ -47,8 +47,7 @@ PageList.select_item = function(item) {
 PageList.add_item = function(page, parent_item) {
     // Create page if not given
     if(page === null) {
-        page = Elements.Element.create_default(Elements.Page);
-        page.name = parent_item.generate_next_child_page_name();
+        page = new Elements.Page(null, parent_item.generate_next_child_page_name());
     }
 
     // Create item
