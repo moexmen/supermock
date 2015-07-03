@@ -15,7 +15,7 @@ Console.keyup = function(e) {
     Console.compile();
 };
 
-Console.open_page = function(page) {
+Console.read_page = function(page) {
     Console.page = page;
 
     Console.render().val(Console.page.content);

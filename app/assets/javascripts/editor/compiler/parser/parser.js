@@ -1,7 +1,10 @@
 var Parser = {};
 
 Parser.init = function() {
-    Parser.mappers = [ Parser.Mappers.Button ];
+    Parser.mappers = [
+        Parser.Mappers.Button,
+        Parser.Mappers.Modal
+    ];
 };
 
 Parser.parse = function(line) {
@@ -77,7 +80,7 @@ Parser.parse_properties = function(args) {
 
 Parser.validate_property = function(property) {
     if(property.indexOf('=') == -1) {
-        throw new Error('Modifier missing equal sign!');
+        throw new Error('Property missing equal sign!');
     }
 
 

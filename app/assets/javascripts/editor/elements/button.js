@@ -4,7 +4,8 @@ Elements.Button = {};
 
 Elements.Button.properties = [
     { type: Elements.Properties.Position, target: function(html) { return html; } },
-    { type: Elements.Properties.Text, target: function(html) { return html.children('button'); }  },
+    { type: Elements.Properties.Size, target: function(html) { return html; } },
+    { type: Elements.Properties.Text, target: function(html) { return html.children('button'); } },
     { type: Elements.Properties.Click, target: function(html) { return html.children('button'); } }
 ];
 

@@ -64,7 +64,7 @@ Editor.set_curr_page = function(page_id) {
     }
 
     Editor.curr_page = page;
-    Console.open_page(page);
+    Console.read_page(page);
     Editor.render_curr_page();
 };
 
