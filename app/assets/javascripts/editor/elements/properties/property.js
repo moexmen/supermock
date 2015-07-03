@@ -1,0 +1,3 @@
+//= require ../element
+
+Elements.Properties = {};

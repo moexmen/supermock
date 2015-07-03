@@ -17,7 +17,7 @@ Editor.load_project = function() {
 };
 
 Editor.init_mode = function() {
-    this.modes = { EDIT: 0, VIEW: 1 }
+    this.modes = { EDIT: 0, VIEW: 1 };
     this.mode = this.modes.EDIT;
 };
 
@@ -34,8 +34,8 @@ Editor.init_console = function() {
 };
 
 Editor.edit_mode = function() {
-    Editor.sidebar().show();
-    PageList.curr_page().edit_mode();
+    //Editor.sidebar().show();
+    //PageList.curr_page().edit_mode();
 
     Editor.mode = Editor.modes.EDIT;
 };
@@ -43,8 +43,8 @@ Editor.edit_mode = function() {
 Editor.view_mode = function() {
     Editor.escape_all();
 
-    Editor.sidebar().hide();
-    PageList.curr_page().view_mode();
+    //Editor.sidebar().hide();
+    //PageList.curr_page().view_mode();
 
     Editor.mode = Editor.modes.VIEW;
 };
@@ -57,17 +57,19 @@ Editor.is_view_mode = function() {
     return Editor.mode === Editor.modes.VIEW;
 };
 
-Editor.set_curr_page_with_id = function(page_id) {
-    PageList.set_curr_page_with_id(page_id);
-};
+Editor.set_curr_page = function(page_id) {
+    var page = Editor.project.find_page(page_id);
+    if(page == null) {
+        return;
+    }
 
-Editor.open_page = function(page) {
+    Editor.curr_page = page;
     Console.open_page(page);
-    Editor.render_page(page);
+    Editor.render_curr_page();
 };
 
-Editor.render_page = function(page) {
-    Editor.canvas().empty().append(page.render());
+Editor.render_curr_page = function() {
+    Editor.canvas().empty().append(Editor.curr_page.render());
 };
 
 Editor.canvas = function() {

@@ -7,11 +7,11 @@ Parser.init = function() {
 Parser.parse = function(line) {
     var args = Parser.split_line(line);
     var element_type = Parser.parse_element_type(args);
-    var modifiers = Parser.parse_modifiers(args);
+    var properties = Parser.parse_properties(args);
     var element = null;
 
     $.each(Parser.mappers, function(index, mapper) {
-        element = mapper.map(element_type, modifiers);
+        element = mapper.map(element_type, properties);
 
         if(element != null) {
             return false;
@@ -36,12 +36,12 @@ Parser.split_line = function(line) {
         var arg = temp[i];
 
         // Starting quote
-        if(arg.indexOf("'") != -1) {
+        if(arg.split("'").length == 2) {
             for(i++; i<temp.length; i++) {
                 arg = arg + ' ' + temp[i];
 
                 // Ending quote
-                if(temp[i].slice(-1) == "'") {
+                if(temp[i].indexOf("'") != -1) {
                     break;
                 }
             }
@@ -57,41 +57,41 @@ Parser.parse_element_type = function(args) {
     return args[0];
 };
 
-Parser.parse_modifiers = function(args) {
-    var modifiers = args.slice(1);
+Parser.parse_properties = function(args) {
+    var properties = args.slice(1);
 
-    $.each(modifiers, function(index, modifier) {
-        Parser.validate_modifier(modifier);
+    $.each(properties, function(index, property) {
+        Parser.validate_property(property);
 
-        var temp = modifier.split('=');
+        var temp = property.split('=');
 
-        modifier = {};
-        modifier.name = temp[0];
-        modifier.value = temp[1].replace(/'/g, '');
+        property = {};
+        property.name = temp[0];
+        property.value = temp[1].replace(/^'/, '').replace(/'$/, '');
 
-        modifiers[index] = modifier;
+        properties[index] = property;
     });
 
-    return modifiers;
+    return properties;
 };
 
-Parser.validate_modifier = function(modifier) {
-    if(modifier.indexOf('=') == -1) {
+Parser.validate_property = function(property) {
+    if(property.indexOf('=') == -1) {
         throw new Error('Modifier missing equal sign!');
     }
 
 
-    var temp = modifier.split('=');
+    var temp = property.split('=');
 
     if(temp.length != 2) {
-        throw new Error('Modifier must be in key-pair value!');
+        throw new Error('Property must be in key-pair value!');
     }
 
     if(temp[0].length == 0) {
-        throw new Error('Modifier name missing!');
+        throw new Error('Property name missing!');
     }
 
     if(temp[1].length == 0) {
-        throw new Error('Modifier value missing!');
+        throw new Error('Property value missing!');
     }
 };

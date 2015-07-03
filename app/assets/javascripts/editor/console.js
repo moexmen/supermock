@@ -25,7 +25,7 @@ Console.compile = function() {
     var result = Compiler.try_compile(Console.page.content);
 
     if(result.success) {
-        Editor.render_page(Console.page);
+        Editor.set_curr_page(Console.page.id);
         Console.render_status().text('');
     }
     else {

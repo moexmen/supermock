@@ -1,3 +1,0 @@
-//= require ../element
-
-Elements.Modifiers = {};

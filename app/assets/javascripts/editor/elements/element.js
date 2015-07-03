@@ -1,4 +1,4 @@
-//= require_tree ./modifiers
+//= require_tree ./properties
 
 var Elements = {};
 Elements.Element = {};
