@@ -22,7 +22,7 @@ Console.read_page = function(page) {
 };
 
 Console.compile = function() {
-    var result = Compiler.try_compile(Console.page.content);
+    var result = Parser.try_parse(Console.page.content);
 
     if(result.success) {
         Editor.set_curr_page(Console.page.id);

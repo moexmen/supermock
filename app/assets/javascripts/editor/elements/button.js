@@ -1,5 +1,7 @@
 //= require ./element
 
+var Elements = Elements || {};
+
 Elements.Button = function(properties) {
     this.properties = properties;
     this.html = null;

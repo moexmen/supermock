@@ -32,7 +32,7 @@ Elements.Page.prototype.render = function() {
         parent_html.append(this.parent_page.render());
     }
 
-    var result = Compiler.try_compile(this.content);
+    var result = Parser.try_parse(this.content);
     if(result.success) {
         html.append(result.elements);
     }

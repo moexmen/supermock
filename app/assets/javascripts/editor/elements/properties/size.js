@@ -1,5 +1,5 @@
-//= require ./property
-
+var Elements = Elements || {};
+Elements.Properties = Elements.Properties || {};
 Elements.Properties.Size = {};
 
 Elements.Properties.Size.apply = function(element, properties) {

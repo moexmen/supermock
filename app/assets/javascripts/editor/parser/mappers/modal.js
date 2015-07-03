@@ -1,5 +1,5 @@
-//= require ./mapper
-
+var Parser = Parser || {};
+Parser.Mappers = Parser.Mappers || {};
 Parser.Mappers.Modal = {};
 
 Parser.Mappers.Modal.map = function(element_type, properties) {

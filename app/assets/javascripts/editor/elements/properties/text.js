@@ -1,5 +1,5 @@
-//= require ./property
-
+var Elements = Elements || {};
+Elements.Properties = Elements.Properties || {};
 Elements.Properties.Text = {};
 
 Elements.Properties.Text.apply = function(element, properties) {

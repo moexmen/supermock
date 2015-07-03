@@ -1,19 +1,65 @@
-var Parser = {};
+//= require_tree ./mappers
 
-Parser.init = function() {
-    Parser.mappers = [
-        Parser.Mappers.Button,
-        Parser.Mappers.Modal
-    ];
+var Parser = Parser || {};
+
+Parser.MAPPERS = [
+    Parser.Mappers.Button,
+    Parser.Mappers.Modal
+];
+
+Parser.try_parse = function(code) {
+    try {
+        return { success: true, elements: Parser.parse(code) };
+    }
+    catch(e) {
+        console.log(e);
+
+        return { success: false, error: e.message };
+    }
 };
 
-Parser.parse = function(line) {
+Parser.parse = function(code) {
+    var lines = code.split('\n');
+    var elements = [];
+
+    $.each(lines, function(index, line) {
+        var element = Parser.parse_line(line);
+
+        if (element != null) {
+            elements.push(element.render());
+        }
+
+    });
+
+    return elements;
+};
+
+Parser.lines_to_dom = function(lines) {
+
+};
+
+Parser.recursive_parse_lines = function(lines) {
+    var elements = [];
+
+    $.each(lines, function(index, line) {
+        var element = Parser.parse_line(line);
+
+        if (element != null) {
+            elements.push(element.render());
+        }
+
+    });
+
+    return elements;
+};
+
+Parser.parse_line = function(line) {
     var args = Parser.split_line(line);
     var element_type = Parser.parse_element_type(args);
     var properties = Parser.parse_properties(args);
     var element = null;
 
-    $.each(Parser.mappers, function(index, mapper) {
+    $.each(Parser.MAPPERS, function(index, mapper) {
         element = mapper.map(element_type, properties);
 
         if(element != null) {

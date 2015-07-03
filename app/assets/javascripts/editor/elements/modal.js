@@ -1,5 +1,7 @@
 //= require ./element
 
+var Elements = Elements || {};
+
 Elements.Modal = function(properties) {
     this.properties = properties;
     this.html = null;
@@ -8,6 +10,10 @@ Elements.Modal = function(properties) {
 Elements.Modal.PROPERTIES = [
     { type: Elements.Properties.ModalClose, target: function(html) { return html.find('.modal-header .close'); } }
 ];
+
+Elements.Modal.prototype.append = function(child) {
+    this.render().find('.modal-body').append(child);
+};
 
 Elements.Modal.prototype.render = function() {
     if(this.html == null) {

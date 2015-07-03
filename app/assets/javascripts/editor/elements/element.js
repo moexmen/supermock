@@ -1,6 +1,6 @@
 //= require_tree ./properties
 
-var Elements = {};
+var Elements = Elements || {};
 Elements.Element = {};
 
 Elements.Element.parse_json = function(json) {

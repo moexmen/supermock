@@ -6,7 +6,6 @@ Editor.init = function() {
     Editor.init_buttons();
     Editor.init_page_list();
     Editor.init_console();
-    Compiler.init();
 
     PageList.select_first_item();
 };

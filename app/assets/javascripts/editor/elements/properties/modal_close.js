@@ -1,5 +1,5 @@
-//= require ./property
-
+var Elements = Elements || {};
+Elements.Properties = Elements.Properties || {};
 Elements.Properties.ModalClose = {};
 
 Elements.Properties.ModalClose.apply = function(element, properties) {
