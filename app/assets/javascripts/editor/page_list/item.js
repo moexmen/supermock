@@ -57,7 +57,7 @@ PageList.Item.prototype.unselect = function() {
 };
 
 PageList.Item.prototype.generate_next_child_page_name = function() {
-    return this.page.name + ' > ' + (this.page.child_pages.length + 1);
+    return this.page.id + ' > ' + (this.page.child_pages.length + 1);
 };
 
 PageList.Item.prototype.render = function() {

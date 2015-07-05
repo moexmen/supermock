@@ -5,7 +5,7 @@ Elements.Page = function(id, name, content, child_page_models) {
     this.name = name;
     this.parent_page = null;
     this.child_pages = [];
-    this.content = content;
+    this.content = content || '';
 
     $.each(child_page_models || [], function(idx, child_page_json) {
         var child_page = Elements.Element.parse_json(child_page_json);
