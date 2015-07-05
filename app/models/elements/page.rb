@@ -1,12 +1,11 @@
 require 'elements/element_model'
 
 class Page < ElementModel
-  attr_accessor :id, :name, :elements, :parent_page, :child_pages
+  attr_accessor :id, :name, :content, :parent_page, :child_pages
 
   def initialize(*args)
     super(*args)
-    @id ||= SecureRandom.uuid
-    @elements ||= []
+    @content ||= ''
     @parent_page = nil
     @child_pages ||= []
   end
@@ -16,7 +15,7 @@ class Page < ElementModel
         type: 'Page',
         id: @id,
         name: @name,
-        elements: @elements.map(&:to_json),
+        content: @content,
         parent_page: parent_page,
         child_pages: @child_pages.map(&:to_json),
     }

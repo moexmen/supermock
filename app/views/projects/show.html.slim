@@ -3,10 +3,24 @@
 body#project_show
 
   table
+    tr.horizontal_ruler
+      td [ style='height:10px; background-color:grey' ]
+        table [ style='margin:auto; font-size: 11px; color: white;' ]
+          tr
+            - (960/40).times.each do |value|
+              td [ style='width: 40px; border-right: 1px solid black' ] = value*40
+
     tr
       td
         .stage
-          #canvas
+          #canvas [ style='background-image: url("/assets/grid.png");' ]
+
+    tr.horizontal_ruler
+      td [ style='height:10px; background-color:grey' ]
+        table [ style='margin:auto; font-size: 11px; color: white;' ]
+          tr
+            - (960/40).times.each do |value|
+              td [ style='width: 40px; border-right: 1px solid black' ] = value*40
 
     tr.editor_row
       td
@@ -43,8 +57,7 @@ body#project_show
                 tr
                   td#console_status
 
-
-
+  #invisible_dom
 
   #page_list_item_menu
     ul.dropdown-menu [role='menu']
@@ -61,48 +74,77 @@ body#project_show
     #element_page_template.element-page.hidden
       .element-page-parent
 
+    #element_page_content_template.element-page-content.hidden
+
+    #element_text_template.element.element-text.hidden
+      span
+
+    #element_textfield_template.element.element-textfield.hidden
+      input.form-control type='text'
+
+    #element_textarea_template.element.element-textarea.hidden
+      textarea.form-control
+
+    #element_hyperlink_template.element.element-hyperlink.hidden
+      a
+
     #element_button_template.element.element-button.hidden
       button.btn.btn-default
+
+    #element_checkbox_template.element.element-checkbox.checkbox.hidden
+      label
+        input type='checkbox'
+        span
+
+    #element_radio_button_template.element.element-radio-button.radio.hidden
+      label
+        input type='radio'
+        div
+
+    #element_datepicker_template.element.element-datepicker.hidden
+      .input-group.date
+        input.form-control type='text'
+        span.input-group-addon
+          span.glyphicon.glyphicon-calendar
+
+    #element_dropdown_template.element.element-dropdown.hidden
+      select.form-control
+    option#element_dropdown_item_template.element-dropdown-item.hidden
+
+    #element_image_template.element.element-image.hidden
+      img
+
+    #element_number_list_template.element.element-number-list.hidden
+      ol
+    li#element_number_list_item_template.element-number-list_item.hidden
+
+    #element_bullet_list_template.element.element-bullet-list.hidden
+      ul
+    li#element_bullet_list_item_template.element-bullet-list_item.hidden
+
+    #element_table_template.element.element-table.hidden
+      table.table.table-hover.table-bordered
+    table#element_table_row_template.hidden
+      tr
+    table#element_table_column_template.hidden
+      td
+
+    #element_tabs_template.element.element-tabs.hidden
+      ul.nav.nav-tabs [ role='tablist' ]
+      .tab-content
+    li#element_tab_template.element-tab.hidden [ role='presentation' ]
+      a [ role='tab' data-toggle='tab' ]
+    #element_tab_content_template.element-tab-content.hidden.tab-pane [ role='tabpanel' ]
+
+    #element_box_template.element.element-box.hidden
 
     #element_modal_template.element.element-modal.modal.hidden role='dialog'
       .modal-backdrop.in
       .modal-dialog role='document'
         .modal-content
-          .modal-header
-            button.close type='button'
-              span &times;
-            h4.modal-title
-          .modal-body
-          .modal-footer
-
-    #element_text_template.element.element-text.hidden
-      div
-      .element-hitarea
-
-    #element_textinput_template.element.element-textinput.hidden
-      input.form-control type="text" placeholder="Type text here"
-      .element-hitarea
-
-    #element_textarea_template.element.element-textarea.hidden
-      textarea.form-control placeholder="Type text here"
-      .element-hitarea
-
-    #element_checkbox_template.element.element-checkboxarea.hidden
-      input checked="true" type="checkbox" 
-      label
-      .element-hitarea
-
-    #element_radiobutton_template.element.element-radiobutton.hidden
-      input checked="true" type="radio"
-      label
-      .element-hitarea
-
-    #element_table_template.element.element-table.hidden
-      table.table.table-hover
-        tr
-          td Row 1, Column 1
-          td Row 1, Column 2
-        tr
-          td Row 2, Column 1
-          td Row 2, Column 2
-      .element-hitarea
+    #element_modal_header_template.element-modal-header.hidden.modal-header
+      button.close type='button'
+        span &times;
+      h4.modal-title Title
+    #element_modal_body_template.element-modal-body.hidden.modal-body
+    #element_modal_footer_template.element-modal-footer.hidden.modal-footer

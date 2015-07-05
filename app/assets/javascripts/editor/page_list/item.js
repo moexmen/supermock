@@ -8,7 +8,7 @@ PageList.Item = function(page, parent_item) {
 };
 
 PageList.Item.prototype.destroy = function() {
-    this.page.destroy();
+    //this.page.destroy();
     this.page = null;
 
     this.child_items = null;

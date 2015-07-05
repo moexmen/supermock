@@ -1,11 +1,16 @@
 var Elements = Elements || {};
 
-Elements.Page = function(id, name) {
+Elements.Page = function(id, name, content, child_page_models) {
     this.id = id || Util.uuid();
     this.name = name;
     this.parent_page = null;
     this.child_pages = [];
-    this.content = 'button text=haha';
+    this.content = content;
+
+    $.each(child_page_models || [], function(idx, child_page_json) {
+        var child_page = Elements.Element.parse_json(child_page_json);
+        this.add_child_page(child_page);
+    }.bind(this));
 };
 
 Elements.Page.prototype.has_child_page = function(page) {
@@ -34,7 +39,7 @@ Elements.Page.prototype.render = function() {
 
     var result = Parser.try_parse(this.content);
     if(result.success) {
-        html.append(result.elements);
+        html.append(result.elements.render());
     }
 
     return html;

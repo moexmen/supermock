@@ -3,8 +3,31 @@
 var Parser = Parser || {};
 
 Parser.MAPPERS = [
+    Parser.Mappers.Text,
+    Parser.Mappers.Textfield,
+    Parser.Mappers.Textarea,
+    Parser.Mappers.Hyperlink,
     Parser.Mappers.Button,
-    Parser.Mappers.Modal
+    Parser.Mappers.Checkbox,
+    Parser.Mappers.RadioButton,
+    Parser.Mappers.Dropdown,
+    Parser.Mappers.Dropdown.Item,
+    Parser.Mappers.DatePicker,
+    Parser.Mappers.Image,
+    Parser.Mappers.NumberList,
+    Parser.Mappers.NumberList.Item,
+    Parser.Mappers.BulletList,
+    Parser.Mappers.BulletList.Item,
+    Parser.Mappers.Box,
+    Parser.Mappers.Modal,
+    Parser.Mappers.Modal.Header,
+    Parser.Mappers.Modal.Body,
+    Parser.Mappers.Modal.Footer,
+    Parser.Mappers.Tabs,
+    Parser.Mappers.Tabs.Tab,
+    Parser.Mappers.Table,
+    Parser.Mappers.Table.Row,
+    Parser.Mappers.Table.Column
 ];
 
 Parser.try_parse = function(code) {
@@ -19,48 +42,38 @@ Parser.try_parse = function(code) {
 };
 
 Parser.parse = function(code) {
+    var root_element = new Elements.PageContent();
+    var element_tree = [ root_element ];
     var lines = code.split('\n');
-    var elements = [];
 
     $.each(lines, function(index, line) {
-        var element = Parser.parse_line(line);
+        var indent_level = Parser.parse_indent_level(line);
+        var parent_element = element_tree[indent_level - 1];
+
+        var element = Parser.parse_line(parent_element, line);
 
         if (element != null) {
-            elements.push(element.render());
-        }
+            element_tree[indent_level] = element;
 
+            parent_element.append(element);
+        }
     });
 
-    return elements;
+    return root_element;
 };
 
-Parser.lines_to_dom = function(lines) {
-
+Parser.parse_indent_level = function(line) {
+    return line.split('\t').length;
 };
 
-Parser.recursive_parse_lines = function(lines) {
-    var elements = [];
-
-    $.each(lines, function(index, line) {
-        var element = Parser.parse_line(line);
-
-        if (element != null) {
-            elements.push(element.render());
-        }
-
-    });
-
-    return elements;
-};
-
-Parser.parse_line = function(line) {
+Parser.parse_line = function(parent_element, line) {
     var args = Parser.split_line(line);
     var element_type = Parser.parse_element_type(args);
     var properties = Parser.parse_properties(args);
     var element = null;
 
     $.each(Parser.MAPPERS, function(index, mapper) {
-        element = mapper.map(element_type, properties);
+        element = mapper.map(parent_element, element_type, properties);
 
         if(element != null) {
             return false;
@@ -108,39 +121,27 @@ Parser.parse_element_type = function(args) {
 
 Parser.parse_properties = function(args) {
     var properties = args.slice(1);
+    var parsed_properties = [];
 
-    $.each(properties, function(index, property) {
-        Parser.validate_property(property);
+    for(var i=0; i<properties.length; i++) {
+        if(properties[i].indexOf('=') != -1) {
+            var temp = properties[i].split('=');
 
-        var temp = property.split('=');
+            parsed_properties.push({
+                name: temp[0],
+                value: temp[1].replace(/^'/, '').replace(/'$/, '')
+            });
+        }
+        else {
+            var temp = properties[i];
 
-        property = {};
-        property.name = temp[0];
-        property.value = temp[1].replace(/^'/, '').replace(/'$/, '');
+            for(++i; i<properties.length; i++) {
+                temp += ' ' + properties[i];
+            }
 
-        properties[index] = property;
-    });
-
-    return properties;
-};
-
-Parser.validate_property = function(property) {
-    if(property.indexOf('=') == -1) {
-        throw new Error('Property missing equal sign!');
+            parsed_properties.push({ name: '', value: temp });
+        }
     }
 
-
-    var temp = property.split('=');
-
-    if(temp.length != 2) {
-        throw new Error('Property must be in key-pair value!');
-    }
-
-    if(temp[0].length == 0) {
-        throw new Error('Property name missing!');
-    }
-
-    if(temp[1].length == 0) {
-        throw new Error('Property value missing!');
-    }
+    return parsed_properties;
 };

@@ -21,11 +21,12 @@
     margin-left: auto;
     margin-right: auto;
     position: relative;
+    overflow-x: hidden;
   }
 
   .editor_row {
     background-color: #676767;
-    height: 300px;
+    height: 250px;
   }
 
   #editor {
@@ -63,6 +64,7 @@
       background-color: black;
       color: white;
       font-family: monospace;
+      tab-size: 4;
     }
 
     #console_status {
@@ -105,6 +107,10 @@
     }
   }
 
+  #invisible_dom {
+    position: absolute;
+  }
+
   .element-page {
     width: 100%;
     height: 100%;
@@ -113,25 +119,129 @@
     top: 0px;
   }
 
+  .element-page-content {
+  }
+
   .element {
-    overflow: hidden;
+    //overflow: hidden;
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    margin: 0px;
+  }
+
+  .element-text {
+    width: 200px;
+    height: 100px;
+    text-align: justify;
+
+    > span {
+      width: 100%;
+    }
+  }
+
+  .element-hyperlink {
+    > a {
+      text-decoration: underline;
+    }
   }
 
   .element-button {
-    position: absolute;
-
     > button {
       width: 100%;
       height: 100%;
     }
   }
 
+  .element-checkbox {
+    > label {
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  .element-radio-button {
+    display: table;
+
+    > label {
+      width: 100%;
+      height: 100%;
+      padding-left: 22px;
+    }
+  }
+
+  .element-dropdown {
+    width: 150px;
+    height: 34px;
+
+    > select {
+      height: 100%;
+    }
+  }
+
+  .element-datepicker {
+    overflow: visible;
+    width: 200px;
+
+    > .input-group {
+      position: relative;
+    }
+
+    input {
+      z-index: 0;
+    }
+
+    .bootstrap-datetimepicker-widget {
+    }
+  }
+
+  .element-number-list {
+    width: 400px;
+    height: 100px;
+
+    > ol {
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  .element-bullet-list {
+    width: 400px;
+    height: 100px;
+
+    > ul {
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  .element-table {
+    width: 400px;
+    height: 100px;
+
+    > table {
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  .element-box {
+    border: 1px solid black;
+    width: 100px;
+    height: 100px;
+  }
+
+  .element-tab-content {
+    position: relative;
+    width: 100%;
+  }
+
   .element-modal {
-    position: absolute;
     display: block;
     z-index: 0;
 
     .modal-backdrop.in {
+      position: absolute;
       z-index: -1;
       left: 0;
       top: 0;
@@ -140,91 +250,14 @@
       margin-right: auto;
     }
   }
+
+  .element-modal-body {
+    margin: 15px;
+    padding: 0px;
+  }
+
+  .element-modal-footer {
+    position: relative;
+    margin: 15px;
+  }
 }
-
-
-//
-//    .element-page-hitarea {
-//      position: absolute;
-//      left: 0px;
-//      top: 0px;
-//      width: 100%;
-//      height: 100%;
-//    }
-//
-//    .element-page-parent {
-//      position: absolute;
-//      left: 0px;
-//      top: 0px;
-//      width: 100%;
-//      height: 100%;
-//    }
-//  }
-//
-//  .element {
-//    overflow: hidden;
-//  }
-//
-//  .element-hitarea {
-//    position: absolute;
-//    left: 0px;
-//    top: 0px;
-//    width: 100%;
-//    height: 100%;
-//    cursor: pointer;
-//    background-color: #666666;
-//    opacity: 0.2;
-//  }
-//
-//  .element-button {
-//    position: absolute;
-//
-//    > button {
-//      width: 100%;
-//      height: 100%;
-//    }
-//  }
-//  .element-text {
-//    position: absolute;
-//
-//    > div {
-//      overflow: hidden;
-//    }
-//  }
-//  .element-textinput {
-//    position: absolute;
-//
-//    > input {
-//      overflow: hidden;
-//      width: 100%;
-//      height: 100%;
-//    }
-//  }
-//
-//  .element-textarea {
-//    position: absolute;
-//
-//    > textarea {
-//      overflow: hidden;
-//      width: 100%;
-//      height: 100%;
-//    }
-//  }
-//
-//  .element-checkboxarea {
-//    position: absolute;
-//
-//  }
-//
-//  .element-radiobutton {
-//    position: absolute;
-//
-//  }
-//
-//  .element-table {
-//    position: absolute;
-//    border: 1px solid black;
-//
-//  }
-//}
-

@@ -7,6 +7,9 @@ Elements.Button = function(properties) {
     this.html = null;
 };
 
+Elements.Button.prototype = Object.create(Elements.Element.prototype);
+Elements.Button.prototype.constructor = Elements.Button;
+
 Elements.Button.PROPERTIES = [
     { type: Elements.Properties.Position, target: function(html) { return html; } },
     { type: Elements.Properties.Size, target: function(html) { return html; } },

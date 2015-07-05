@@ -4,7 +4,7 @@ Elements.Properties.Text = {};
 
 Elements.Properties.Text.apply = function(element, properties) {
     $.each(properties, function(index, property) {
-        if (property.name == 'text') {
+        if (property.name == '') {
             element.text(property.value);
 
             return false;

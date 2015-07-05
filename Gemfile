@@ -32,6 +32,9 @@ gem 'autoprefixer-rails'
 gem 'illegal_logger', git: 'https://estl.moe/stash/scm/ilog/illegal_logger.git'
 # For javascript and css easy structuring
 gem 'rails_utils'
+# Datetimepicker
+gem 'momentjs-rails'
+gem 'bootstrap3-datetimepicker-rails'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

@@ -8,6 +8,20 @@ Editor.init = function() {
     Editor.init_console();
 
     PageList.select_first_item();
+
+    $('body').keyup(function(e) {
+        if (Editor.is_edit_mode()) {
+            switch (e.which) {
+            }
+        }
+        else if (Editor.is_view_mode()) {
+            switch (e.which) {
+                case 27: // escape
+                    Editor.edit_mode();
+                    break;
+            }
+        }
+    });
 };
 
 Editor.load_project = function() {
@@ -33,17 +47,17 @@ Editor.init_console = function() {
 };
 
 Editor.edit_mode = function() {
-    //Editor.sidebar().show();
-    //PageList.curr_page().edit_mode();
+    $('.horizontal_ruler').show();
+    $('.editor_row').show();
+    Editor.canvas().css('background-image', 'url("/assets/grid.png")');
 
     Editor.mode = Editor.modes.EDIT;
 };
 
 Editor.view_mode = function() {
-    Editor.escape_all();
-
-    //Editor.sidebar().hide();
-    //PageList.curr_page().view_mode();
+    $('.horizontal_ruler').hide();
+    $('.editor_row').hide();
+    Editor.canvas().css('background-image', '');
 
     Editor.mode = Editor.modes.VIEW;
 };
