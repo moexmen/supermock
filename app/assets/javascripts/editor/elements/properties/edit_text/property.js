@@ -32,7 +32,6 @@ Elements.Property.EditText.prototype.edit_text = function() {
         .focusout(function() {
             this.html_to_edit.attr('contenteditable', false);
             this.html_to_edit.off('focusout');
-            console.log("Hao liao");
             Selector.text_editing = false;
         }.bind(this))
 }

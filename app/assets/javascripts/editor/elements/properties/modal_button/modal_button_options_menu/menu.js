@@ -26,8 +26,12 @@ Elements.Property.ButtonEditOptions.prototype.add_button_native_click_page_prope
 Elements.Property.ButtonEditOptions.prototype.show = function(target, elements) {
 	this.remove_all_items();
 
-	this.add_show(elements);
-	this.add_hide(elements);
+	if(elements[0].visible()){
+		this.add_hide(elements);
+	}
+	else {
+		this.add_show(elements);
+	}
 	this.add_edit_text(elements);
 	this.add_button_native_click_page_property(elements);
 

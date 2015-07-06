@@ -31,6 +31,9 @@ Elements.Button.prototype.render = function() {
                             new Elements.Property.Position(0, 0, true),
                             new Elements.Property.Delete() ];
     }
-
     return this.html;
+}
+
+Elements.Button.prototype.visible = function() {
+    return this.btn.css('display') !== 'none';
 }
