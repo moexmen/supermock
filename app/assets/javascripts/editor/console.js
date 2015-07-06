@@ -1,7 +1,7 @@
 var Console = Console || {};
 
 Console.init = function() {
-    Console.page = null;
+    Console.target_element = null;
 
     Console.render().keydown(Console.keydown).keyup(Console.keyup);
 };
@@ -27,30 +27,31 @@ Console.keydown = function(e) {
 };
 
 Console.keyup = function(e) {
-    if(Console.page.content == Console.render().val()) {
+    if(Console.target_element.to_code() == Console.render().val()) {
         return;
     }
 
-    Console.page.content = Console.render().val();
     Console.compile();
 };
 
-Console.read_page = function(page) {
-    Console.page = page;
-
-    Console.render().val(Console.page.content);
+Console.read_element = function(element) {
+    Console.target_element = element;
+    Console.refresh();
 };
 
 Console.compile = function() {
-    var result = Parser.try_parse(Console.page.content);
-
-    if(result.success) {
-        Editor.set_curr_page(Console.page.id);
+    try {
+        Console.target_element.set_code(Console.render().val());
         Console.render_status().text('');
     }
-    else {
-        Console.render_status().text('Error: ' + result.error);
+    catch(e) {
+        console.log(e);
+        Console.render_status().text('Error: ' + e.message);
     }
+};
+
+Console.refresh = function() {
+    Console.render().val(Console.target_element.to_code());
 };
 
 Console.render = function() {

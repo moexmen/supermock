@@ -5,6 +5,7 @@ Editor.init = function() {
     Editor.init_mode();
     Editor.init_buttons();
     Editor.init_page_list();
+    Selector.init();
     Editor.init_console();
 
     PageList.select_first_item();
@@ -26,7 +27,7 @@ Editor.init = function() {
 
 Editor.load_project = function() {
     var project_model = $('#editor').data('project');
-    this.project = new Elements.Project(project_model);
+    this.project = new Project(project_model);
 };
 
 Editor.init_mode = function() {
@@ -47,7 +48,6 @@ Editor.init_console = function() {
 };
 
 Editor.edit_mode = function() {
-    $('.horizontal_ruler').show();
     $('.editor_row').show();
     Editor.canvas().css('background-image', 'url("/assets/grid.png")');
 
@@ -55,7 +55,6 @@ Editor.edit_mode = function() {
 };
 
 Editor.view_mode = function() {
-    $('.horizontal_ruler').hide();
     $('.editor_row').hide();
     Editor.canvas().css('background-image', '');
 
@@ -77,13 +76,37 @@ Editor.set_curr_page = function(page_id) {
     }
 
     Editor.curr_page = page;
-    Console.read_page(page);
     Editor.render_curr_page();
+    Console.read_element(page);
 };
 
 Editor.render_curr_page = function() {
     Editor.canvas().empty().append(Editor.curr_page.render());
 };
+
+Editor.mousedown_element = function(element, event) {
+    switch(event.which) {
+        case 1: // left
+            Selector.mousedown_element(element, event);
+            return false;
+        case 3: // right
+            Selector.unselect_all();
+            Selector.select(element);
+            Selector.mousedown(event);
+            return false;
+        default:
+            return true;
+    }
+}
+
+Editor.mouseup_element = function(element, event) {
+    if(element instanceof Elements.Page)
+        Selector.unselect_all();
+    else
+        Selector.mouseup_element(element, event);
+
+    return false;
+}
 
 Editor.canvas = function() {
     return $('#canvas');

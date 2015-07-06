@@ -32,7 +32,8 @@ Parser.MAPPERS = [
 
 Parser.try_parse = function(code) {
     try {
-        return { success: true, elements: Parser.parse(code) };
+        var result = Parser.parse(code);
+        return { success: true, properties: result.properties, child_elements: result.child_elements };
     }
     catch(e) {
         console.log(e);
@@ -42,28 +43,30 @@ Parser.try_parse = function(code) {
 };
 
 Parser.parse = function(code) {
-    var root_element = new Elements.PageContent();
+    var root_element = { child_elements: [], add_element: function(element) { this.child_elements.push(element); }};
     var element_tree = [ root_element ];
     var lines = code.split('\n');
 
-    $.each(lines, function(index, line) {
-        var indent_level = Parser.parse_indent_level(line);
+    var properties = Parser.parse_properties(Parser.split_line(lines[0]));
+
+    for(var i=1; i<lines.length; i++) {
+        var indent_level = Parser.parse_indent_level(lines[i]);
         var parent_element = element_tree[indent_level - 1];
 
-        var element = Parser.parse_line(parent_element, line);
+        var element = Parser.parse_line(parent_element, lines[i]);
 
         if (element != null) {
             element_tree[indent_level] = element;
 
-            parent_element.append(element);
+            parent_element.add_element(element);
         }
-    });
+    };
 
-    return root_element;
+    return { properties: properties, child_elements: root_element.child_elements };
 };
 
 Parser.parse_indent_level = function(line) {
-    return line.split('\t').length;
+    return line.split('\t').length - 1;
 };
 
 Parser.parse_line = function(parent_element, line) {

@@ -3,24 +3,20 @@
 body#project_show
 
   table
-    tr.horizontal_ruler
-      td [ style='height:10px; background-color:grey' ]
-        table [ style='margin:auto; font-size: 11px; color: white;' ]
-          tr
-            - (960/40).times.each do |value|
-              td [ style='width: 40px; border-right: 1px solid black' ] = value*40
-
     tr
       td
         .stage
-          #canvas [ style='background-image: url("/assets/grid.png");' ]
+          #canvas
 
-    tr.horizontal_ruler
-      td [ style='height:10px; background-color:grey' ]
-        table [ style='margin:auto; font-size: 11px; color: white;' ]
-          tr
-            - (960/40).times.each do |value|
-              td [ style='width: 40px; border-right: 1px solid black' ] = value*40
+          #selector
+            #handle_north.handle
+            #handle_east.handle
+            #handle_south.handle
+            #handle_west.handle
+            #handle_north_west.handle.handle-diagonal
+            #handle_north_east.handle.handle-diagonal
+            #handle_south_east.handle.handle-diagonal
+            #handle_south_west.handle.handle-diagonal
 
     tr.editor_row
       td
@@ -72,9 +68,9 @@ body#project_show
 
   #element_templates
     #element_page_template.element-page.hidden
-      .element-page-parent
-
-    #element_page_content_template.element-page-content.hidden
+      .parent-page
+      .hitarea
+      .child-elements
 
     #element_text_template.element.element-text.hidden
       span
@@ -89,7 +85,8 @@ body#project_show
       a
 
     #element_button_template.element.element-button.hidden
-      button.btn.btn-default
+      button.btn.btn-default Button
+      .hitarea
 
     #element_checkbox_template.element.element-checkbox.checkbox.hidden
       label
