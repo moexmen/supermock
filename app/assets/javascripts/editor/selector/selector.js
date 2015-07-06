@@ -9,6 +9,7 @@ Selector.init = function() {
     Selector.position_delta = 25;
     Selector.size_delta = 5;
 
+    Selector.text_editing = false;
     Selector.render().mousedown(Selector.mousedown).mouseup(Selector.mouseup);
     Selector.hide();
 }
@@ -22,7 +23,7 @@ Selector.any_selected = function() {
 }
 
 Selector.any_text_editting = function() {
-    return Selector.element_text_edit != null;
+    return Selector.text_editing == true;
 }
 
 Selector.select = function(element) {
@@ -187,11 +188,7 @@ Selector.position_snap_to_grid = function() {
         var height = Math.round(size.height/Selector.size_delta) * Selector.size_delta;
         
         element.set_position(left, top);
-        this.find_property(Elements.Property.Position).set_position(left, top);
-
         element.set_size(width, height);
-        this.find_property(Elements.Property.Dimensions).resize(width, height);
-
     });
 }
 

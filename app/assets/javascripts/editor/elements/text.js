@@ -17,35 +17,69 @@ Elements.Text.prototype.destroy = function() {
 }
 
 Elements.Text.prototype.on_resize = function() {
-    var text_html = this.html.children('div:eq(0)');
+    if(this.resizing_text_not_allowed()) {
+        return;
+    }
+    
     var text_height = this.html.children('div:eq(0)').outerHeight();
-    var box_height = this.html.outerHeight();
-    if(text_html.text().indexOf("Lorem") == -1 && text_html.text().indexOf("Text") == -1) {
-		return;
-	}
-    else if (text_height >= box_height){
-        while(text_height + 20 > box_height && text_height > 40){
-            this.word_array.splice(-1, 1);
-            text_html.text(this.text_string());
-            var text_height = text_html.outerHeight();
-        }
+    var box_height = this.html.outerHeight();    
+    if (text_height >= box_height){
+        this.remove_words();
     } 
     else {
-    	while(text_height + 40 < box_height){
-	    	var random_number = Math.floor(Math.random() * Elements.Text.lorem_ipsum_array.length);
-	        this.word_array.push(Elements.Text.lorem_ipsum_array[random_number]);
-	        text_html.text(this.text_string());
-	    	var text_height = text_html.outerHeight();
-    	}
-    }    
-    if(text_html.text().charAt(text_html.text().length - 1) != "."){
-    	text_html.text(text_html.text() + ".");
-	}
+        this.add_more_words();
+    }
+
+    this.insert_final_period();
 }
+
+Elements.Text.prototype.remove_words = function() {
+    var text_html = this.html.children('div:eq(0)');
+    var text_height = this.html.children('div:eq(0)').outerHeight();
+
+    while(text_height + 20 > this.html.outerHeight() && text_height > 40){
+        this.word_array.splice(-1, 1);
+        text_html.text(this.text_string());
+        text_height = text_html.outerHeight();
+    }
+}
+
+Elements.Text.prototype.add_more_words = function() {
+    var text_html = this.html.children('div:eq(0)');
+    var text_height = this.html.children('div:eq(0)').outerHeight();
     
+    while(text_height + 40 < this.html.outerHeight()){
+        var random_number = Math.floor(Math.random() * Elements.Text.lorem_ipsum_array.length);
+        this.word_array.push(Elements.Text.lorem_ipsum_array[random_number]);
+        text_html.text(this.text_string());
+        text_height = text_html.outerHeight();
+    }
+}
+
+Elements.Text.prototype.resizing_text_not_allowed = function() {
+    if(this.text_contains('Lorem') || this.text_contains('Text')) {
+        return false;
+    }
+    else {
+        return true;
+    }
+}
+
+Elements.Text.prototype.text_contains = function(text_to_check) {
+    return this.html.children('div:eq(0)').text().indexOf(text_to_check) >= 0;
+}
+ 
+Elements.Text.prototype.insert_final_period = function() {
+    var text_html = this.html.children('div:eq(0)');
+    var index_of_last_letter = text_html.text().length - 1;
+
+    if(text_html.text().charAt(index_of_last_letter) != ".") {
+        text_html.text(text_html.text() + ".");
+    }
+}
 
 Elements.Text.prototype.text_string = function() {
-	return this.word_array.join(" ");
+    return this.word_array.join(" ");
 } 
 
 Elements.Text.prototype.render = function() {
@@ -57,12 +91,9 @@ Elements.Text.prototype.render = function() {
             .mousedown(function(e) { return Editor.mousedown_element(this, e); }.bind(this))
             .mouseup(function(e) { return Editor.mouseup_element(this, e); }.bind(this));
 
-	    this.properties = [ new Elements.Property.EditText(this.html.children('div:eq(0)'), "Text"),
-						    new Elements.Property.TextSize(this.html.children('div:eq(0)'), 12),
-	    					new Elements.Property.Dimensions(this.html.outerWidth(), this.html.outerHeight(), 
-                                Object.keys(Elements.Element.resize_directions).map(function(key){ 
-                                    return Elements.Element.resize_directions[key]; 
-                                })),
+        this.properties = [ new Elements.Property.EditText(this.html.children('div:eq(0)'), "Text"),
+                            new Elements.Property.TextSize(this.html.children('div:eq(0)'), 12),
+                            new Elements.Property.Dimensions(this.html.outerWidth(), this.html.outerHeight(), null),
                             new Elements.Property.Position(0, 0, true),
                             new Elements.Property.Delete() ];
 

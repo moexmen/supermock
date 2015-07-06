@@ -3,16 +3,7 @@ Selector.resize = {};
 
 Selector.resize.init = function() {
     Selector.resize.element_dimensions = []
-
-    Selector.resize.cursor_directions = {};
-    Selector.resize.cursor_directions[Elements.Element.resize_directions.NORTH] = 'n-resize';
-    Selector.resize.cursor_directions[Elements.Element.resize_directions.EAST] = 'e-resize';
-    Selector.resize.cursor_directions[Elements.Element.resize_directions.SOUTH] = 's-resize';
-    Selector.resize.cursor_directions[Elements.Element.resize_directions.WEST] = 'w-resize';
-    Selector.resize.cursor_directions[Elements.Element.resize_directions.NORTHEAST] = 'ne-resize';
-    Selector.resize.cursor_directions[Elements.Element.resize_directions.SOUTHEAST] ='se-resize';
-    Selector.resize.cursor_directions[Elements.Element.resize_directions.SOUTHWEST] = 'sw-resize';
-    Selector.resize.cursor_directions[Elements.Element.resize_directions.NORTHWEST] = 'nw-resize';
+    this.init_cursor_directions();
 
     Selector.resize.handles = [
         Selector.resize.handle_north(),
@@ -28,6 +19,19 @@ Selector.resize.init = function() {
     $.each(Selector.resize.handles, function(idx, handle) {
        handle.mousedown(Selector.resize.mousedown_handle);
     });
+}
+
+Selector.resize.init_cursor_directions = function() {
+    Selector.resize.cursor_directions = {};
+
+    Selector.resize.cursor_directions[Elements.Property.Dimensions.RESIZE_DIRECTIONS.NORTH] = 'n-resize';
+    Selector.resize.cursor_directions[Elements.Property.Dimensions.RESIZE_DIRECTIONS.EAST] = 'e-resize';
+    Selector.resize.cursor_directions[Elements.Property.Dimensions.RESIZE_DIRECTIONS.SOUTH] = 's-resize';
+    Selector.resize.cursor_directions[Elements.Property.Dimensions.RESIZE_DIRECTIONS.WEST] = 'w-resize';
+    Selector.resize.cursor_directions[Elements.Property.Dimensions.RESIZE_DIRECTIONS.NORTHEAST] = 'ne-resize';
+    Selector.resize.cursor_directions[Elements.Property.Dimensions.RESIZE_DIRECTIONS.SOUTHEAST] ='se-resize';
+    Selector.resize.cursor_directions[Elements.Property.Dimensions.RESIZE_DIRECTIONS.SOUTHWEST] = 'sw-resize';
+    Selector.resize.cursor_directions[Elements.Property.Dimensions.RESIZE_DIRECTIONS.NORTHWEST] = 'nw-resize';
 }
 
 Selector.resize.save_element_dimensions = function() {
@@ -127,21 +131,21 @@ Selector.resize.resize_selector = function(handle, delta_left, delta_top) {
 
 Selector.resize.direction_handle_mapping = function(dir) {
     switch (dir) {
-        case Elements.Element.resize_directions.NORTH:
+        case Elements.Property.Dimensions.RESIZE_DIRECTIONS.NORTH:
             return Selector.resize.handle_north();
-        case Elements.Element.resize_directions.SOUTH:
+        case Elements.Property.Dimensions.RESIZE_DIRECTIONS.SOUTH:
             return Selector.resize.handle_south();
-        case Elements.Element.resize_directions.EAST:
+        case Elements.Property.Dimensions.RESIZE_DIRECTIONS.EAST:
             return Selector.resize.handle_east();
-        case Elements.Element.resize_directions.WEST:
+        case Elements.Property.Dimensions.RESIZE_DIRECTIONS.WEST:
             return Selector.resize.handle_west();
-        case Elements.Element.resize_directions.NORTHEAST:
+        case Elements.Property.Dimensions.RESIZE_DIRECTIONS.NORTHEAST:
             return Selector.resize.handle_north_east();
-        case Elements.Element.resize_directions.NORTHWEST:
+        case Elements.Property.Dimensions.RESIZE_DIRECTIONS.NORTHWEST:
             return Selector.resize.handle_north_west();
-        case Elements.Element.resize_directions.SOUTHEAST:
+        case Elements.Property.Dimensions.RESIZE_DIRECTIONS.SOUTHEAST:
             return Selector.resize.handle_south_east();
-        case Elements.Element.resize_directions.SOUTHWEST:
+        case Elements.Property.Dimensions.RESIZE_DIRECTIONS.SOUTHWEST:
             return Selector.resize.handle_south_west();
         default:
             return null;
@@ -190,8 +194,8 @@ Selector.resize.update_cursor = function(){
         directions_possible = new_array_of_possible_directions;
     });
 
-    $.each(Object.keys(Elements.Element.resize_directions), function(idx, key) {
-        var direction = Elements.Element.resize_directions[key];
+    $.each(Object.keys(Elements.Property.Dimensions.RESIZE_DIRECTIONS), function(idx, key) {
+        var direction = Elements.Property.Dimensions.RESIZE_DIRECTIONS[key];
         var handle = Selector.resize.direction_handle_mapping(direction);
         handle.css('cursor', 'not-allowed').unbind();
     });

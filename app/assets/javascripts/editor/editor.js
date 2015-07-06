@@ -115,6 +115,7 @@ Editor.handle_key_events = function() {
 }
 
 Editor.mousedown_element = function(element, event) {
+    TypeToAdd.hide();
     switch(event.which) {
         case 1: // left
             Selector.mousedown_element(element, event);
@@ -160,10 +161,14 @@ Editor.remove_selected_elements = function() {
     });
 }
 
+Editor.select_first_element = function() {
+    Selector.select(PageList.curr_page().elements[0]);
+}
+
 Editor.escape_all = function() {
     TypeToAdd.hide();
     Selector.unselect_all();
-    Editor.element_property_menu.hide();
+    Editor.hide_all_menus();
 }
 
 Editor.set_curr_page_with_id = function(page_id) {

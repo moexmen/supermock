@@ -17,19 +17,15 @@ Elements.Box.prototype.render = function() {
         this.html = Util.clone_template('#element_box_template');
         this.html.data('element', this);
         this.properties = [ new Elements.Property.Border(this.html.find('div:eq(0)'), 3),
-                            new Elements.Property.Dimensions(this.html.outerWidth(), this.html.outerHeight(), 
-                                Object.keys(Elements.Element.resize_directions).map(function(key){ 
-                                    return Elements.Element.resize_directions[key]; 
-                                })),
+                            new Elements.Property.Dimensions(this.html.outerWidth(), this.html.outerHeight(), null),
                             new Elements.Property.Position(0, 0, true),
                             new Elements.Property.Delete() ];
 
         this.hitarea = this.html.children('.element-hitarea:eq(0)')
             .mousedown(function(e) { return Editor.mousedown_element(this, e); }.bind(this))
             .mouseup(function(e) { return Editor.mouseup_element(this, e); }.bind(this));
-        
-        this.set_size(100, 100);
 
+        this.set_size(100, 100);
     }
 
     return this.html;

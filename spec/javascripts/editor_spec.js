@@ -711,18 +711,18 @@ function property_menu_spec() {
             it('should show on right click and no longer show once menuitem is clicked', function () {
                 expect(Editor.element_property_menu.visible()).toBe(true);
 
-                mouseclick_option(Elements.Property.Border.IncreaseMenuItem);
+                mouseclick_option(Elements.Property.Border.MenuItem, 0);
                 expect(Editor.element_property_menu.visible()).toBe(false);
             });
             
             it('should increase border size', function () {
-                expect(Editor.element_property_menu.find_item(Elements.Property.Border.IncreaseMenuItem)).not.toBe(null);
+                expect(Editor.element_property_menu.find_item(Elements.Property.Border.MenuItem)).not.toBe(null);
 
                 var curr_element = Selector.selected_elements[0];
                 var curr_element_border_property = curr_element.find_property(Elements.Property.Border);
                
                 var border_size_property_value = curr_element_border_property.value;
-                mouseclick_option(Elements.Property.Border.IncreaseMenuItem);
+                mouseclick_option(Elements.Property.Border.MenuItem, 0);
                 
                 var new_border_size_property_value = curr_element_border_property.value;
                 
@@ -731,17 +731,16 @@ function property_menu_spec() {
             });
 
             it('should decrease border size', function() {
-                expect(Editor.element_property_menu.find_item(Elements.Property.Border.DecreaseMenuItem)).not.toBe(null);
+                expect(Editor.element_property_menu.find_item(Elements.Property.Border.MenuItem)).not.toBe(null);
 
                 var curr_element = Selector.selected_elements[0];
                 var curr_element_border_property = curr_element.find_property(Elements.Property.Border)
                 
                 var border_size_property_value = curr_element_border_property.value;
 
-                mouseclick_option(Elements.Property.Border.DecreaseMenuItem);
+                mouseclick_option(Elements.Property.Border.MenuItem, 1);
                 
                 var new_border_size_property_value = curr_element_border_property.value;
-                
                 expect(new_border_size_property_value).toBeLessThan(border_size_property_value);
             });
         });
@@ -763,16 +762,16 @@ function property_menu_spec() {
                 var box_1_initial_border_size = box_1_border_property.value;
                 var box_2_initial_border_size = box_2_border_property.value;
                 
-                mouseclick_option(Elements.Property.Border.IncreaseMenuItem);
+                mouseclick_option(Elements.Property.Border.MenuItem, 0);
 
                 expect(box_1_border_property.value).toBeGreaterThan(box_1_initial_border_size);
                 expect(box_2_border_property.value).toBeGreaterThan(box_1_initial_border_size);
             });
         });
 
-        function mouseclick_option(menu_item) {
-            var click_page_menu_item = Editor.element_property_menu.find_item(menu_item);
-            trigger_mouse_event(click_page_menu_item.hitarea, MOUSE_EVENTS.CLICK, null, null, MOUSE_BTNS.LEFT);
+        function mouseclick_option(menu_item, instance) {
+            var border_property_menu_item = Editor.element_property_menu.find_items(menu_item)[instance];
+            trigger_mouse_event(border_property_menu_item.hitarea, MOUSE_EVENTS.CLICK, null, null, MOUSE_BTNS.LEFT);
         }
     }
 

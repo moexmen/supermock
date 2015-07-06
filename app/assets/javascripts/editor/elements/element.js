@@ -5,17 +5,6 @@ Elements.Element = function() {
     this.html = null;
 }
 
-Elements.Element.resize_directions = {
-    NORTH: '0',
-    SOUTH: '1',
-    EAST: '2',
-    WEST: '3',
-    NORTHEAST: "4",
-    NORTHWEST: '5',
-    SOUTHEAST: '6',
-    SOUTHWEST: '7'
-}
-
 Elements.Element.prototype.destroy = function() {
     this.unrender();
     this.html = null;
@@ -33,6 +22,7 @@ Elements.Element.prototype.has_property = function(property_constructor) {
 
 Elements.Element.prototype.set_position = function(left, top) {
     this.render().css({ left: left, top: top });
+    this.find_property(Elements.Property.Position).set_position(left, top);
 }
 
 Elements.Element.prototype.get_position = function() {
@@ -41,6 +31,7 @@ Elements.Element.prototype.get_position = function() {
 
 Elements.Element.prototype.get_size = function() {
     return { width: this.render().outerWidth(), height: this.render().outerHeight() };
+    this.find_property(Elements.Property.Dimensions).set_size(width, height);
 }
 
 Elements.Element.prototype.set_size = function(width, height) {

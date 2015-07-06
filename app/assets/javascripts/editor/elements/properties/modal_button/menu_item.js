@@ -13,37 +13,16 @@ Elements.Property.ModalButtons.MenuItem.prototype.mouseenter = function() {
     this.parent_menu.hide_sub_menus();
     
     if(this.elements[0].btn.css('display') == 'none') {
-        Editor.modal_button_menu.show(this.render(), this.show_callback.bind(this), null,
-            this.edit_text_callback.bind(this), this.elements);
+        Editor.modal_button_menu.show(this.render(), this.elements);
     }
     else {
-        Editor.modal_button_menu.show(this.render(), null, this.hide_callback.bind(this),
-            this.edit_text_callback.bind(this), this.elements);
+        Editor.modal_button_menu.show(this.render(), this.elements);
     }
     return false;
 }
 
 Elements.Property.ModalButtons.MenuItem.prototype.hide_sub_menus = function() {
     Editor.modal_button_menu.hide();
-}
-
-Elements.Property.ModalButtons.MenuItem.prototype.show_callback = function() {
-    this.parent_menu.hide();
-    this.elements[0].btn.css('display', 'inline-block');
-}
-
-Elements.Property.ModalButtons.MenuItem.prototype.hide_callback = function() {
-    this.parent_menu.hide();
-    this.elements[0].btn.css('display', 'none');
-}
-
-Elements.Property.ModalButtons.MenuItem.prototype.edit_text_callback = function() {
-    this.parent_menu.hide();
-
-    var new_text = prompt("Please enter new name for button", this.elements[0].text)
-
-    this.elements[0].text = new_text;
-    this.elements[0].btn.text(new_text);
 }
 
 Elements.Property.ModalButtons.MenuItem.prototype.render = function() {

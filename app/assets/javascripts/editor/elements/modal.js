@@ -18,33 +18,43 @@ Elements.Modal.prototype.render = function() {
         this.html = Util.clone_template('#element_modal_template');
         this.html.data('element', this);
 
+        this.init_buttons();
+
         this.hitarea = this.html.find('.element-hitarea:eq(0)')
             .mousedown(function(e) { return Editor.mousedown_element(this, e); }.bind(this))
             .mouseup(function(e) { return Editor.mouseup_element(this, e); }.bind(this));
 
-        this.btn_1 = new Elements.Button('Okay');
-        this.btn_2 = new Elements.Button('Cancel');
-        this.btn_3 = new Elements.Button('Button 3');
-
-        this.html.find('.modal-footer').append(this.btn_1.render(), this.btn_2.render(), this.btn_3.render());
-
-        $.each([this.btn_1, this.btn_2, this.btn_3], function(idx, button){
-            button.render().css({   'display': 'inline-block',
-                                    'position': 'relative',
-                                    'margin-left': 10
-                            });
-            button.hitarea.remove();
-        });
-
         this.properties = [ new Elements.Property.EditText(this.html.find('.modal-title'), "Modal Title"),
                             new Elements.Property.ModalButtons(this.btn_1, this.btn_2, this.btn_3),
                             new Elements.Property.Dimensions(this.html.outerWidth(), this.html.outerHeight(), 
-                                [Elements.Element.resize_directions.SOUTH]),
+                                [Elements.Property.Dimensions.RESIZE_DIRECTIONS.SOUTH]),
                             new Elements.Property.Position(0, 0, false)
                             ];
+
+        this.html.find('#closebutton:eq(0)').click(function() {
+            Editor.set_curr_page_with_id(PageList.parent_page().id); 
+        }.bind(this));
     }
 
     return this.html;
+}
+
+Elements.Modal.prototype.init_buttons = function() {
+    this.btn_1 = new Elements.Button('Okay');
+    this.btn_2 = new Elements.Button('Cancel');
+    this.btn_3 = new Elements.Button('Button 3');
+
+    this.html.find('.modal-footer').append(this.btn_1.render(), this.btn_2.render(), this.btn_3.render());
+
+    $.each([this.btn_1, this.btn_2, this.btn_3], function(idx, button){
+        button.render().css({   'display': 'inline-block',
+                                'position': 'relative',
+                                'margin-left': 10
+                        });
+        button.hitarea.remove();
+    });
+
+    this.btn_2.find_property(Elements.Property.ClickPage).value = PageList.parent_page().id;
 }
 
 Elements.Modal.prototype.get_position = function() {
@@ -54,11 +64,11 @@ Elements.Modal.prototype.get_position = function() {
 }
 
 Elements.Modal.prototype.set_position = function(left, top) {
-    //moving not allowed for modal.
 }
 
 Elements.Modal.prototype.get_size = function() {
-    return { width: this.render().find('.modal-content:eq(0)').outerWidth(), height: this.render().find('.modal-content:eq(0)').outerHeight() };
+    var modal_content = this.render().find('.modal-content:eq(0)');
+    return { width: modal_content.outerWidth(), height: modal_content.outerHeight() };
 }
 
 Elements.Modal.prototype.set_size = function(width, height) {

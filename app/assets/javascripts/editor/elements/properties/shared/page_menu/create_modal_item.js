@@ -17,8 +17,8 @@ Elements.Property.PageMenu.CreateModalItem.prototype.click = function(e) {
     Editor.set_curr_page_with_id(page.id);
 
     this.select_callback(page);
-    Selector.select(page.elements[0]);
-
+    Editor.select_first_element();
+    
     return Elements.Property.MenuItem.prototype.click.call(this, e);
 }
 

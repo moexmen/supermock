@@ -1,10 +1,10 @@
 //= require ../shared/menu_item
 //= require ./property
 
-Elements.Property.TextSize.MenuItem = function MenuItem(parent_menu, elements, increase_or_decrease) {
+Elements.Property.TextSize.MenuItem = function MenuItem(parent_menu, elements, text, dimensions) {
     Elements.Property.MenuItem.call(this, parent_menu, elements);
-    this.text = increase_or_decrease;
-    increase_or_decrease.localeCompare("Increase text size") == 0  ? this.resize_dimension = 1.25 : this.resize_dimension = 0.8;
+    this.text = text;
+    this.resize_dimension = dimensions;
 }
     
 Elements.Property.TextSize.MenuItem.prototype = Object.create(Elements.Property.MenuItem.prototype);
@@ -16,8 +16,9 @@ Elements.Property.TextSize.MenuItem.prototype.click = function() {
         var new_size = Math.round(curr_size * this.resize_dimension);
         element.find_property(Elements.Property.TextSize).value = new_size;
 
-        element.find_property(Elements.Property.TextSize).readjust_text_size();
+        element.find_property(Elements.Property.TextSize).target.css('font-size', new_size);
         element.on_resize();
+
     }.bind(this));
 
     this.parent_menu.hide();

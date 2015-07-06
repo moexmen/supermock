@@ -4,9 +4,14 @@ Elements.Property.Menu = function() {
     this.items = [];
     this.hide();
 }
+
 Elements.Property.Menu.prototype.find_item = function(item_constructor) {
+    return this.find_items(item_constructor)[0] || null;
+}
+
+Elements.Property.Menu.prototype.find_items = function(item_constructor) {
     var matched_item = $.grep(this.items, function(item) { return item.constructor === item_constructor });
-    return matched_item[0] || null;
+    return matched_item === [] ? null : matched_item;
 }
 
 Elements.Property.Menu.prototype.add_divider = function() {

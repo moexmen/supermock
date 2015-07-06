@@ -25,10 +25,7 @@ Elements.Radiobutton.prototype.render = function() {
 
         this.properties = [ new Elements.Property.EditText(this.html.find('label:eq(0)'), this.text),
                             new Elements.Property.Check(this.html.children(':radio'), true),
-                            new Elements.Property.Dimensions(this.html.outerWidth(), this.html.outerHeight(), 
-                                Object.keys(Elements.Element.resize_directions).map(function(key){ 
-                                    return Elements.Element.resize_directions[key]; 
-                                })),
+                            new Elements.Property.Dimensions(this.html.outerWidth(), this.html.outerHeight(), null),
                             new Elements.Property.Position(0, 0, true),
                             new Elements.Property.Delete() ];
     }
