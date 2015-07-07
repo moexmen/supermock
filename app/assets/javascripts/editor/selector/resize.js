@@ -26,7 +26,7 @@ Selector.resize.save_element_dimensions = function() {
     var selector_position = Selector.get_position();
 
     $.each(Selector.selected_elements, function(idx, element) {
-        var element_position = element.get_position();
+        var element_position = element.get_position_relative_to_canvas();
         var element_size = element.get_size();
 
         Selector.resize.element_dimensions.push({

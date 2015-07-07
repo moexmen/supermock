@@ -2,33 +2,38 @@
 
 var Parser = Parser || {};
 
-Parser.MAPPERS = [
-    Parser.Mappers.Text,
-    Parser.Mappers.Textfield,
-    Parser.Mappers.Textarea,
-    Parser.Mappers.Hyperlink,
-    Parser.Mappers.Button,
-    Parser.Mappers.Checkbox,
-    Parser.Mappers.RadioButton,
-    Parser.Mappers.Dropdown,
-    Parser.Mappers.Dropdown.Item,
-    Parser.Mappers.DatePicker,
-    Parser.Mappers.Image,
-    Parser.Mappers.NumberList,
-    Parser.Mappers.NumberList.Item,
-    Parser.Mappers.BulletList,
-    Parser.Mappers.BulletList.Item,
-    Parser.Mappers.Box,
-    Parser.Mappers.Modal,
-    Parser.Mappers.Modal.Header,
-    Parser.Mappers.Modal.Body,
-    Parser.Mappers.Modal.Footer,
-    Parser.Mappers.Tabs,
-    Parser.Mappers.Tabs.Tab,
-    Parser.Mappers.Table,
-    Parser.Mappers.Table.Row,
-    Parser.Mappers.Table.Column
+Parser.ELEMENT_FACTORIES = [
+    Elements.Button,
+    Elements.Box
 ];
+
+//Parser.MAPPERS = [
+//    Parser.Mappers.Text,
+//    Parser.Mappers.Textfield,
+//    Parser.Mappers.Textarea,
+//    Parser.Mappers.Hyperlink,
+//    Parser.Mappers.Button,
+//    Parser.Mappers.Checkbox,
+//    Parser.Mappers.RadioButton,
+//    Parser.Mappers.Dropdown,
+//    Parser.Mappers.Dropdown.Item,
+//    Parser.Mappers.DatePicker,
+//    Parser.Mappers.Image,
+//    Parser.Mappers.NumberList,
+//    Parser.Mappers.NumberList.Item,
+//    Parser.Mappers.BulletList,
+//    Parser.Mappers.BulletList.Item,
+//    Parser.Mappers.Box,
+//    Parser.Mappers.Modal,
+//    Parser.Mappers.Modal.Header,
+//    Parser.Mappers.Modal.Body,
+//    Parser.Mappers.Modal.Footer,
+//    Parser.Mappers.Tabs,
+//    Parser.Mappers.Tabs.Tab,
+//    Parser.Mappers.Table,
+//    Parser.Mappers.Table.Row,
+//    Parser.Mappers.Table.Column
+//];
 
 Parser.try_parse = function(code) {
     try {
@@ -43,7 +48,7 @@ Parser.try_parse = function(code) {
 };
 
 Parser.parse = function(code) {
-    var root_element = { child_elements: [], add_element: function(element) { this.child_elements.push(element); }};
+    var root_element = { child_elements: [], add_element: function(element) { this.child_elements.push(element); }} ;
     var element_tree = [ root_element ];
     var lines = code.split('\n');
 
@@ -51,13 +56,16 @@ Parser.parse = function(code) {
 
     for(var i=1; i<lines.length; i++) {
         var indent_level = Parser.parse_indent_level(lines[i]);
-        var parent_element = element_tree[indent_level - 1];
 
+        if (indent_level == 0) {
+            continue;
+        }
+
+        var parent_element = element_tree[indent_level - 1];
         var element = Parser.parse_line(parent_element, lines[i]);
 
         if (element != null) {
             element_tree[indent_level] = element;
-
             parent_element.add_element(element);
         }
     };
@@ -75,8 +83,8 @@ Parser.parse_line = function(parent_element, line) {
     var properties = Parser.parse_properties(args);
     var element = null;
 
-    $.each(Parser.MAPPERS, function(index, mapper) {
-        element = mapper.map(parent_element, element_type, properties);
+    $.each(Parser.ELEMENT_FACTORIES, function(index, element_factory) {
+        element = element_factory.map_from_code(parent_element, element_type, properties);
 
         if(element != null) {
             return false;

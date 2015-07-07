@@ -2,7 +2,6 @@
 
 Elements.Page = function(id, name) {
     Elements.Element.call(this);
-    this.type = 'page';
 
     this.id = id || Util.uuid();
     this.name = name;
@@ -13,6 +12,8 @@ Elements.Page = function(id, name) {
 
 Elements.Page.prototype = Object.create(Elements.Element.prototype);
 Elements.Page.prototype.constructor = Elements.Page;
+
+Elements.Page.TYPE = 'page';
 
 Elements.Page.PROPERTIES = [
 ];
@@ -43,10 +44,10 @@ Elements.Page.prototype.render = function() {
         if(this.parent_page != null) {
             this.html.children('.page-parent').append(this.parent_page.render());
         }
-    }
 
-    this.apply_properties();
-    this.render_child_elements();
+        this.apply_properties();
+        this.render_child_elements();
+    }
 
     return this.html;
 };

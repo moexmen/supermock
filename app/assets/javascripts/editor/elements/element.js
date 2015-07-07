@@ -7,16 +7,20 @@ Elements.Element = function() {
     this.child_elements = [];
 };
 
-Elements.Element.prototype.get_size = function() {
-    var original_parent = this.render().parent();
+Elements.Element.prototype.add_element = function(element) {
+    this.child_elements.push(element);
+};
 
-    this.render().detach();
-    $('#invisible_dom').append(this.render());
+Elements.Element.prototype.get_size = function() {
+    //var original_parent = this.render().parent();
+    //
+    //this.render().detach();
+    //$('#invisible_dom').append(this.render());
 
     var size = { width: this.render().outerWidth(), height: this.render().outerHeight() };
 
-    this.render().detach();
-    original_parent.append(this.render());
+    //this.render().detach();
+    //original_parent.append(this.render());
 
     return size;
 };
@@ -44,19 +48,33 @@ Elements.Element.prototype.set_position = function(left, top) {
     Console.refresh();
 };
 
-Elements.Element.prototype.fit_element = function(element) {
-    var parent_size = this.get_size();
-    var child_size = element.get_size();
-    var child_position = element.get_position();
+Elements.Element.prototype.get_position_relative_to_canvas = function() {
+    //var original_parent = this.render().parent();
+    //
+    //this.render().detach();
+    //$('#invisible_dom').append(this.render());
 
-    this.set_size(
-        Math.max(parent_size.width, child_size.width + child_position.left),
-        Math.max(parent_size.height, child_size.height + child_position.top));
+    var position = this.render().offset();
+    var canvas_position = Editor.canvas().offset();
+
+    position.left -= canvas_position.left;
+    position.top -= canvas_position.top;
+
+    //this.render().detach();
+    //original_parent.append(this.render());
+
+    return position;
 };
 
 Elements.Element.prototype.select = function() {
     if(this.hitarea != null) {
         this.hitarea.css('opacity', 0.2);
+    }
+};
+
+Elements.Element.prototype.unselect = function() {
+    if(this.hitarea != null) {
+        this.hitarea.css('opacity', 0.0);
     }
 };
 
@@ -77,7 +95,7 @@ Elements.Element.prototype.render_child_elements = function() {
 Elements.Element.prototype.to_code = function(indent) {
     indent = indent || '';
 
-    var code = indent + this.type + this.properties_to_code();
+    var code = indent + this.constructor.TYPE + this.properties_to_code();
 
     $.each(this.child_elements, function(i, element) {
         code += '\n' + element.to_code(indent + '\t');
@@ -101,7 +119,9 @@ Elements.Element.prototype.set_code = function(code) {
 
     this.properties = result.properties;
     this.child_elements = result.child_elements;
-    this.render();
+
+    this.apply_properties();
+    this.render_child_elements();
 };
 
 Elements.Element.parse_json = function(json) {

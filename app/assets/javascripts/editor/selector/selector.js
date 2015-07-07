@@ -22,6 +22,8 @@ Selector.select = function(element) {
     element.select();
     Selector.selected_elements.push(element);
     Selector.show();
+
+    Console.read_element(Selector.selected_elements.length == 1 ? Selector.selected_elements[0] : null);
 }
 
 Selector.unselect = function(element) {
@@ -32,8 +34,6 @@ Selector.unselect = function(element) {
 }
 
 Selector.unselect_all = function() {
-    //Editor.element_property_menu.hide();
-
     $.each(Selector.selected_elements || [], function(idx, element) {
         element.unselect();
     });
@@ -54,13 +54,10 @@ Selector.mousedown = function(e) {
             Selector.move.mousedown(e);
         }
     }
-    else if(e.which == 3) { //right
-        Editor.element_property_menu.show(Selector.render(), Selector.selected_elements);
-    }
 
     return false;
 }
-Selector.mouseup = function(e) {
+Selector.mouseup = function() {
     Selector.stop_mouse_events();
     Selector.show();
 
@@ -80,9 +77,6 @@ Selector.mousedown_element = function(element, event) {
             Selector.move.mousedown(event);
         }
     }
-}
-
-Selector.mouseup_element = function(element, event) {
 }
 
 Selector.stop_mouse_events = function() {
@@ -125,7 +119,7 @@ Selector.element_at = function(left, top) {
 
     var element_behind = null;
     $.each(Selector.selected_elements, function(idx, element) {
-        var position = element.get_position();
+        var position = element.get_position_relative_to_canvas();
         var size = element.get_size();
 
         if(left >= position.left && left <= position.left + size.width
@@ -150,7 +144,7 @@ Selector.show = function() {
     var max_y = 0;
 
     $.each(Selector.selected_elements, function(idx, element) {
-        var position = element.get_position();
+        var position = element.get_position_relative_to_canvas();
         var size = element.get_size();
 
         min_x = Math.min(min_x, position.left);

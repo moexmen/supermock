@@ -34,11 +34,6 @@ Console.keyup = function(e) {
     Console.compile();
 };
 
-Console.read_element = function(element) {
-    Console.target_element = element;
-    Console.refresh();
-};
-
 Console.compile = function() {
     try {
         Console.target_element.set_code(Console.render().val());
@@ -50,8 +45,18 @@ Console.compile = function() {
     }
 };
 
+Console.read_element = function(element) {
+    Console.target_element = element;
+    Console.refresh();
+};
+
 Console.refresh = function() {
-    Console.render().val(Console.target_element.to_code());
+    if(Console.target_element == null) {
+        Console.render().val('').prop('disabled', true);
+    }
+    else {
+        Console.render().val(Console.target_element.to_code()).prop('disabled', false);
+    }
 };
 
 Console.render = function() {

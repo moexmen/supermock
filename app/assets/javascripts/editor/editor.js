@@ -76,12 +76,8 @@ Editor.set_curr_page = function(page_id) {
     }
 
     Editor.curr_page = page;
-    Editor.render_curr_page();
+    Editor.canvas().empty().append(page.render());
     Console.read_element(page);
-};
-
-Editor.render_curr_page = function() {
-    Editor.canvas().empty().append(Editor.curr_page.render());
 };
 
 Editor.mousedown_element = function(element, event) {
@@ -100,10 +96,10 @@ Editor.mousedown_element = function(element, event) {
 }
 
 Editor.mouseup_element = function(element, event) {
-    if(element instanceof Elements.Page)
+    if(element instanceof Elements.Page) {
         Selector.unselect_all();
-    else
-        Selector.mouseup_element(element, event);
+        Console.read_element(Editor.curr_page);
+    }
 
     return false;
 }
