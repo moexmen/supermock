@@ -89,7 +89,10 @@ Editor.is_view_mode = function() {
 Editor.handle_key_events = function() {
     $('body').keyup(function (e) {
 
-        if (Editor.is_edit_mode() && !Selector.any_text_editting()) {
+        if (Editor.is_edit_mode()) {
+            if (Selector.is_text_editing()) {
+                return;
+            }
             switch (e.which) {
                 case 32: // space
                     Editor.escape_all();

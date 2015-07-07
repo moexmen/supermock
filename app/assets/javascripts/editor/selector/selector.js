@@ -22,7 +22,7 @@ Selector.any_selected = function() {
     return Selector.selected_elements.length > 0;
 }
 
-Selector.any_text_editting = function() {
+Selector.is_text_editing = function() {
     return Selector.text_editing == true;
 }
 

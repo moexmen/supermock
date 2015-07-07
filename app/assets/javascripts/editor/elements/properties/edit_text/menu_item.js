@@ -23,7 +23,16 @@ Elements.Property.EditText.MenuItem.prototype.render = function() {
 }
 
 Elements.Property.EditText.MenuItem.prototype.click = function() {
-    this.elements[0].find_property(Elements.Property.EditText).edit_text();
+    Selector.text_editing = true;
+    this.elements[0].find_property(Elements.Property.EditText).html_to_edit
+        .attr('contenteditable', true)
+        .focus()
+        .dblclick()
+        .focusout(function() {
+            this.html_to_edit.attr('contenteditable', false);
+            this.html_to_edit.off('focusout');
+            Selector.text_editing = false;
+        }.bind(this))
     this.parent_menu.hide();
     return false;
 }
