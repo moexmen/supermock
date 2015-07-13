@@ -30,7 +30,6 @@ Console.keyup = function(e) {
     if(Console.target_element.to_code() == Console.render().val()) {
         return;
     }
-
     Console.compile();
 };
 

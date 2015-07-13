@@ -4,30 +4,28 @@ var Parser = Parser || {};
 
 Parser.ELEMENT_FACTORIES = [
     Elements.Button,
-    Elements.Box
+    Elements.Box,
+    Elements.Checkbox,
+    Elements.RadioButton,
+    Elements.Image,
+    Elements.Hyperlink,
+    Elements.Text,
+    Elements.Textarea,
+    Elements.Textfield,
+    Elements.Dropdown,
+    Elements.Dropdown.Item,
+    Elements.NumberList,
+    Elements.NumberList.Item,
+    Elements.BulletList,
+    Elements.BulletList.Item,
+    Elements.DatePicker,
+    Elements.Modal,
+    Elements.Modal.Header,
+    Elements.Modal.Body,
+    Elements.Modal.Footer,
 ];
 
 //Parser.MAPPERS = [
-//    Parser.Mappers.Text,
-//    Parser.Mappers.Textfield,
-//    Parser.Mappers.Textarea,
-//    Parser.Mappers.Hyperlink,
-//    Parser.Mappers.Button,
-//    Parser.Mappers.Checkbox,
-//    Parser.Mappers.RadioButton,
-//    Parser.Mappers.Dropdown,
-//    Parser.Mappers.Dropdown.Item,
-//    Parser.Mappers.DatePicker,
-//    Parser.Mappers.Image,
-//    Parser.Mappers.NumberList,
-//    Parser.Mappers.NumberList.Item,
-//    Parser.Mappers.BulletList,
-//    Parser.Mappers.BulletList.Item,
-//    Parser.Mappers.Box,
-//    Parser.Mappers.Modal,
-//    Parser.Mappers.Modal.Header,
-//    Parser.Mappers.Modal.Body,
-//    Parser.Mappers.Modal.Footer,
 //    Parser.Mappers.Tabs,
 //    Parser.Mappers.Tabs.Tab,
 //    Parser.Mappers.Table,
@@ -74,7 +72,7 @@ Parser.parse = function(code) {
 };
 
 Parser.parse_indent_level = function(line) {
-    return line.split('\t').length - 1;
+    return line.match(/^\t*/)[0].length || line.match(/^\s*/)[0].length / 4;
 };
 
 Parser.parse_line = function(parent_element, line) {
@@ -144,14 +142,28 @@ Parser.parse_properties = function(args) {
             });
         }
         else {
-            var temp = properties[i];
+            var value = properties[i];
 
-            for(++i; i<properties.length; i++) {
-                temp += ' ' + properties[i];
-            }
-
-            parsed_properties.push({ name: '', value: temp });
+            parsed_properties = this.append_unnamed_property(parsed_properties, value);
         }
+    }
+
+    return parsed_properties;
+};
+
+Parser.append_unnamed_property = function(parsed_properties, value) {
+    success = false;
+
+    $.each(parsed_properties, function(index, property) {
+        if(property.name == '') {
+            property.value += ' ' + value;
+            success = true;
+            return;
+        }
+    });
+
+    if(!success) {
+        parsed_properties.push({ name: '', value: value });
     }
 
     return parsed_properties;

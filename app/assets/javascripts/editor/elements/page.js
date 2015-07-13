@@ -34,6 +34,30 @@ Elements.Page.prototype.remove_child_page = function(page) {
     this.child_pages.remove(page);
 };
 
+Elements.Page.prototype.edit_mode = function() {
+    $.each(this.child_elements, function(idx, element) {
+        element.edit_mode();
+    });
+
+    if(this.parent_page != null) {
+        this.parent_page.edit_mode(); //why should the parent page be in edit mode?
+    }
+
+    this.hitarea.show();
+};
+
+Elements.Page.prototype.view_mode = function() {
+    $.each(this.child_elements, function(idx, element) {
+        element.view_mode();
+    });
+
+    if(this.parent_page != null) {
+        this.parent_page.view_mode();
+    }
+
+    this.hitarea.hide();
+};
+
 Elements.Page.prototype.render = function() {
     if(this.html == null) {
         this.html = Util.clone_template('#element_page_template');

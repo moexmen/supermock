@@ -1,13 +1,18 @@
-var Elements = Elements || {};
-Elements.Properties = Elements.Properties || {};
+//= require ./property
+// var Elements = Elements || {};
+// Elements.Properties = Elements.Properties || {};
 Elements.Properties.TextPlaceholder = {};
 
-Elements.Properties.TextPlaceholder.apply = function(element, properties) {
+Elements.Properties.TextPlaceholder.apply = function(html, properties) {
     $.each(properties, function(index, property) {
         if (property.name == '') {
-            element.prop('placeholder', property.value);
+            html.prop('placeholder', property.value);
 
             return false;
         }
     });
+};
+
+Elements.Properties.TextPlaceholder.to_code = function(html) {
+    return html.prop('placeholder');
 };

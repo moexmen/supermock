@@ -74,15 +74,19 @@ body#project_show
 
     #element_text_template.element.element-text.hidden
       span
+      .hitarea
 
     #element_textfield_template.element.element-textfield.hidden
       input.form-control type='text'
+      .hitarea
 
     #element_textarea_template.element.element-textarea.hidden
       textarea.form-control
+      .hitarea
 
     #element_hyperlink_template.element.element-hyperlink.hidden
       a
+      .hitarea
 
     #element_button_template.element.element-button.hidden
       button.btn.btn-default Button
@@ -91,32 +95,39 @@ body#project_show
     #element_checkbox_template.element.element-checkbox.checkbox.hidden
       label
         input type='checkbox'
-        span
+        span Checkbox
+      .hitarea
 
     #element_radio_button_template.element.element-radio-button.radio.hidden
       label
         input type='radio'
-        div
+        span Radiobutton
+      .hitarea
 
     #element_datepicker_template.element.element-datepicker.hidden
       .input-group.date
         input.form-control type='text'
         span.input-group-addon
           span.glyphicon.glyphicon-calendar
+      .hitarea
 
     #element_dropdown_template.element.element-dropdown.hidden
       select.form-control
+      .hitarea
     option#element_dropdown_item_template.element-dropdown-item.hidden
 
     #element_image_template.element.element-image.hidden
-      img
+      img alt="Image placeholder" src='http://estl.be/wp-content/uploads/2013/04/logo1-300x137.png'
+      .hitarea
 
     #element_number_list_template.element.element-number-list.hidden
       ol
+      .hitarea
     li#element_number_list_item_template.element-number-list_item.hidden
 
     #element_bullet_list_template.element.element-bullet-list.hidden
       ul
+      .hitarea
     li#element_bullet_list_item_template.element-bullet-list_item.hidden
 
     #element_table_template.element.element-table.hidden
@@ -134,6 +145,7 @@ body#project_show
     #element_tab_content_template.element-tab-content.hidden.tab-pane [ role='tabpanel' ]
 
     #element_box_template.element.element-box.hidden
+      div.box
       .hitarea
       .child-elements
 
@@ -146,4 +158,6 @@ body#project_show
         span &times;
       h4.modal-title Title
     #element_modal_body_template.element-modal-body.hidden.modal-body
+      .child-elements
     #element_modal_footer_template.element-modal-footer.hidden.modal-footer
+      .child-elements

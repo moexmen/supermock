@@ -13,6 +13,9 @@ Editor.init = function() {
     $('body').keyup(function(e) {
         if (Editor.is_edit_mode()) {
             switch (e.which) {
+                case 27: // escape
+                    Editor.view_mode();
+                    break;
             }
         }
         else if (Editor.is_view_mode()) {
@@ -49,14 +52,17 @@ Editor.init_console = function() {
 
 Editor.edit_mode = function() {
     $('.editor_row').show();
-    Editor.canvas().css('background-image', 'url("/assets/grid.png")');
+    Editor.stage().css('background-image', 'url(/assets/grid.png)');
+    PageList.curr_page().edit_mode();
 
     Editor.mode = Editor.modes.EDIT;
 };
 
 Editor.view_mode = function() {
     $('.editor_row').hide();
-    Editor.canvas().css('background-image', '');
+    Editor.stage().css('background-image', 'none'); // empty string not working
+    PageList.curr_page().view_mode();
+    Selector.unselect_all();
 
     Editor.mode = Editor.modes.VIEW;
 };
@@ -76,8 +82,17 @@ Editor.set_curr_page = function(page_id) {
     }
 
     Editor.curr_page = page;
-    Editor.canvas().empty().append(page.render());
+    Editor.canvas().children().detach();
+    Editor.canvas().append(page.render());
+
     Console.read_element(page);
+
+    if(Editor.is_edit_mode()) {
+        PageList.curr_page().edit_mode();
+    }
+    else if(Editor.is_view_mode()) {
+        PageList.curr_page().view_mode();
+    }
 };
 
 Editor.mousedown_element = function(element, event) {
@@ -106,6 +121,10 @@ Editor.mouseup_element = function(element, event) {
 
 Editor.canvas = function() {
     return $('#canvas');
+};
+
+Editor.stage = function() {
+    return $('.stage');
 };
 
 Editor.sidebar = function() {

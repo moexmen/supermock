@@ -1,22 +1,27 @@
 //= require ../element
 
 Elements.NumberList = function(properties) {
+    Elements.Element.call(this);
+
     this.properties = properties;
-    this.html = null;
 };
 
 Elements.NumberList.prototype = Object.create(Elements.Element.prototype);
 Elements.NumberList.prototype.constructor = Elements.NumberList;
 
+Elements.NumberList.TYPE = 'number-list';
+
 Elements.NumberList.PROPERTIES = [
-    { type: Elements.Properties.Position, target: function(html) { return html; } },
-    { type: Elements.Properties.Size, target: function(html) { return html; } }
+    { type: Elements.Properties.Position, target: function(element) { return element.html; } },
+    { type: Elements.Properties.Size, target: function(element) { return element.html; } }
 ];
 
-Elements.NumberList.prototype.append = function(element) {
-    if(element.constructor == Elements.NumberList.Item) {
-        this.render().find('ol').append(element.render());
-        this.fit_element(element);
+Elements.NumberList.map_from_code = function(parent_element, element_type, properties) {
+    if(element_type == Elements.NumberList.TYPE) {
+        return new Elements.NumberList(properties);
+    }
+    else {
+        return null;
     }
 };
 
@@ -24,12 +29,13 @@ Elements.NumberList.prototype.render = function() {
     if(this.html == null) {
         this.html = Util.clone_template('#element_number_list_template');
 
-        $.each(Elements.NumberList.PROPERTIES, function(index, property) {
-            property.type.apply(property.target(this.html), this.properties);
-        }.bind(this));
+       this.hitarea = this.html.children('.hitarea')
+            .mousedown(function(e) { return Editor.mousedown_element(this, e); }.bind(this));
+
+        this.apply_properties();
+        this.render_child_elements('ol');
+
     }
 
     return this.html;
 };
-
-

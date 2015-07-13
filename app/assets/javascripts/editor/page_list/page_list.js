@@ -20,6 +20,10 @@ PageList.init_buttons = function() {
     PageList.new_page_btn().click(function() { PageList.add_item(null, PageList.root_item); });
 };
 
+PageList.curr_page = function() {
+    return PageList.curr_item.page;
+};
+
 PageList.select_first_item = function() {
     PageList.select_item(PageList.root_item.first_child_item());
 };

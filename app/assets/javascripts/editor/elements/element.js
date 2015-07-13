@@ -27,6 +27,10 @@ Elements.Element.prototype.get_size = function() {
 
 Elements.Element.prototype.set_size = function(width, height) {
     this.render().outerWidth(width).outerHeight(height);
+    this.on_resize();
+};
+
+Elements.Element.prototype.on_resize = function() {
 };
 
 Elements.Element.prototype.get_position = function() {
@@ -60,6 +64,7 @@ Elements.Element.prototype.get_position_relative_to_canvas = function() {
     position.left -= canvas_position.left;
     position.top -= canvas_position.top;
 
+    position.left = Math.max(0, position.left);
     //this.render().detach();
     //original_parent.append(this.render());
 
@@ -78,19 +83,32 @@ Elements.Element.prototype.unselect = function() {
     }
 };
 
+Elements.Element.prototype.edit_mode = function() {
+    if(this.hitarea != null) {
+        this.hitarea.show();
+    }
+};
+
 Elements.Element.prototype.apply_properties = function() {
     $.each(this.constructor.PROPERTIES, function(i, property) {
         property.type.apply(property.target(this), this.properties);
     }.bind(this));
 };
 
-Elements.Element.prototype.render_child_elements = function() {
-    var elements_html = this.html.children('.child-elements').empty();
+Elements.Element.prototype.view_mode = function() {
+    if(this.hitarea != null) {
+        this.hitarea.hide();
+    }
+};
+
+Elements.Element.prototype.render_child_elements = function(html) {
+    var parent_html = html || '.child-elements';
+    var elements_html = this.html.find(parent_html).empty();
 
     $.each(this.child_elements, function(i, element) {
         elements_html.append(element.render());
     });
-}
+};
 
 Elements.Element.prototype.to_code = function(indent) {
     indent = indent || '';
@@ -108,7 +126,10 @@ Elements.Element.prototype.properties_to_code = function() {
     var code = '';
 
     $.each(this.constructor.PROPERTIES, function(i, property) {
-        code += ' ' + property.type.to_code(property.target(this));
+        property_code = property.type.to_code(property.target(this));
+        if(property_code != '') {
+            code += ' ' + property_code;
+        }
     }.bind(this));
 
     return code;
