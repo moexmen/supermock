@@ -39,6 +39,23 @@ PageList.select_item = function(item) {
     Editor.set_curr_page(PageList.curr_item.page.id);
 };
 
+PageList.set_curr_item = function(page_id) {
+    if (PageList.curr_page().id == page_id){ //current page is the same as the 
+        return;
+    }
+    $.each(PageList.root_item.child_items, function(idx, page_list_item) {
+        if (page_list_item.page.id == page_id) {
+
+            if(PageList.curr_item != null) {
+                PageList.curr_item.unselect();
+            }
+            
+            PageList.curr_item = page_list_item;
+            PageList.curr_item.select();
+        }
+    });
+
+}
 PageList.add_item = function(page, parent_item) {
     // Create page if not given
     if(page === null) {

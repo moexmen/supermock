@@ -61,6 +61,7 @@ Editor.edit_mode = function() {
 Editor.view_mode = function() {
     $('.editor_row').hide();
     Editor.stage().css('background-image', 'none'); // empty string not working
+
     PageList.curr_page().view_mode();
     Selector.unselect_all();
 
@@ -82,6 +83,8 @@ Editor.set_curr_page = function(page_id) {
     }
 
     Editor.curr_page = page;
+    PageList.set_curr_item(page_id);
+
     Editor.canvas().children().detach();
     Editor.canvas().append(page.render());
 

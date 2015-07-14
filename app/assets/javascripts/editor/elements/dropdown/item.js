@@ -17,7 +17,7 @@ Elements.Dropdown.Item.PROPERTIES = [
 ];
 
 Elements.Dropdown.Item.map_from_code = function(parent_element, element_type, properties) {
-    if(parent_element.constructor == Elements.Dropdown && element_type == Elements.Dropdown.Item.TYPE) {
+    if(element_type == Elements.Dropdown.Item.TYPE && parent_element.constructor == Elements.Dropdown) {
         return new Elements.Dropdown.Item(properties);
     }
     else {

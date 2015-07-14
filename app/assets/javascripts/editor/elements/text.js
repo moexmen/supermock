@@ -22,17 +22,7 @@ Elements.Text.prototype.generate_text = function() {
     // Hack to calculate height before it is being rendered
     $('body').append(this.html);
 
-    while(this.text_html.outerHeight() < this.html.outerHeight()) {
-        this.text_html.text(this.text_html.text() + ' ' + Elements.Text.random_word());
-
-        // In case of infinite loop
-        if(this.text_html.outerHeight() == 0) {
-            break;
-        }
-    }
-
-    // Remove last word to prevent clipping
-    this.text_html.text(this.text_html.text().split(' ').slice(0, -1).join(' '));
+    this.on_increase_size();
 
     this.html.detach();
 };
@@ -72,6 +62,28 @@ Elements.Text.random_word = function() {
     return Elements.Text.LOREM_IPSUM[random_number];
 };
 
-Elements.Text.on_resize = function() {
-    return; //go do your thing here. 
+Elements.Text.prototype.on_increase_size = function() {
+    while(this.text_html.outerHeight() < this.html.outerHeight()) {
+        this.text_html.text(this.text_html.text() + ' ' + Elements.Text.random_word());
+
+        // In case of infinite loop
+        if(this.text_html.outerHeight() == 0) {
+            break;
+        }
+    }
+
+    // Remove last word to prevent clipping
+    this.text_html.text(this.text_html.text().split(' ').slice(0, -1).join(' '));
 };
+
+Elements.Text.prototype.on_decrease_size = function() {
+    while(this.text_html.outerHeight() > this.html.outerHeight()) {
+        this.text_html.text(this.text_html.text().split(' ').slice(0, -1).join(' '));
+        
+        // In case of infinite loop
+        if(this.text_html.outerHeight() == 0) {
+            break;
+        }
+    }
+};
+

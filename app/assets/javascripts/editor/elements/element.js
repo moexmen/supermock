@@ -26,11 +26,25 @@ Elements.Element.prototype.get_size = function() {
 };
 
 Elements.Element.prototype.set_size = function(width, height) {
+    prev_dimensions = this.get_size();
+    var prev_area = prev_dimensions.width * prev_dimensions.height;
+    new_area = width * height;
+
+    delta_area = new_area - prev_area;
+    if(delta_area > 0) {
+        this.on_increase_size();
+    }
+    else {
+        this.on_decrease_size();
+    }
+
     this.render().outerWidth(width).outerHeight(height);
-    this.on_resize();
 };
 
-Elements.Element.prototype.on_resize = function() {
+Elements.Element.prototype.on_increase_size = function() {
+};
+
+Elements.Element.prototype.on_decrease_size = function() {
 };
 
 Elements.Element.prototype.get_position = function() {
@@ -64,7 +78,7 @@ Elements.Element.prototype.get_position_relative_to_canvas = function() {
     position.left -= canvas_position.left;
     position.top -= canvas_position.top;
 
-    position.left = Math.max(0, position.left);
+    // position.left = Math.max(0, position.left);
     //this.render().detach();
     //original_parent.append(this.render());
 

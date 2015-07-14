@@ -14,5 +14,5 @@ Elements.Properties.Text.apply = function(html, properties) {
 };
 
 Elements.Properties.Text.to_code = function(html) {
-    return html.text();
+    return html.text().trim();
 };

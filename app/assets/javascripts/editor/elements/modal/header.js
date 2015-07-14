@@ -12,9 +12,8 @@ Elements.Modal.Header.prototype.constructor = Elements.Modal.Header;
 Elements.Modal.Header.TYPE = 'header';
 
 Elements.Modal.Header.PROPERTIES = [
-    { type: Elements.Properties.Text, target: function(element) { return element.html; } }
-    // { type: Elements.Properties.ModalClose, target: function(element) { return element.html.find('.close'); } },
-    // { type: Elements.Properties.Modal.Title, target: function(html) { return html.find('.modal-title'); } }
+    { type: Elements.Properties.ModalClose, target: function(element) { return element.html.find('.close'); } },
+    { type: Elements.Properties.Text, target: function(element) { return element.html.find('.modal-title'); } }
 ];
 
 Elements.Modal.Header.map_from_code = function(parent_element, element_type, properties) {
