@@ -23,6 +23,7 @@ Parser.ELEMENT_FACTORIES = [
     Elements.Modal.Header,
     Elements.Modal.Body,
     Elements.Modal.Footer,
+    Elements.Icon,
 ];
 
 //Parser.MAPPERS = [
