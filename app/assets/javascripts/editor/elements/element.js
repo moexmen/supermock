@@ -78,7 +78,6 @@ Elements.Element.prototype.get_position_relative_to_canvas = function() {
     position.left -= canvas_position.left;
     position.top -= canvas_position.top;
 
-    // position.left = Math.max(0, position.left);
     //this.render().detach();
     //original_parent.append(this.render());
 

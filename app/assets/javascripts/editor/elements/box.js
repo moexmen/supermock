@@ -12,9 +12,8 @@ Elements.Box.prototype.constructor = Elements.Box;
 Elements.Box.TYPE = 'box';
 
 Elements.Box.PROPERTIES = [
-    { type: Elements.Properties.Position, target: function(element) { return element.html; } },
-    { type: Elements.Properties.Size, target: function(element) { return element.html; } },
-    { type: Elements.Properties.Text, target: function(element) { return element.html.children('.box'); } },
+    // { type: Elements.Properties.Position, target: function(element) { return element.html; } },
+    // { type: Elements.Properties.Size, target: function(element) { return element.html; } },
 ];
 
 Elements.Box.map_from_code = function(parent_element, element_type, properties) {

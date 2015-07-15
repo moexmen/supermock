@@ -3,7 +3,24 @@ var Console = Console || {};
 Console.init = function() {
     Console.target_element = null;
 
-    Console.render().keydown(Console.keydown).keyup(Console.keyup);
+    Console.render().keydown(Console.keydown).keyup(Console.keyup).scroll(Console.scroll);
+};
+
+Console.scroll = function() {
+    // Console.line_count_gutter().style.top = -(Console.render().scrollTop) + "px";
+};
+
+Console.update_line_count = function() {
+    var line_count = Console.render().val().split("\n").length;
+
+    Console.line_count_gutter().text('');
+
+    for (i=1; i<=line_count; i++) {
+        var text_so_far = Console.line_count_gutter().text()
+        Console.line_count_gutter().text(text_so_far + i + "." + "\n");
+    }
+
+    // Console.line_count_gutter().style.top = -(Console.render().scrollTop) + "px";
 };
 
 Console.keydown = function(e) {
@@ -30,6 +47,7 @@ Console.keyup = function(e) {
     if(Console.target_element.to_code() == Console.render().val()) {
         return;
     }
+    Console.update_line_count();
     Console.compile();
 };
 
@@ -64,4 +82,8 @@ Console.render = function() {
 
 Console.render_status = function() {
     return $('#console_status');
+};
+
+Console.line_count_gutter = function() {
+    return $('#divlines');
 };
