@@ -25,10 +25,16 @@ Elements.Element.prototype.get_size = function() {
     return size;
 };
 
+Elements.Element.prototype.set_size_without_resize = function(width, height) {
+    this.render().outerWidth(width).outerHeight(height);
+};
+
 Elements.Element.prototype.set_size = function(width, height) {
     prev_dimensions = this.get_size();
     var prev_area = prev_dimensions.width * prev_dimensions.height;
     new_area = width * height;
+
+    this.render().outerWidth(width).outerHeight(height);
 
     delta_area = new_area - prev_area;
     if(delta_area > 0) {
@@ -37,8 +43,6 @@ Elements.Element.prototype.set_size = function(width, height) {
     else {
         this.on_decrease_size();
     }
-
-    this.render().outerWidth(width).outerHeight(height);
 };
 
 Elements.Element.prototype.on_increase_size = function() {
