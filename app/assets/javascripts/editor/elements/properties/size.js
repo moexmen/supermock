@@ -6,11 +6,11 @@ Elements.Properties.Size = {};
 Elements.Properties.Size.apply = function(html, properties) {
     $.each(properties, function(index, property) {
         if (property.name == 'w') {
-            html.css('width', property.value + 'px');
+            html.outerWidth(property.value);
         }
 
         if (property.name == 'h') {
-            html.css('height', property.value + 'px');
+            html.outerHeight(property.value);
         }
     });
 };

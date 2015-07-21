@@ -65,7 +65,6 @@ Elements.Image.prototype.on_resize = function() {
             var width_based_on_height = curr_height * this.width_to_height_ratio;
             this.set_size_without_resize(width_based_on_height, curr_height);
         }
-        console.log(this.width_to_height_ratio);
     }
 };
 
