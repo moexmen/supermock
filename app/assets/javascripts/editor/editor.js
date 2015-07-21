@@ -82,6 +82,8 @@ Editor.set_curr_page = function(page_id) {
         return;
     }
 
+    Selector.unselect_all();
+
     Editor.curr_page = page;
     PageList.set_curr_item(page_id);
 
