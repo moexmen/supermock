@@ -1,10 +1,32 @@
 //= require_tree ./properties
 
 var Elements = Elements || {};
+
 Elements.Element = function() {
     this.html = null;
     this.properties = [];
     this.child_elements = [];
+    this.movable = true;
+    this.resizeable_directions = this.all_directions();
+};
+
+Elements.Element.prototype.all_directions = function() {
+    return $.map(Elements.Element.RESIZE_DIRECTIONS, function(value, key) { return value; });
+};
+
+Elements.Element.RESIZE_DIRECTIONS = {
+    NORTH: '0',
+    SOUTH: '1',
+    EAST: '2',
+    WEST: '3',
+    NORTHEAST: "4",
+    NORTHWEST: '5',
+    SOUTHEAST: '6',
+    SOUTHWEST: '7'
+};
+
+Elements.Element.has_direction = function(direction){
+    return $.inArray(direction, this.resizeable_directions) != -1;
 };
 
 Elements.Element.prototype.add_element = function(element) {
@@ -119,8 +141,12 @@ Elements.Element.prototype.view_mode = function() {
 };
 
 Elements.Element.prototype.render_child_elements = function(html) {
-    var parent_html = html || '.child-elements';
-    var elements_html = this.html.children(parent_html).empty();
+    if(html == null) {
+        var elements_html = this.html.children('.child-elements').empty();
+    }
+    else {
+        var elements_html = this.html.find(html).empty();
+    }
 
     $.each(this.child_elements, function(i, element) {
         elements_html.append(element.render());

@@ -3,8 +3,9 @@ Selector.resize = {};
 
 Selector.resize.init = function() {
     Selector.resize.element_dimensions = []
+    this.init_cursor_directions();
 
-    var handles = [
+    Selector.resize.handles = [
         Selector.resize.handle_north(),
         Selector.resize.handle_east(),
         Selector.resize.handle_south(),
@@ -15,9 +16,22 @@ Selector.resize.init = function() {
         Selector.resize.handle_north_west(),
     ];
 
-    $.each(handles, function(idx, handle) {
+    $.each(Selector.resize.handles, function(idx, handle) {
        handle.mousedown(Selector.resize.mousedown_handle).mouseup(Selector.resize.mouseup_handle);
     });
+}
+
+Selector.resize.init_cursor_directions = function() {
+    Selector.resize.cursor_directions = {};
+
+    Selector.resize.cursor_directions[Elements.Element.RESIZE_DIRECTIONS.NORTH] = 'n-resize';
+    Selector.resize.cursor_directions[Elements.Element.RESIZE_DIRECTIONS.EAST] = 'e-resize';
+    Selector.resize.cursor_directions[Elements.Element.RESIZE_DIRECTIONS.SOUTH] = 's-resize';
+    Selector.resize.cursor_directions[Elements.Element.RESIZE_DIRECTIONS.WEST] = 'w-resize';
+    Selector.resize.cursor_directions[Elements.Element.RESIZE_DIRECTIONS.NORTHEAST] = 'ne-resize';
+    Selector.resize.cursor_directions[Elements.Element.RESIZE_DIRECTIONS.SOUTHEAST] ='se-resize';
+    Selector.resize.cursor_directions[Elements.Element.RESIZE_DIRECTIONS.SOUTHWEST] = 'sw-resize';
+    Selector.resize.cursor_directions[Elements.Element.RESIZE_DIRECTIONS.NORTHWEST] = 'nw-resize';
 }
 
 Selector.resize.save_element_dimensions = function() {
@@ -114,6 +128,29 @@ Selector.resize.resize_selector = function(handle, delta_left, delta_top) {
     Selector.delta_position(delta.left, delta.top);
 }
 
+Selector.resize.direction_handle_mapping = function(dir) {
+    switch (dir) {
+        case Elements.Element.RESIZE_DIRECTIONS.NORTH:
+            return Selector.resize.handle_north();
+        case Elements.Element.RESIZE_DIRECTIONS.SOUTH:
+            return Selector.resize.handle_south();
+        case Elements.Element.RESIZE_DIRECTIONS.EAST:
+            return Selector.resize.handle_east();
+        case Elements.Element.RESIZE_DIRECTIONS.WEST:
+            return Selector.resize.handle_west();
+        case Elements.Element.RESIZE_DIRECTIONS.NORTHEAST:
+            return Selector.resize.handle_north_east();
+        case Elements.Element.RESIZE_DIRECTIONS.NORTHWEST:
+            return Selector.resize.handle_north_west();
+        case Elements.Element.RESIZE_DIRECTIONS.SOUTHEAST:
+            return Selector.resize.handle_south_east();
+        case Elements.Element.RESIZE_DIRECTIONS.SOUTHWEST:
+            return Selector.resize.handle_south_west();
+        default:
+            return null;
+    }
+}
+
 Selector.resize.resize_elements = function(new_size, new_position) {
     $.each(Selector.selected_elements, function(idx, element) {
         var element_ratio = Selector.resize.element_dimensions[idx];
@@ -142,6 +179,33 @@ Selector.resize.calc_min_delta = function(delta) {
     }
 
     return delta;
+}
+
+Selector.resize.update_cursor = function(){
+    var directions_possible = Selector.selected_elements[0].resizeable_directions;
+
+    $.each(Selector.selected_elements, function(idx, element) {
+        var new_array_of_possible_directions = [];
+        $.each(directions_possible, function(idx, direction) {
+            if(Elements.Element.has_direction(direction, element)) {
+                new_array_of_possible_directions.push(direction);
+            }
+        });
+        directions_possible = new_array_of_possible_directions;
+    });
+
+    $.each(Object.keys(Elements.Element.RESIZE_DIRECTIONS), function(idx, key) {
+        var direction = Elements.Element.RESIZE_DIRECTIONS[key];
+        var handle = Selector.resize.direction_handle_mapping(direction);
+        handle.css('cursor', 'not-allowed').unbind();
+    });
+
+    $.each(directions_possible, function(idx, direction) {
+        var handle = Selector.resize.direction_handle_mapping(direction);
+        handle.css('cursor', Selector.resize.cursor_directions[direction]);
+        handle.mousedown(Selector.resize.mousedown_handle).mouseup(Selector.resize.mouseup_handle);
+
+    });
 }
 
 Selector.resize.handle_north = function() {

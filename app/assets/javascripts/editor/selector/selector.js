@@ -156,6 +156,9 @@ Selector.show = function() {
     Selector.set_position(min_x, min_y);
     Selector.set_size(max_x - min_x, max_y - min_y);
     Selector.render().show();
+
+    Selector.move.update_cursor();
+    Selector.resize.update_cursor();
 }
 
 Selector.hide = function() {

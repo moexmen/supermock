@@ -17,10 +17,10 @@ Elements.Properties.Border.apply = function(html, properties) {
 
 Elements.Properties.Border.to_code = function(html) {
     var border_property = html.css('border');
-    if(border_property != '') {
-        return 'border=' + "'" + border_property + "'" ;
+    if(border_property == '' || border_property.indexOf('0') == 0) {
+        return '';
     }
     else {
-        return '';
+        return 'border=' + "'" + border_property + "'" ;
     }
 };

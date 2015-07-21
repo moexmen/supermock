@@ -15,11 +15,6 @@ Elements.Modal.Footer.PROPERTIES = [
     { type: Elements.Properties.Text, target: function(element) { return element.html; } }
 ];
 
-// Elements.Modal.Footer.prototype.append = function(element) {
-//     this.render().append(element.render());
-//     this.fit_element(element);
-// };
-
 // Elements.Modal.Footer.prototype.fit_element = function(element) {
 //     var parent_size = this.get_size();
 //     var child_size = element.get_size();
@@ -45,7 +40,9 @@ Elements.Modal.Footer.prototype.render = function() {
 
         this.apply_properties();
         this.render_child_elements();
-
+        this.html.children('.child-elements').children()
+            .css('position', 'inherit')
+            .remove('.hitarea');
     }
 
     return this.html;

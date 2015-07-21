@@ -54,7 +54,8 @@ Editor.edit_mode = function() {
     $('.editor_row').show();
     Editor.stage().css('background-image', 'url(/assets/grid.png)');
     PageList.curr_page().edit_mode();
-
+    Console.refresh();
+    
     Editor.mode = Editor.modes.EDIT;
 };
 
