@@ -120,7 +120,7 @@ Elements.Element.prototype.view_mode = function() {
 
 Elements.Element.prototype.render_child_elements = function(html) {
     var parent_html = html || '.child-elements';
-    var elements_html = this.html.find(parent_html).empty();
+    var elements_html = this.html.children(parent_html).empty();
 
     $.each(this.child_elements, function(i, element) {
         elements_html.append(element.render());

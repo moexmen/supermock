@@ -65,12 +65,13 @@ Elements.Page.prototype.render = function() {
         this.hitarea = this.html.children('.hitarea')
             .mouseup(function(e) { return Editor.mouseup_element(this, e); }.bind(this));
 
-        if(this.parent_page != null) {
-            this.html.children('.page-parent').append(this.parent_page.render());
-        }
-
         this.apply_properties();
         this.render_child_elements();
+    }
+
+    if(this.parent_page != null) {
+        this.html.children('.parent-page').children().detach();
+        this.html.children('.parent-page').append(this.parent_page.render());
     }
 
     return this.html;
