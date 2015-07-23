@@ -187,7 +187,7 @@ Selector.resize.update_cursor = function(){
     $.each(Selector.selected_elements, function(idx, element) {
         var new_array_of_possible_directions = [];
         $.each(directions_possible, function(idx, direction) {
-            if(Elements.Element.has_direction(direction, element)) {
+            if(element.has_direction(direction)) {
                 new_array_of_possible_directions.push(direction);
             }
         });

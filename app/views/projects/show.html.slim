@@ -137,11 +137,19 @@ body#project_show
     li#element_bullet_list_item_template.element-bullet-list_item.hidden
 
     #element_table_template.element.element-table.hidden
-      table.table.table-hover.table-bordered
+      table.table.table-hover.table-striped.table-condensed
+      .hitarea
+    table#element_table_header_template.hidden
+      thead
+        tr
+    table#element_table_header_column_template.hidden
+      th.table-align
+    table#element_table_footer_template.hidden
+      tfoot
     table#element_table_row_template.hidden
-      tr
+      tr.table-align
     table#element_table_column_template.hidden
-      td
+      td.table-align
 
     #element_tabs_template.element.element-tabs.hidden
       ul.nav.nav-tabs [ role='tablist' ]

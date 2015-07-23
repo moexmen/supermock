@@ -4,6 +4,7 @@ Elements.Modal = function(properties) {
     Elements.Element.call(this);
 
     this.properties = properties;
+    this.resizeable_directions = [Elements.Element.RESIZE_DIRECTIONS.SOUTH];
 };
 
 Elements.Modal.prototype = Object.create(Elements.Element.prototype);

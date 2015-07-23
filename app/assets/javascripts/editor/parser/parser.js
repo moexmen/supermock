@@ -24,15 +24,15 @@ Parser.ELEMENT_FACTORIES = [
     Elements.Modal.Body,
     Elements.Modal.Footer,
     Elements.Icon,
+    // Elements.Tabs,
+    // Elements.Tabs.Tab,
+    Elements.Table,
+    Elements.Table.Header,
+    Elements.Table.Header.Column,
+    Elements.Table.Footer,
+    Elements.Table.Row,
+    Elements.Table.Column,
 ];
-
-//Parser.MAPPERS = [
-//    Parser.Mappers.Tabs,
-//    Parser.Mappers.Tabs.Tab,
-//    Parser.Mappers.Table,
-//    Parser.Mappers.Table.Row,
-//    Parser.Mappers.Table.Column
-//];
 
 Parser.try_parse = function(code) {
     try {

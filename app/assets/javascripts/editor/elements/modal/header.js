@@ -17,7 +17,7 @@ Elements.Modal.Header.PROPERTIES = [
 ];
 
 Elements.Modal.Header.map_from_code = function(parent_element, element_type, properties) {
-    if(parent_element.constructor == Elements.Modal && element_type == Elements.Modal.Header.TYPE) {
+    if(element_type == Elements.Modal.Header.TYPE && parent_element.constructor == Elements.Modal) {
         return new Elements.Modal.Header(properties);
     }
     else {

@@ -71,7 +71,7 @@ Selector.mousedown_element = function(element, event) {
         }
     }
     else { // non shift
-        if(Selector.is_selected(element) == false) { // new element, clear previous selection
+        if(Selector.is_selected(element) == false && element.selectable) { // new element, clear previous selection
             Selector.unselect_all();
             Selector.select(element);
             Selector.move.mousedown(event);

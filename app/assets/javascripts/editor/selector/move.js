@@ -2,18 +2,41 @@ var Selector = Selector || {};
 Selector.move = {};
 
 Selector.move.init = function() {
+    Selector.move.update_cursor();
 }
 
 Selector.move.update_last_move_position = function(e) {
     Selector.move.last_move_position = { left: e.pageX, top: e.pageY };
 }
 
+Selector.move.elements_movable = function() {
+    var all_elements_movable = true;
+
+    $.each(Selector.selected_elements, function(idx, element) {
+        if(!element.movable) 
+            all_elements_movable = false;
+    });
+
+    return all_elements_movable;
+}
+
+Selector.move.update_cursor = function() {
+    if(Selector.move.elements_movable()) {
+        Selector.render().css('cursor', 'move');
+    }
+    else {
+        Selector.render().css('cursor', 'not-allowed');
+    }
+}
+
 Selector.move.mousedown = function(e) {
-    if(e.which == 1) { // left
+    if(!Selector.move.elements_movable()) {
+        return;
+    }
+    else if(e.which == 1) { // left
         Selector.move.update_last_move_position(e);
         $(window).mousemove(Selector.move.mousemove).mouseup(Selector.move.mouseup);
     }
-
     return false;
 }
 

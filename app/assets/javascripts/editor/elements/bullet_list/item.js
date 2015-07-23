@@ -16,7 +16,7 @@ Elements.BulletList.Item.PROPERTIES = [
 ];
 
 Elements.BulletList.Item.map_from_code = function(parent_element, element_type, properties) {
-    if(parent_element.constructor == Elements.BulletList && element_type == Elements.BulletList.Item.TYPE) {
+    if(element_type == Elements.BulletList.Item.TYPE && parent_element.constructor == Elements.BulletList) {
         return new Elements.BulletList.Item(properties);
     }
     else {

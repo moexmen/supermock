@@ -16,7 +16,7 @@ Elements.NumberList.Item.PROPERTIES = [
 ];
 
 Elements.NumberList.Item.map_from_code = function(parent_element, element_type, properties) {
-    if(parent_element.constructor == Elements.NumberList && element_type == Elements.NumberList.Item.TYPE) {
+    if(element_type == Elements.NumberList.Item.TYPE && parent_element.constructor == Elements.NumberList) {
         return new Elements.NumberList.Item(properties);
     }
     else {

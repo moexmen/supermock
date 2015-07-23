@@ -1,29 +1,43 @@
 //= require ./table
 
 Elements.Table.Column = function(properties) {
+    Elements.Element.call(this);
+
     this.properties = properties;
 };
 
 Elements.Table.Column.prototype = Object.create(Elements.Element.prototype);
 Elements.Table.Column.prototype.constructor = Elements.Table.Column;
 
+Elements.Table.Column.TYPE = 'data';
+
 Elements.Table.Column.PROPERTIES = [
-    { type: Elements.Properties.Text, target: function(html) { return html; } },
-    { type: Elements.Properties.Size, target: function(html) { return html; } }
+    { type: Elements.Properties.Table.Column.Merge, target: function(element) { return element.html; } },
+    { type: Elements.Properties.Table.Column.Width, target: function(element) { return element.html; } },
+    { type: Elements.Properties.Table.Column.TextAlign, target: function(element) { return element.html; } },
+    { type: Elements.Properties.Text, target: function(element) { return element.html; } },
 ];
 
-Elements.Table.Column.prototype.append = function(element) {
-    this.render().append(element.render());
+Elements.Table.Column.map_from_code = function(parent_element, element_type, properties) {
+    if((parent_element.constructor == Elements.Table.Row ||
+        parent_element.constructor == Elements.Table.Footer) && 
+        element_type == Elements.Table.Column.TYPE) {
+        return new Elements.Table.Column(properties);
+    }
+    else {
+        return null;
+    }
 };
 
 Elements.Table.Column.prototype.render = function() {
     if(this.html == null) {
         this.html = Util.clone_template('#element_table_column_template');
+
+        this.render_child_elements('td');
         this.html = this.html.find('td');
 
-        $.each(Elements.Table.Column.PROPERTIES, function(index, property) {
-            property.type.apply(property.target(this.html), this.properties);
-        }.bind(this));
+        this.apply_properties();
+
     }
 
     return this.html;

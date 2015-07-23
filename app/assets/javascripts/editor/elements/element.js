@@ -7,10 +7,11 @@ Elements.Element = function() {
     this.properties = [];
     this.child_elements = [];
     this.movable = true;
-    this.resizeable_directions = this.all_directions();
+    this.resizeable_directions = Elements.Element.all_directions();
+    this.selectable = true;
 };
 
-Elements.Element.prototype.all_directions = function() {
+Elements.Element.all_directions = function() {
     return $.map(Elements.Element.RESIZE_DIRECTIONS, function(value, key) { return value; });
 };
 
@@ -25,8 +26,20 @@ Elements.Element.RESIZE_DIRECTIONS = {
     SOUTHWEST: '7'
 };
 
-Elements.Element.has_direction = function(direction){
+Elements.Element.prototype.has_direction = function(direction){
     return $.inArray(direction, this.resizeable_directions) != -1;
+};
+
+Elements.Element.prototype.set_unmovable = function(){
+    this.movable = false;
+};
+
+Elements.Element.prototype.set_unresizeable = function(){
+    this.resizeable_directions = [];
+};
+
+Elements.Element.prototype.set_unselectable = function(){
+    this.selectable = false;
 };
 
 Elements.Element.prototype.add_element = function(element) {
@@ -126,6 +139,9 @@ Elements.Element.prototype.edit_mode = function() {
     if(this.hitarea != null) {
         this.hitarea.show();
     }
+    $.each(this.child_elements, function(idx, element){
+        element.edit_mode();
+    });
 };
 
 Elements.Element.prototype.apply_properties = function() {
@@ -138,6 +154,9 @@ Elements.Element.prototype.view_mode = function() {
     if(this.hitarea != null) {
         this.hitarea.hide();
     }
+    $.each(this.child_elements, function(idx, element){
+        element.view_mode();
+    });
 };
 
 Elements.Element.prototype.render_child_elements = function(html) {
