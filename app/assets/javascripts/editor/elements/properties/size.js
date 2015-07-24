@@ -18,3 +18,13 @@ Elements.Properties.Size.apply = function(html, properties) {
 Elements.Properties.Size.to_code = function(html) {
     return 'w=' + html.outerWidth() + ' h=' + html.outerHeight();
 };
+
+Elements.Properties.Size.to_json = function(html) {
+    return JSON.stringify( {w: html.outerWidth(), h: html.outerHeight()} );
+};
+
+Elements.Properties.Size.parse_json = function(html, json) {
+    var size = $.parseJSON(json);
+
+    return [{name: 'w', value: size.w}, {name: 'h', value: size.h}];
+};

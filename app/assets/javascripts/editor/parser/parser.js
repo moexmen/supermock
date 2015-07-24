@@ -24,14 +24,14 @@ Parser.ELEMENT_FACTORIES = [
     Elements.Modal.Body,
     Elements.Modal.Footer,
     Elements.Icon,
-    // Elements.Tabs,
-    // Elements.Tabs.Tab,
     Elements.Table,
     Elements.Table.Header,
     Elements.Table.Header.Column,
     Elements.Table.Footer,
     Elements.Table.Row,
     Elements.Table.Column,
+    Elements.Tabs,
+    Elements.Tabs.Tab,
 ];
 
 Parser.try_parse = function(code) {

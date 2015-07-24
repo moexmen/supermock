@@ -76,3 +76,39 @@ Elements.Page.prototype.render = function() {
 
     return this.html;
 };
+
+Elements.Page.to_json = function() {
+
+};
+
+Elements.Page.parse_json = function(json, parent_page) {
+    var model = $.parseJSON(json);
+//     Elements.Element.call(this);
+
+//     this.parent_page = null;
+//     this.child_pages = [];
+// };
+    switch(model.type) {
+        case 'Page':
+            var curr_page = new Elements.Page(model.id, model.name);
+            
+            curr_page.parent_page = parent_page;
+            
+            $.each(model.child_elements, function(idx, element_json){
+                curr_page.child_elements.push(Elements.Element.parse_json(element_json));
+            });
+
+            // $.each(model.child_pages, function(idx, page_json) {
+            //     curr_page.child_pages.push(Elements.Page.parse_json(page_json, curr_page));
+            // });
+
+            // $.each(model.properties, function(idx, property_json) {
+            //     curr_page.properties.push(Elements.Properties.parse_json(property_json));
+            // });
+            
+            return page;
+
+        default:
+            return null;
+    }
+};

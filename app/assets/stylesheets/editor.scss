@@ -396,6 +396,14 @@
     }
   }
 
+  .element-tabs {
+    width: 400px;
+    height: 200px;
+    border: 1px solid #ddd;
+    padding: 20px 15px 15px;
+    border-radius: 4px 4px 0 0;
+  }
+
   .element-tab-content {
     position: relative;
     width: 100%;

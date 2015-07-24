@@ -213,6 +213,8 @@ Elements.Element.parse_json = function(json) {
     switch(model.type) {
         case 'Page':
             return new Elements.Page(model.id, model.name);
+        case 'Button':
+            return Elements.Button.parse_json(model.button_json);
         default:
             return null;
     }

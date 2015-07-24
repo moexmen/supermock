@@ -40,6 +40,7 @@ Editor.init_mode = function() {
 
 Editor.init_buttons = function() {
     Editor.view_btn().click(Editor.view_mode);
+    Editor.save_btn().click(Editor.save);
 };
 
 Editor.init_page_list = function() {
@@ -67,6 +68,23 @@ Editor.view_mode = function() {
     Selector.unselect_all();
 
     Editor.mode = Editor.modes.VIEW;
+};
+
+Editor.save = function() {
+    var data_save = $.ajax({
+      method: "POST",
+      url: "some.php",
+      data: { name: "John", location: "Boston" }
+      success: alert( "Data Saved Successfully: " + msg );
+    })
+    
+    data_save.done(function( msg ) {
+        alert( "Data Saved: " + msg );
+    });
+
+    data_save.fail(function( jqXHR, textStatus ) {
+      alert( "Request failed: " + textStatus );
+    });
 };
 
 Editor.is_edit_mode = function() {
@@ -139,4 +157,8 @@ Editor.sidebar = function() {
 
 Editor.view_btn = function() {
     return $('#view_btn');
+};
+
+Editor.save_btn = function() {
+    return $('#save_btn');
 };

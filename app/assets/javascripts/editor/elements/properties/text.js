@@ -20,3 +20,9 @@ Elements.Properties.Text.to_code = function(html) {
     }
     return text;
 };
+
+Elements.Properties.Text.parse_json = function(json) {
+    var model = $.parseJSON(json);
+
+    return [{name: '', value: model.text}];
+};

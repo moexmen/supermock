@@ -39,3 +39,23 @@ Elements.Button.prototype.render = function() {
 
     return this.html;
 };
+
+// Elements.Button.prototype.to_json = function() {
+//     var json_object = {};
+//     $.each(this.properties, function(idx, property){
+//         json_object[]
+//     });
+//     return JSON.stringify(json_object);
+// };
+
+Elements.Button.parse_json = function(json) {
+    var model = $.parseJSON(json);
+    var properties = [];
+
+    $.each(model.properties, function(idx, property_json) {
+        $.each(Elements.Properties.parse_json(property_json), function(idx, property_object){
+            properties.push(property_object);
+        });
+    });
+    var button = new Elements.Button(properties);
+};

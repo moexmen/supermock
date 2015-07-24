@@ -4,9 +4,9 @@ Elements.Tabs = function(properties) {
     Elements.Element.call(this);
 
     this.properties = properties;
-    // this.tab_list_html = null;
-    // this.tab_content_html = null;
-    // this.tabs = [];
+    this.tab_list_html = null;
+    this.tab_content_html = null;
+    this.selected_tab_id = null;
 };
 
 Elements.Tabs.prototype = Object.create(Elements.Element.prototype);
@@ -15,8 +15,8 @@ Elements.Tabs.prototype.constructor = Elements.Tabs;
 Elements.Tabs.TYPE = 'tabs';
 
 Elements.Tabs.PROPERTIES = [
-    // { type: Elements.Properties.Position, target: function(element) { return element.html; } },
-    // { type: Elements.Properties.Size, target: function(element) { return element.html; } },
+    { type: Elements.Properties.Position, target: function(element) { return element.html; } },
+    { type: Elements.Properties.Size, target: function(element) { return element.html; } },
 ];
 
 Elements.Tabs.map_from_code = function(parent_element, element_type, properties) {
@@ -61,8 +61,11 @@ Elements.Tabs.prototype.render = function() {
         this.tab_list_html = this.html.find('ul');
         this.tab_content_html = this.html.find('.tab-content');
 
+        this.hitarea = this.html.children('.hitarea')
+            .mousedown(function(e) { return Editor.mousedown_element(this, e); }.bind(this));
+
         this.apply_properties();
-        this.render_child_elements('ul');
+        this.render_child_elements('ul'); //appends the tab, not the content
 
     }
 

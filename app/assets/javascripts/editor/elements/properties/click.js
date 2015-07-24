@@ -39,3 +39,9 @@ Elements.Properties.Click.go_to_page = function(html, value) {
     html.unbind('click');
     html.click(function() { Editor.set_curr_page(page_id); });
 };
+
+Elements.Properties.Click.parse_json = function(json) {
+    var model = $.parseJSON(json);
+
+    return [{name: 'click', value: model.click}];
+};
