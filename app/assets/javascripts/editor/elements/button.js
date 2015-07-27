@@ -39,26 +39,3 @@ Elements.Button.prototype.render = function() {
 
     return this.html;
 };
-
-Elements.Button.prototype.to_json = function() {
-    var button_json = { type: Elements.Button.TYPE,
-                        properties: [],
-                    };
-
-    $.each(this.properties, function(idx, property){
-        button_json.properties.push(JSON.stringify(property));
-    });
-
-    return JSON.stringify(button_json);
-};
-
-Elements.Button.parse_json = function(model) {
-    if(model.type != Elements.Button.TYPE) {
-        return null;
-    }
-    var properties = [];
-    $.each(model.properties, function(idx, property){
-        properties.push($.parseJSON(property));
-    });
-    return new Elements.Button(properties);
-};

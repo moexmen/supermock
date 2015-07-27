@@ -210,10 +210,11 @@ Elements.Element.prototype.set_code = function(code) {
 Elements.Element.parse_json = function(json) {
     var model = $.parseJSON(json);
 
-    $.each(Parser.ELEMENT_FACTORIES, function(index, element_factory) {
-        element = element_factory.parse_json(model);
+    var element = null;
 
-        if(element != null) {
+    $.each(Parser.ELEMENT_FACTORIES, function(index, element_factory) {
+        if(model.type == element_factory.TYPE) {
+            element = Elements.Element.convert_json(model, element_factory);
             return false;
         }
     });
@@ -222,4 +223,34 @@ Elements.Element.parse_json = function(json) {
 };
 
 Elements.Element.prototype.to_json = function() {
+    var json = { type: this.constructor.TYPE,
+                        properties: [],
+                        child_elements: [],
+                    };
+
+    $.each(this.properties, function(idx, property){
+        json.properties.push(JSON.stringify(property));
+    });
+
+    $.each(this.child_elements, function(idx, child_element){
+        json.child_elements.push(child_element.to_json());
+    });
+
+    return JSON.stringify(json);
+};
+
+Elements.Element.convert_json = function(model, element_factory) {
+    var properties = [];
+
+    $.each(model.properties, function(idx, property){
+        properties.push($.parseJSON(property));
+    });
+
+    var element = new element_factory(properties);
+    if(model.child_elements) {
+        $.each(model.child_elements, function(idx, child_element){
+            element.child_elements.push(Elements.Element.parse_json(child_element));
+        });
+    }
+    return element;
 };
