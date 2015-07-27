@@ -30,7 +30,7 @@ Elements.DatePicker.prototype.render = function() {
     if(this.html == null) {
         this.html = Util.clone_template('#element_datepicker_template');
         this.html.find('.input-group').datetimepicker({
-            defaultDate: moment('01 Jul 2014', 'DD MMM YYYY'),
+            defaultDate: moment(),
             format: 'DD MMM YYYY',
             showTodayButton: true,
         });

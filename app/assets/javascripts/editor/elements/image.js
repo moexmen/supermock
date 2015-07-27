@@ -40,30 +40,18 @@ Elements.Image.prototype.render = function() {
     return this.html;
 };
 
-Elements.Image.prototype.on_increase_size = function() {
-    this.on_resize();
-};
-
-Elements.Image.prototype.on_decrease_size = function() {
-    this.on_resize();
-};
-
-Elements.Image.prototype.on_resize = function() {
+Elements.Image.prototype.set_size = function(width, height) {
     if(this.width_to_height_ratio == null) {
-        this.width_to_height_ratio = parseInt(this.get_size().width) / parseInt(this.get_size().height);
+        this.width_to_height_ratio = width / height;
     }
     else {
-        var curr_dimensions = this.get_size();
-        var curr_height = parseInt(curr_dimensions.height);
-        var curr_width = parseInt(curr_dimensions.width);
-
-        var height_based_on_width = Math.round(curr_width / this.width_to_height_ratio);
-        if (curr_height > height_based_on_width) {
-            this.set_size_without_resize(curr_width, height_based_on_width);
+        var height_based_on_width = Math.round(width / this.width_to_height_ratio);
+        if (height > height_based_on_width) {
+            this.set_size_without_resize(width, height_based_on_width);
         }
         else {
-            var width_based_on_height = curr_height * this.width_to_height_ratio;
-            this.set_size_without_resize(width_based_on_height, curr_height);
+            var width_based_on_height = height * this.width_to_height_ratio;
+            this.set_size_without_resize(width_based_on_height, height);
         }
     }
 };

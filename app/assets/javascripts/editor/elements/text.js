@@ -99,9 +99,6 @@ Elements.Text.prototype.check_edited_text = function() {
     target_text = this.text_html.text();
     var first_word = target_text.substr(0, target_text.indexOf(" "));
     
-    if($.inArray(first_word, Elements.Text.LOREM_IPSUM) == -1) {
-        return true;
-    }
-    return false;
+    return $.inArray(first_word, Elements.Text.LOREM_IPSUM) == -1;
 };
 

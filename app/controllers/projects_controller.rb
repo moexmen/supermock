@@ -38,7 +38,7 @@ class ProjectsController < ApplicationController
       flash[:error] = @project.errors.full_messages if @project.errors.any?
     end
 
-    redirect_to projects_path
+    head :ok
   end
 
   # DELETE /projects/1
@@ -60,6 +60,6 @@ class ProjectsController < ApplicationController
     end
 
     def project_params
-      params.require(:project).permit(:name, :platform, :card_colour)
+      params.require(:project).permit(:name, :platform, :card_colour, :pages)
     end
 end

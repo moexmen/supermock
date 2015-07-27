@@ -71,20 +71,23 @@ Editor.view_mode = function() {
 };
 
 Editor.save = function() {
+    var project_url = location.href.split('/').reverse()[0];
     var data_save = $.ajax({
-      method: "POST",
-      url: "some.php",
-      data: { name: "John", location: "Boston" }
-      success: alert( "Data Saved Successfully: " + msg );
-    })
-    
-    data_save.done(function( msg ) {
-        alert( "Data Saved: " + msg );
+        method: "PUT",
+        url: project_url,
+        data: {'project[pages]': Editor.save_pages() },
+        success: alert( "Data saved successfully"),
     });
+};
 
-    data_save.fail(function( jqXHR, textStatus ) {
-      alert( "Request failed: " + textStatus );
-    });
+Editor.save_pages = function() {
+    var pages = [];
+
+    $.each(Editor.project.pages, function(idx, page) {
+        pages.push(page.to_json());
+    }.bind(this));
+
+    return JSON.stringify(pages);
 };
 
 Editor.is_edit_mode = function() {

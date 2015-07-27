@@ -100,7 +100,6 @@ Parser.split_line = function(line) {
         return [];
     }
 
-
     var temp = line.split(' ');
     var args = [];
 
@@ -159,7 +158,7 @@ Parser.append_unnamed_property = function(parsed_properties, value) {
         if(property.name == '') {
             property.value += ' ' + value;
             success = true;
-            return;
+            return false;
         }
     });
 

@@ -1,13 +1,14 @@
 require 'elements/element_model'
 
 class Page < ElementModel
-  attr_accessor :id, :name, :content, :parent_page, :child_pages
+  attr_accessor :id, :name, :content, :parent_page, :child_pages, :child_elements
 
   def initialize(*args)
     super(*args)
     @content ||= ''
     @parent_page = nil
     @child_pages ||= []
+    @child_elements ||= []
   end
 
   def as_json(options = {})
@@ -18,6 +19,7 @@ class Page < ElementModel
         content: @content,
         parent_page: parent_page,
         child_pages: @child_pages.map(&:to_json),
+        child_elements: @child_elements,
     }
   end
 

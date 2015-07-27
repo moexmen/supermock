@@ -71,8 +71,8 @@ Elements.Element.prototype.set_size = function(width, height) {
 
     this.render().outerWidth(width).outerHeight(height);
 
-    delta_area = new_area - prev_area;
-    if(delta_area > 0) {
+    difference = new_area - prev_area;
+    if(difference > 0) {
         this.on_increase_size();
     }
     else {
@@ -210,12 +210,17 @@ Elements.Element.prototype.set_code = function(code) {
 Elements.Element.parse_json = function(json) {
     var model = $.parseJSON(json);
 
-    switch(model.type) {
-        case 'Page':
-            return new Elements.Page(model.id, model.name);
-        case 'Button':
-            return Elements.Button.parse_json(model.button_json);
-        default:
-            return null;
-    }
+    $.each(Parser.ELEMENT_FACTORIES, function(index, element_factory) {
+        element = element_factory.parse_json(model);
+
+        if(element != null) {
+            return false;
+        }
+    });
+
+    return element;
+};
+
+Elements.Element.prototype.to_json = function() {
+    return JSON.stringify(this);
 };

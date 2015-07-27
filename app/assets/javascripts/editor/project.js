@@ -2,7 +2,7 @@ Project = function(project_model) {
     this.pages = [];
 
     $.each($.parseJSON(project_model.pages), function(idx, page_json) {
-        var page = Elements.Element.parse_json(page_json);
+        var page = Elements.Page.convert_from_json(page_json);
         this.add_page(page);
     }.bind(this));
 };
