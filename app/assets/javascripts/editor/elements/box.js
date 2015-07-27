@@ -38,3 +38,26 @@ Elements.Box.prototype.render = function() {
 
     return this.html;
 };
+
+Elements.Box.prototype.to_json = function() {
+    var json = { type: Elements.Box.TYPE,
+                        properties: [],
+                    };
+
+    $.each(this.properties, function(idx, property){
+        json.properties.push(JSON.stringify(property));
+    });
+
+    return JSON.stringify(json);
+};
+
+Elements.Box.parse_json = function(model) {
+    if(model.type != Elements.Box.TYPE) {
+        return null;
+    }
+    var properties = [];
+    $.each(model.properties, function(idx, property){
+        properties.push($.parseJSON(property));
+    });
+    return new Elements.Box(properties);
+};

@@ -222,5 +222,4 @@ Elements.Element.parse_json = function(json) {
 };
 
 Elements.Element.prototype.to_json = function() {
-    return JSON.stringify(this);
 };

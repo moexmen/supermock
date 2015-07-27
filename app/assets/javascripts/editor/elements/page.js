@@ -106,7 +106,6 @@ Elements.Page.convert_from_json = function(json, parent_page) {
 
     var curr_page = new Elements.Page(model.id, model.name);
 
-
     $.each(model.child_elements, function(idx, element_json){
         curr_page.child_elements.push(Elements.Element.parse_json(element_json));
     });
@@ -115,9 +114,6 @@ Elements.Page.convert_from_json = function(json, parent_page) {
         curr_page.child_pages.push(Elements.Page.convert_from_json(page_json, curr_page));
     });
 
-    // $.each(model.properties, function(idx, property_json) {
-    //     curr_page.properties.push(Elements.Properties.parse_json(property_json));
-    // });
     curr_page.parent_page = parent_page;
 
     return curr_page;
