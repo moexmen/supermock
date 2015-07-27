@@ -80,15 +80,19 @@ Elements.Page.prototype.render = function() {
 Elements.Page.prototype.to_json = function() {
     var page_json = {   child_elements: [],
                         child_pages: [],
-                        parent_page: this.parent_page,
+                        parent_page: null, //to prevent circular reference
                         type: Elements.Page.TYPE,
                         id: this.id,
-                        name: name,
+                        name: this.name,
                         properties: [],
                     };
 
     $.each(this.child_elements, function(idx, element){
         page_json.child_elements.push(element.to_json());
+    });
+
+    $.each(this.child_pages, function(idx, child_page) {
+        page_json.child_pages.push(child_page.to_json());
     });
 
     return JSON.stringify(page_json);
@@ -102,18 +106,19 @@ Elements.Page.convert_from_json = function(json, parent_page) {
 
     var curr_page = new Elements.Page(model.id, model.name);
 
-    curr_page.parent_page = parent_page;
 
     $.each(model.child_elements, function(idx, element_json){
         curr_page.child_elements.push(Elements.Element.parse_json(element_json));
     });
 
-    // $.each(model.child_pages, function(idx, page_json) {
-    //     curr_page.child_pages.push(Elements.Page.parse_json(page_json, curr_page));
-    // });
+    $.each(model.child_pages, function(idx, page_json) {
+        curr_page.child_pages.push(Elements.Page.convert_from_json(page_json, curr_page));
+    });
 
     // $.each(model.properties, function(idx, property_json) {
     //     curr_page.properties.push(Elements.Properties.parse_json(property_json));
     // });
+    curr_page.parent_page = parent_page;
+
     return curr_page;
 };

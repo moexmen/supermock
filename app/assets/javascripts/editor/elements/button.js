@@ -53,8 +53,12 @@ Elements.Button.prototype.to_json = function() {
 };
 
 Elements.Button.parse_json = function(model) {
-    if(model.type == Elements.Button.TYPE) {
-        return new Elements.Button(model.properties);
+    if(model.type != Elements.Button.TYPE) {
+        return null;
     }
-    return null;
+    var properties = [];
+    $.each(model.properties, function(idx, property){
+        properties.push($.parseJSON(property));
+    });
+    return new Elements.Button(properties);
 };

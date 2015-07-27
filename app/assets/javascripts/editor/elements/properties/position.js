@@ -20,9 +20,3 @@ Elements.Properties.Position.to_code = function(html) {
 
     return 'x=' + position.left + ' y=' + position.top;
 };
-
-Elements.Properties.Position.parse_json = function(json) {
-    var model = $.parseJSON(json);
-
-    return [{name: 'x', value: model.x}, {name: 'y', value: model.y}];
-};
