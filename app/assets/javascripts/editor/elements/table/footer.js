@@ -16,7 +16,7 @@ Elements.Table.Footer.PROPERTIES = [
 ];
 
 Elements.Table.Footer.map_from_code = function(parent_element, element_type, properties) {
-    if(parent_element.constructor == Elements.Table && element_type == Elements.Table.Footer.TYPE) {
+    if(element_type == Elements.Table.Footer.TYPE && parent_element.constructor == Elements.Table) {
         return new Elements.Table.Footer(properties);
     }
     else {
@@ -27,7 +27,8 @@ Elements.Table.Footer.map_from_code = function(parent_element, element_type, pro
 Elements.Table.Footer.prototype.render = function() {
     if(this.html == null) {
         this.html = Util.clone_template('#element_table_footer_template');
-        this.render_child_elements('tfoot');
+        
+        this.render_child_elements();
         this.html = this.html.find('tfoot');
 
         this.apply_properties();

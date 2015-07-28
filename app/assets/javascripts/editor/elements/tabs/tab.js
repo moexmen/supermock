@@ -22,7 +22,7 @@ Elements.Tabs.Tab.PROPERTIES = [
 
 Elements.Tabs.Tab.map_from_code = function(parent_element, element_type, properties) {
     if(element_type == Elements.Tabs.Tab.TYPE && parent_element.constructor == Elements.Tabs) {
-        return new Elements.Tabs.Tab(parent_element, properties);
+        return new Elements.Tabs.Tab(properties, parent_element);
     }
     else {
         return null;

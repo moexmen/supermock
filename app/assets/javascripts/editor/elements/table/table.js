@@ -35,7 +35,7 @@ Elements.Table.prototype.render = function() {
             .mousedown(function(e) { return Editor.mousedown_element(this, e); }.bind(this));
 
         this.apply_properties();
-        this.render_child_elements('table');
+        this.render_child_elements();
     }
 
     return this.html;

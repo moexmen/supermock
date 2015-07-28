@@ -65,19 +65,9 @@ Elements.Tabs.prototype.render = function() {
             .mousedown(function(e) { return Editor.mousedown_element(this, e); }.bind(this));
 
         this.apply_properties();
-        this.render_child_elements('ul'); //appends the tab, not the content
+        this.render_child_elements(); //appends the tab, not the content
 
     }
 
     return this.html;
 };
-
-// Elements.Tabs.prototype.render_tab_list = function() {
-//     this.render();
-//     return this.tab_list_html;
-// };
-
-// Elements.Tabs.prototype.render_tab_content = function() {
-//     this.render();
-//     return this.tab_content_html;
-// };

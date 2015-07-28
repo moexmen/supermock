@@ -32,7 +32,7 @@ Elements.Modal.prototype.render = function() {
             .mousedown(function(e) { return Editor.mousedown_element(this, e); }.bind(this));
 
         this.apply_properties();
-        this.render_child_elements('.modal-dialog > .modal-content');
+        this.render_child_elements();
     }
 
     return this.html;

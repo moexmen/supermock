@@ -31,7 +31,7 @@ Elements.Table.Header.Column.prototype.render = function() {
     if(this.html == null) {
         this.html = Util.clone_template('#element_table_header_column_template');
 
-        this.render_child_elements('th');
+        this.render_child_elements();
         this.html = this.html.find('th');
 
         this.apply_properties();

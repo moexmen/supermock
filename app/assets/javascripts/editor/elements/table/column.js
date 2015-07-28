@@ -19,9 +19,9 @@ Elements.Table.Column.PROPERTIES = [
 ];
 
 Elements.Table.Column.map_from_code = function(parent_element, element_type, properties) {
-    if((parent_element.constructor == Elements.Table.Row ||
-        parent_element.constructor == Elements.Table.Footer) && 
-        element_type == Elements.Table.Column.TYPE) {
+    if( element_type == Elements.Table.Column.TYPE && 
+        (parent_element.constructor == Elements.Table.Row ||
+        parent_element.constructor == Elements.Table.Footer)) {
         return new Elements.Table.Column(properties);
     }
     else {
@@ -33,7 +33,7 @@ Elements.Table.Column.prototype.render = function() {
     if(this.html == null) {
         this.html = Util.clone_template('#element_table_column_template');
 
-        this.render_child_elements('td');
+        this.render_child_elements();
         this.html = this.html.find('td');
 
         this.apply_properties();

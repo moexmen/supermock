@@ -159,13 +159,8 @@ Elements.Element.prototype.view_mode = function() {
     });
 };
 
-Elements.Element.prototype.render_child_elements = function(html) {
-    if(html == null) {
-        var elements_html = this.html.children('.child-elements').empty();
-    }
-    else {
-        var elements_html = this.html.find(html).empty();
-    }
+Elements.Element.prototype.render_child_elements = function() {
+    var elements_html = this.html.find('.child-elements:eq(0)').empty();
 
     $.each(this.child_elements, function(i, element) {
         elements_html.append(element.render());
@@ -207,18 +202,28 @@ Elements.Element.prototype.set_code = function(code) {
     this.render_child_elements();
 };
 
-Elements.Element.parse_json = function(json) {
+Elements.Element.parse_json = function(json, parent_element) {
     var model = $.parseJSON(json);
 
-    var element = null;
+    var properties = [];
+    $.each(model.properties, function(idx, property){
+        properties.push($.parseJSON(property));
+    });
 
+    var element = null;
     $.each(Parser.ELEMENT_FACTORIES, function(index, element_factory) {
-        if(model.type == element_factory.TYPE) {
-            element = Elements.Element.convert_json(model, element_factory);
+        element = element_factory.map_from_code(parent_element, model.type, properties);
+
+        if(element != null){
             return false;
         }
     });
 
+    if(model.child_elements) {
+        $.each(model.child_elements, function(idx, child_element){
+            element.child_elements.push(Elements.Element.parse_json(child_element, element));
+        });
+    }
     return element;
 };
 
@@ -230,27 +235,11 @@ Elements.Element.prototype.to_json = function() {
 
     $.each(this.properties, function(idx, property){
         json.properties.push(JSON.stringify(property));
-    });
+    }.bind(this));
 
     $.each(this.child_elements, function(idx, child_element){
         json.child_elements.push(child_element.to_json());
-    });
+    }.bind(this));
 
     return JSON.stringify(json);
-};
-
-Elements.Element.convert_json = function(model, element_factory) {
-    var properties = [];
-
-    $.each(model.properties, function(idx, property){
-        properties.push($.parseJSON(property));
-    });
-
-    var element = new element_factory(properties);
-    if(model.child_elements) {
-        $.each(model.child_elements, function(idx, child_element){
-            element.child_elements.push(Elements.Element.parse_json(child_element));
-        });
-    }
-    return element;
 };

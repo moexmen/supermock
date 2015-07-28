@@ -30,7 +30,7 @@ Elements.Table.Row.prototype.render = function() {
     if(this.html == null) {
         this.html = Util.clone_template('#element_table_row_template');
 
-        this.render_child_elements('tr');
+        this.render_child_elements();
         this.html = this.html.find('tr');
 
         this.apply_properties();

@@ -31,7 +31,7 @@ Elements.Table.Header.prototype.render = function() {
         this.html = this.html.find('thead');
 
         this.apply_properties();
-        this.render_child_elements('tr');
+        this.render_child_elements();
     }
 
     return this.html;
