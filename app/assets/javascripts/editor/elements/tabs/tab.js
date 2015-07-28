@@ -1,6 +1,6 @@
 //= require ./tabs
 
-Elements.Tabs.Tab = function(parent_tab, properties) {
+Elements.Tabs.Tab = function(properties, parent_tab) {
     Elements.Element.call(this);
 
     this.properties = properties;
@@ -33,25 +33,6 @@ Elements.Tabs.Tab.Content = {};
 Elements.Tabs.Tab.Content.PROPERTIES = [
     { type: Elements.Properties.Tabs.Selected, target: function(element) { return element.content_html; } },
 ];
-
-// Elements.Tabs.Tab.prototype.append = function(element) {
-//     this.render().append(element.render());
-//     this.fit_element(element);
-// };
-
-// Elements.Tabs.Tab.prototype.select = function() {
-//     this.tab_html.addClass('active');
-//     this.content_html.addClass('active');
-// };
-
-// Elements.Tabs.Tab.prototype.unselect = function() {
-//     this.tab_html.removeClass('active');
-//     this.content_html.removeClass('active');
-// };
-
-// Elements.Tabs.Tab.prototype.is_selected = function() {
-//     return this.tab_html.hasClass('active');
-// };
 
 Elements.Tabs.Tab.prototype.render = function() {
     if(this.tab_html == null) {

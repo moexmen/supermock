@@ -76,7 +76,7 @@ Editor.save = function() {
         method: "PUT",
         url: project_url,
         data: {'project[pages]': Editor.save_pages() },
-        success: alert( "Data saved successfully"),
+        success: Console.render_status().text("Data saved successfully"),
     });
 };
 
