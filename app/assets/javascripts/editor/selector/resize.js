@@ -153,7 +153,7 @@ Selector.resize.direction_handle_mapping = function(dir) {
 
 Selector.resize.resize_elements = function(new_size, new_position) {
     $.each(Selector.selected_elements, function(idx, element) {
-        console.log("Before", element.get_position());
+        // console.log("Before", element.get_position());
         var element_ratio = Selector.resize.element_dimensions[idx];
 
         var left = new_position.left + Math.round(element_ratio.left * new_size.width);
@@ -161,10 +161,10 @@ Selector.resize.resize_elements = function(new_size, new_position) {
         var width = Math.round(element_ratio.width * new_size.width);
         var height = Math.round(element_ratio.height * new_size.height);
 
-        console.log("During", left, top);
+        // console.log("During", left, top);
         element.set_position(left, top);
         element.set_size(width, height);
-        console.log("After", element.get_position());
+        // console.log("After", element.get_position());
     });
 }
 
