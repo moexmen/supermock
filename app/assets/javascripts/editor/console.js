@@ -24,6 +24,11 @@ Console.update_line_count = function() {
 };
 
 Console.keydown = function(e) {
+    if(e.keyCode === 71 && e.metaKey) { // command-A pressed
+        Editor.snap_to_grid();
+        
+        e.preventDefault();
+    }
     if(e.keyCode === 9) { // tab was pressed
         // get caret position/selection
         var start = this.selectionStart;

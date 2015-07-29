@@ -20,10 +20,6 @@ Elements.Properties.Checked.apply = function(html, properties) {
 Elements.Properties.Checked.to_code = function(html) {
     checked_property = html.prop('checked');
     
-    if(checked_property) {
-        return 'checked=true';
-    } else {
-        return '';
-    }
+    return checked_property ? 'checked=true' : '';
 };
 

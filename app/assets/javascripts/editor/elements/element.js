@@ -160,7 +160,12 @@ Elements.Element.prototype.view_mode = function() {
 };
 
 Elements.Element.prototype.render_child_elements = function() {
-    var elements_html = this.html.find('.child-elements:eq(0)').empty();
+    var elements_html = this.html.children('.child-elements:eq(0)');
+
+    if(elements_html == null) {
+        elements_html = this.html.find('.child-elements:eq(0)');
+    }
+    elements_html.empty();
 
     $.each(this.child_elements, function(i, element) {
         elements_html.append(element.render());
@@ -205,12 +210,10 @@ Elements.Element.prototype.set_code = function(code) {
 Elements.Element.parse_json = function(json, parent_element) {
     var model = $.parseJSON(json);
 
-    var properties = [];
-    $.each(model.properties, function(idx, property){
-        properties.push($.parseJSON(property));
-    });
+    var properties = Parser.parse_properties(model.properties);
 
     var element = null;
+
     $.each(Parser.ELEMENT_FACTORIES, function(index, element_factory) {
         element = element_factory.map_from_code(parent_element, model.type, properties);
 
@@ -228,13 +231,13 @@ Elements.Element.parse_json = function(json, parent_element) {
 };
 
 Elements.Element.prototype.to_json = function() {
-    var json = { type: this.constructor.TYPE,
-                        properties: [],
-                        child_elements: [],
+    var json = {    type: this.constructor.TYPE,
+                    properties: [this.constructor.TYPE],
+                    child_elements: [],
                     };
 
-    $.each(this.properties, function(idx, property){
-        json.properties.push(JSON.stringify(property));
+    $.each(this.properties_to_code().split(' '), function(idx, property){
+        json.properties.push(property);
     }.bind(this));
 
     $.each(this.child_elements, function(idx, child_element){

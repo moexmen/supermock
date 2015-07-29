@@ -41,7 +41,9 @@ Editor.init_mode = function() {
 Editor.init_buttons = function() {
     Editor.view_btn().click(Editor.view_mode);
     Editor.save_btn().click(Editor.save);
+    Editor.exit_btn().click(Editor.exit);
 };
+
 
 Editor.init_page_list = function() {
     PageList.init(this.project);
@@ -58,6 +60,10 @@ Editor.edit_mode = function() {
     Console.read_element(Editor.curr_page);
     
     Editor.mode = Editor.modes.EDIT;
+};
+
+Editor.exit = function() {
+    window.history.back();
 };
 
 Editor.view_mode = function() {
@@ -137,6 +143,26 @@ Editor.mousedown_element = function(element, event) {
     }
 }
 
+Editor.snap_to_grid = function() {
+    Selector.unselect_all();
+
+    var position_delta = 20;
+    var size_delta = 5;
+
+    $.each(PageList.curr_page().child_elements, function(idx, element){
+        var position = element.get_position();
+        var size = element.get_size();
+
+        var left = Math.round(position.left/position_delta) * position_delta;
+        var top = Math.round(position.top/position_delta) * position_delta;
+        var width = Math.round(size.width/size_delta) * size_delta;
+        var height = Math.round(size.height/size_delta) * size_delta;
+        
+        element.set_position(left, top);
+        element.set_size(width, height);
+    });
+};
+
 Editor.mouseup_element = function(element, event) {
     if(element instanceof Elements.Page) {
         Selector.unselect_all();
@@ -164,4 +190,8 @@ Editor.view_btn = function() {
 
 Editor.save_btn = function() {
     return $('#save_btn');
+};
+
+Editor.exit_btn = function() {
+    return $('#exit_btn');
 };
