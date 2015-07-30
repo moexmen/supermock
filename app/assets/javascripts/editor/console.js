@@ -29,7 +29,7 @@ Console.keydown = function(e) {
         
         e.preventDefault();
     }
-    if(e.keyCode === 9) { // tab was pressed
+    else if(e.keyCode === 9) { // tab was pressed
         // get caret position/selection
         var start = this.selectionStart;
         var end = this.selectionEnd;
@@ -46,27 +46,27 @@ Console.keydown = function(e) {
         // prevent the focus lose
         e.preventDefault();
     }
-    else if(e.keyCode === 13) { // enter was pressed
-        // get caret position/selection
-        var start = this.selectionStart;
-        var end = this.selectionEnd;
-
-        var value = Console.render().val();
-        var first_half = value.substring(0, start);
-        var second_half = value.substring(end);
-
-        var indent_level = first_half.split('\n').pop().match(/^\t*/)[0].length;
-
-        first_half += '\n';
-        for (i=0; i<indent_level; i++) {
-            first_half += '\t';
-        }
-
-        Console.render().val(first_half + second_half);
-        this.selectionStart = this.selectionEnd = start + indent_level + 1;
+    else if(e.keyCode === 13) { // enter pressed
+        Console.shift_to_previous_indent(this.selectionStart, this.selectionEnd);
 
         e.preventDefault();
     }
+};
+
+Console.shift_to_previous_indent = function(start, end) {
+    var value = Console.render().val();
+    var first_half = value.substring(0, start);
+    var second_half = value.substring(end);
+
+    var indent_level = first_half.split('\n').pop().match(/^\t*/)[0].length;
+
+    first_half += '\n'; //new line
+    for (i=0; i<indent_level; i++) {
+        first_half += '\t';
+    }
+
+    Console.render().val(first_half + second_half);
+    this.selectionStart = this.selectionEnd = start + indent_level + 1;
 };
 
 Console.keyup = function(e) {

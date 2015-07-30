@@ -60,24 +60,32 @@ Elements.Element.prototype.get_size = function() {
     return size;
 };
 
-Elements.Element.prototype.set_size_without_resize = function(width, height) {
+Elements.Element.prototype.set_property = function(name, value) {
+    $.each(this.properties, function(idx, property){
+        if(property.name == name){
+            property.value = value;
+            return false;
+        }
+    });
+};
+
+Elements.Element.prototype.set_width_height = function(width, height) {
     this.render().outerWidth(width).outerHeight(height);
+
+    this.set_property('w', width); 
+    this.set_property('h', height);
 };
 
 Elements.Element.prototype.set_size = function(width, height) {
     prev_dimensions = this.get_size();
+
     var prev_area = prev_dimensions.width * prev_dimensions.height;
-    new_area = width * height;
+    var new_area = width * height;
+    var difference = new_area - prev_area;
 
-    this.render().outerWidth(width).outerHeight(height);
+    this.set_width_height(width, height);
 
-    difference = new_area - prev_area;
-    if(difference > 0) {
-        this.on_increase_size();
-    }
-    else {
-        this.on_decrease_size();
-    }
+    difference > 0 ? this.on_increase_size() : this.on_decrease_size();
 };
 
 Elements.Element.prototype.on_increase_size = function() {
@@ -102,6 +110,10 @@ Elements.Element.prototype.get_position = function() {
 
 Elements.Element.prototype.set_position = function(left, top) {
     this.render().css({ left: left, top: top });
+
+    this.set_property('x', left); 
+    this.set_property('y', top);
+
     Console.refresh();
 };
 
@@ -207,42 +219,33 @@ Elements.Element.prototype.set_code = function(code) {
     this.render_child_elements();
 };
 
-Elements.Element.parse_json = function(json, parent_element) {
-    var model = $.parseJSON(json);
-
-    var properties = Parser.parse_properties(model.properties);
-
+Elements.Element.parse_json = function(model, parent_element) {
     var element = null;
 
     $.each(Parser.ELEMENT_FACTORIES, function(index, element_factory) {
-        element = element_factory.map_from_code(parent_element, model.type, properties);
+        element = element_factory.map_from_code(parent_element, model.type, model.properties);
 
-        if(element != null){
+        if(element != null) {
             return false;
         }
     });
 
-    if(model.child_elements) {
-        $.each(model.child_elements, function(idx, child_element){
-            element.child_elements.push(Elements.Element.parse_json(child_element, element));
-        });
-    }
+    $.each(model.child_elements, function(idx, child_element){
+        element.child_elements.push(Elements.Element.parse_json(child_element, element));
+    });
+
     return element;
 };
 
 Elements.Element.prototype.to_json = function() {
-    var json = {    type: this.constructor.TYPE,
-                    properties: [this.constructor.TYPE],
-                    child_elements: [],
-                    };
-
-    $.each(this.properties_to_code().split(' '), function(idx, property){ //cannot split by space
-        json.properties.push(property);
-    }.bind(this));
+    var element_json = {    type: this.constructor.TYPE,
+                            properties: this.properties,
+                            child_elements: [],
+                        };
 
     $.each(this.child_elements, function(idx, child_element){
-        json.child_elements.push(child_element.to_json());
+        element_json.child_elements.push(child_element.to_json());
     }.bind(this));
 
-    return JSON.stringify(json);
+    return element_json;
 };

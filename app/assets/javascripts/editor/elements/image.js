@@ -47,11 +47,11 @@ Elements.Image.prototype.set_size = function(width, height) {
     else {
         var height_based_on_width = Math.round(width / this.width_to_height_ratio);
         if (height > height_based_on_width) {
-            this.set_size_without_resize(width, height_based_on_width);
+            this.set_width_height(width, height_based_on_width);
         }
         else {
             var width_based_on_height = height * this.width_to_height_ratio;
-            this.set_size_without_resize(width_based_on_height, height);
+            this.set_width_height(width_based_on_height, height);
         }
     }
 };

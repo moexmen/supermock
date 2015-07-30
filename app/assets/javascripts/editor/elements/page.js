@@ -78,28 +78,28 @@ Elements.Page.prototype.render = function() {
 };
 
 Elements.Page.prototype.to_json = function() {
-    var page_json = {   child_elements: [],
-                        child_pages: [],
-                        parent_page: null, //to prevent circular reference
-                        type: Elements.Page.TYPE,
-                        id: this.id,
-                        name: this.name,
-                        properties: [],
-                    };
+    var save_object = {     child_elements: [],
+                            child_pages: [],
+                            type: Elements.Page.TYPE,
+                            id: this.id,
+                            name: this.name,
+                            properties: [],
+                        };
 
     $.each(this.child_elements, function(idx, element){
-        page_json.child_elements.push(element.to_json());
+        save_object.child_elements.push(element.to_json());
     });
 
     $.each(this.child_pages, function(idx, child_page) {
-        page_json.child_pages.push(child_page.to_json());
+        save_object.child_pages.push(child_page.to_json());
     });
 
-    return JSON.stringify(page_json);
+    return JSON.stringify(save_object);
 };
 
-Elements.Page.convert_from_json = function(json, parent_page) {
-    var model = $.parseJSON(json);
+Elements.Page.parse_json = function(model, parent_page) {
+    var model = $.parseJSON(model);
+    
     if(model.type.toLowerCase() != Elements.Page.TYPE.toLowerCase()) {
         return null;
     }
@@ -111,7 +111,7 @@ Elements.Page.convert_from_json = function(json, parent_page) {
     });
 
     $.each(model.child_pages, function(idx, page_json) {
-        curr_page.child_pages.push(Elements.Page.convert_from_json(page_json, curr_page));
+        curr_page.child_pages.push(Elements.Page.parse_json(page_json, curr_page));
     });
 
     curr_page.parent_page = parent_page;

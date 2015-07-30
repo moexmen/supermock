@@ -68,7 +68,7 @@ Editor.exit = function() {
 
 Editor.view_mode = function() {
     $('.editor_row').hide();
-    Editor.stage().css('background-image', 'none'); // empty string not working
+    Editor.stage().css('background-image', 'none'); // empty string doesn't work
 
     PageList.curr_page().view_mode();
     Selector.unselect_all();
@@ -77,7 +77,7 @@ Editor.view_mode = function() {
 };
 
 Editor.save = function() {
-    var project_url = location.href.split('/').reverse()[0];
+    var project_url = location.href.split('/').reverse()[0]; //to obtain the page id
     var data_save = $.ajax({
         method: "PUT",
         url: project_url,
@@ -93,7 +93,7 @@ Editor.save_pages = function() {
         pages.push(page.to_json());
     }.bind(this));
 
-    return JSON.stringify(pages);
+    return JSON.stringify(pages); //conversion to JSON for saving
 };
 
 Editor.is_edit_mode = function() {

@@ -39,7 +39,8 @@ Elements.Tabs.Tab.prototype.render = function() {
         var tab_id = Util.uuid();
 
         this.tab_html = Util.clone_template('#element_tab_template');
-        this.tab_html.find('a').attr('href', '#' + tab_id);
+        this.tab_html.find('a').attr('href', '#' + tab_id)
+            .click(function(e) { Selector.unselect_all(); }.bind(this));
 
         $.each(Elements.Tabs.Tab.PROPERTIES, function(index, property) {
             property.type.apply(property.target(this), this.properties);
