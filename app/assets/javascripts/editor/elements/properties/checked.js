@@ -5,12 +5,8 @@ Elements.Properties.Checked = {};
 
 Elements.Properties.Checked.apply = function(html, properties) {
     $.each(properties, function(index, property) {
-        if (property.name == 'checked' && property.value == 'true') {
-            html.prop('checked', true);
-
-            return false;
-        } else {
-            html.prop('checked', false);
+        if (property.name == 'checked') {
+            html.prop('checked', property.value == 'true');
 
             return false;
         }

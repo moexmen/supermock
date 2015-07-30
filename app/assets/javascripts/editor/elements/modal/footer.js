@@ -36,10 +36,10 @@ Elements.Modal.Footer.prototype.render = function() {
 };
 
 Elements.Modal.Footer.prototype.set_child_elements = function() {
-    this.html.children('.child-elements').children().css('position', 'initial');
+    this.html.children('.child-elements').css('position', 'initial');
 
-    $.each(this.child_elements, function(idx, element) {
-        element.set_unselectable();
-    }.bind(this));
+    // $.each(this.child_elements, function(idx, element) {
+    //     element.set_unselectable();
+    // }.bind(this));
 
 };

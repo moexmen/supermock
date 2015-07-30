@@ -37,9 +37,4 @@ Elements.Modal.Body.prototype.render = function() {
 
 Elements.Modal.Body.prototype.set_child_elements = function() {
     this.html.children('.child-elements').children().css('position', 'initial');
-
-    $.each(this.child_elements, function(idx, element) {
-        element.set_unselectable();
-    }.bind(this));
-
 };

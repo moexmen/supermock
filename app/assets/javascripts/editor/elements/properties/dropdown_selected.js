@@ -16,8 +16,5 @@ Elements.Properties.Dropdown.Selected.apply = function(html, properties) {
 
 Elements.Properties.Dropdown.Selected.to_code = function(html) {
     var data = html.prop('selected');
-    if(data) {
-        return 'selected=' + data;
-    }
-    return '';
+    return data ? 'selected=' + data : '';
 };

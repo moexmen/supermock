@@ -16,10 +16,7 @@ Elements.Properties.Click.apply = function(html, properties) {
 
 Elements.Properties.Click.to_code = function(html) {
     var data = html.data('click');
-    if(data) {
-        return 'click=' + data;
-    }
-    return '';
+    return data ? 'click=' + data : '';
 };
 
 

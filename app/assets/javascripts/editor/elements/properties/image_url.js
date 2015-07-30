@@ -5,7 +5,7 @@ Elements.Properties.ImageUrl = {};
 
 Elements.Properties.ImageUrl.apply = function(html, properties) {
     $.each(properties, function(index, property) {
-        if (property.name == 'src') {
+        if (property.name == '') {
             html.prop('src', property.value);
 
             return false;
@@ -14,5 +14,5 @@ Elements.Properties.ImageUrl.apply = function(html, properties) {
 };
 
 Elements.Properties.ImageUrl.to_code = function(html) {
-    return 'src=' + html.prop('src');
+    return html.prop('src');
 };
