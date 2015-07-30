@@ -57,7 +57,15 @@ PageList.Item.prototype.unselect = function() {
 };
 
 PageList.Item.prototype.generate_next_child_page_name = function() {
-    return this.page.id + ' > ' + (this.page.child_pages.length + 1);
+    var counter = 1;
+    var name = this.page.id + ' > ' + counter;
+
+    while (PageList.project.recursive_find_page(this.page, name) != null) {
+        counter += 1;
+        name = this.page.id + ' > ' + counter;
+    }
+
+    return name;
 };
 
 PageList.Item.prototype.render = function() {

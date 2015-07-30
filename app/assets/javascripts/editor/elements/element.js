@@ -61,12 +61,18 @@ Elements.Element.prototype.get_size = function() {
 };
 
 Elements.Element.prototype.set_property = function(name, value) {
+    var property_exists = false;
+
     $.each(this.properties, function(idx, property){
         if(property.name == name){
             property.value = value;
+            property_exists = true;
             return false;
         }
     });
+    if(!property_exists) {
+        this.properties.push({name: name, value: value});
+    }
 };
 
 Elements.Element.prototype.set_width_height = function(width, height) {

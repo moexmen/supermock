@@ -29,7 +29,7 @@ PageList.RootItem.prototype.remove_child_item = function(child_item) {
 }
 
 PageList.RootItem.prototype.generate_next_child_page_name = function() {
-    return 'Page ' + (this.project.pages.length + 1);
+    return 'Page ' + Util.create_random_word(8);
 }
 
 PageList.RootItem.prototype.render = function() {

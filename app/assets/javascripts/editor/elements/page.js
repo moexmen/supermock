@@ -78,14 +78,14 @@ Elements.Page.prototype.render = function() {
 };
 
 Elements.Page.prototype.to_json = function() {
-    var save_object = {     child_elements: [],
-                            child_pages: [],
-                            type: Elements.Page.TYPE,
+    var save_object = {     type: Elements.Page.TYPE,
                             id: this.id,
                             name: this.name,
-                            properties: [],
+                            content: null,
+                            parent_page: null,
+                            child_pages: [],
+                            child_elements: [],
                         };
-
     $.each(this.child_elements, function(idx, element){
         save_object.child_elements.push(element.to_json());
     });
