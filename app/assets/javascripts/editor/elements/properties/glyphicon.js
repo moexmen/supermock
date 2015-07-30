@@ -5,8 +5,8 @@ Elements.Properties.Glyphicon = {};
 
 Elements.Properties.Glyphicon.apply = function(html, properties) {
     $.each(properties, function(index, property) {
-        if (property.name == 'glyphicon') {
-            html.addClass(property.value);
+        if (property.name == '') {
+            html.addClass('glyphicon glyphicon-' + property.value);
 
             return false;
         }
@@ -14,5 +14,6 @@ Elements.Properties.Glyphicon.apply = function(html, properties) {
 };
 
 Elements.Properties.Glyphicon.to_code = function(html) {
-    return 'glyphicon=' + html.prop('class').split(' ')[1];
+    var glyphicon = html.prop('class').split(' ')[1]
+    return glyphicon != null ? glyphicon.slice('glyphicon-'.length) : '';
 };

@@ -236,7 +236,7 @@ Elements.Element.prototype.to_json = function() {
                     child_elements: [],
                     };
 
-    $.each(this.properties_to_code().split(' '), function(idx, property){
+    $.each(this.properties_to_code().split(' '), function(idx, property){ //cannot split by space
         json.properties.push(property);
     }.bind(this));
 

@@ -15,7 +15,6 @@ Elements.Icon.PROPERTIES = [
     { type: Elements.Properties.Position, target: function(element) { return element.html; } },
     { type: Elements.Properties.Size, target: function(element) { return element.html; } },
     { type: Elements.Properties.Glyphicon, target: function(element) { return element.html.find('span'); } },
-    { type: Elements.Properties.Text, target: function(element) { return element.html.find('span'); } },
 ];
 
 Elements.Icon.map_from_code = function(parent_element, element_type, properties) {

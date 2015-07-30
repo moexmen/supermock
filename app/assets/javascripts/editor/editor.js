@@ -63,7 +63,7 @@ Editor.edit_mode = function() {
 };
 
 Editor.exit = function() {
-    window.history.back();
+    location.href = '/projects';
 };
 
 Editor.view_mode = function() {

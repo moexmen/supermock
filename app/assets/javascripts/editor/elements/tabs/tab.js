@@ -52,7 +52,7 @@ Elements.Tabs.Tab.prototype.render = function() {
             property.type.apply(property.target(this), this.properties);
         }.bind(this));
 
-        this.render_child_elements(); //appends the tab, not the content
+        this.render_child_elements(); //appends the child elements, not the content
 
         this.attach_content(); //appends the content to tab-content kept in parent tabs
     }
