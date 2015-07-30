@@ -28,6 +28,7 @@ Console.keydown = function(e) {
         Editor.snap_to_grid();
         
         e.preventDefault();
+        Console.refresh();
     }
     else if(e.keyCode === 9) { // tab was pressed
         // get caret position/selection
@@ -47,16 +48,16 @@ Console.keydown = function(e) {
         e.preventDefault();
     }
     else if(e.keyCode === 13) { // enter pressed
-        Console.shift_to_previous_indent(this.selectionStart, this.selectionEnd);
-
+        this.selectionStart = Console.shift_to_previous_indent(this.selectionStart);
+        this.selectionEnd = this.selectionStart;
         e.preventDefault();
     }
 };
 
-Console.shift_to_previous_indent = function(start, end) {
+Console.shift_to_previous_indent = function(start) {
     var value = Console.render().val();
     var first_half = value.substring(0, start);
-    var second_half = value.substring(end);
+    var second_half = value.substring(start);
 
     var indent_level = first_half.split('\n').pop().match(/^\t*/)[0].length;
 
@@ -66,7 +67,7 @@ Console.shift_to_previous_indent = function(start, end) {
     }
 
     Console.render().val(first_half + second_half);
-    this.selectionStart = this.selectionEnd = start + indent_level + 1;
+    return start + indent_level + 1;
 };
 
 Console.keyup = function(e) {
