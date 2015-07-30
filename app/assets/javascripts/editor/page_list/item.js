@@ -58,14 +58,14 @@ PageList.Item.prototype.unselect = function() {
 
 PageList.Item.prototype.generate_next_child_page_name = function() {
     var counter = 1;
-    var name = this.page.id + ' > ' + counter;
+    $.each(this.page.child_pages, function(idx, child_page){
+        var child_page_number = parseInt(child_page.id.split(' ').pop());
+        if (child_page_number > counter) {
+            counter = child_page_number;
+        }
+    });
 
-    while (PageList.project.recursive_find_page(this.page, name) != null) {
-        counter += 1;
-        name = this.page.id + ' > ' + counter;
-    }
-
-    return name;
+    return this.page.id + ' > ' + (counter + 1);
 };
 
 PageList.Item.prototype.render = function() {
