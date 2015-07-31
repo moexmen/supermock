@@ -6,10 +6,6 @@ Console.init = function() {
     Console.render().keydown(Console.keydown).keyup(Console.keyup).scroll(Console.scroll);
 };
 
-Console.scroll = function() {
-    // Console.line_count_gutter().style.top = -(Console.render().scrollTop) + "px";
-};
-
 Console.update_line_count = function() {
     var line_count = Console.render().val().split("\n").length;
 
@@ -19,8 +15,6 @@ Console.update_line_count = function() {
         var text_so_far = Console.line_count_gutter().text()
         Console.line_count_gutter().text(text_so_far + i + "." + "\n");
     }
-
-    // Console.line_count_gutter().style.top = -(Console.render().scrollTop) + "px";
 };
 
 Console.keydown = function(e) {
@@ -100,6 +94,7 @@ Console.refresh = function() {
     }
     else {
         Console.render().val(Console.target_element.to_code()).prop('disabled', false);
+        Console.update_line_count();
     }
 };
 

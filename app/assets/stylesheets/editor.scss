@@ -295,6 +295,9 @@
   }
 
   .element-image {
+    width: 160px; 
+    height: 140px;
+    
     > img {
       left: inherit;
       top: inherit;
@@ -426,8 +429,8 @@
   }
 
   .element-modal-body {
-    margin: 15px;
-    padding: 0px;
+    // margin: 15px;
+    padding: 15px;
     width: auto;
     height: 100%;
   }
@@ -443,8 +446,8 @@
 
   .element-modal-footer {
     position: relative;
-    margin: 15px;
+    // margin: 15px;
     width: auto;
-    height: 40px;
+    height: 55px;
   }
 }

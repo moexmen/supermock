@@ -23,12 +23,7 @@ Selector.move.elements_movable = function() {
 }
 
 Selector.move.update_cursor = function() {
-    if(Selector.move.elements_movable()) {
-        Selector.render().css('cursor', 'move');
-    }
-    else {
-        Selector.render().css('cursor', 'not-allowed');
-    }
+    Selector.render().css('cursor', Selector.move.elements_movable() ? 'move' : 'not-allowed');
 }
 
 Selector.move.mousedown = function(e) {
