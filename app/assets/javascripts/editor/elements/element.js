@@ -107,6 +107,7 @@ Elements.Element.prototype.get_position = function() {
     //$('#invisible_dom').append(this.render());
 
     var position = this.render().position();
+    var offset = this.render().offset();
 
     //this.render().detach();
     //original_parent.append(this.render());
@@ -121,6 +122,16 @@ Elements.Element.prototype.set_position = function(left, top) {
     this.set_property('y', top);
 
     Console.refresh();
+};
+
+Elements.Element.prototype.get_position_relative_to_parent = function() {
+    var position = this.render().offset();
+    var canvas_position = Editor.canvas().offset();
+
+    position.left -= canvas_position.left;
+    position.top -= canvas_position.top;
+
+    return position;
 };
 
 Elements.Element.prototype.get_position_relative_to_canvas = function() {

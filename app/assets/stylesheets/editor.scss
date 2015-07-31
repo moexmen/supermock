@@ -415,7 +415,7 @@
 
     .modal-backdrop.in {
       z-index: 0;
-      position: fixed;
+      position: absolute;
       left: 0;
       top: 0;
       width: 960px;
@@ -429,7 +429,7 @@
     margin: 15px;
     padding: 0px;
     width: auto;
-    height: auto;
+    height: 100%;
   }
 
   .element-modal-header {
@@ -445,6 +445,6 @@
     position: relative;
     margin: 15px;
     width: auto;
-    height: auto;
+    height: 40px;
   }
 }

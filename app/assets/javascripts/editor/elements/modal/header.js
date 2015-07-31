@@ -1,9 +1,10 @@
 //= require ./modal
 
-Elements.Modal.Header = function(properties) {
+Elements.Modal.Header = function(parent_modal, properties) {
     Elements.Element.call(this);
 
     this.properties = properties;
+    this.parent_modal = parent_modal;
 };
 
 Elements.Modal.Header.prototype = Object.create(Elements.Element.prototype);
@@ -18,7 +19,7 @@ Elements.Modal.Header.PROPERTIES = [
 
 Elements.Modal.Header.map_from_code = function(parent_element, element_type, properties) {
     if(element_type == Elements.Modal.Header.TYPE && parent_element.constructor == Elements.Modal) {
-        return new Elements.Modal.Header(properties);
+        return new Elements.Modal.Header(parent_element, properties);
     }
     else {
         return null;

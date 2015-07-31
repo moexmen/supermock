@@ -28,9 +28,6 @@ Elements.Modal.prototype.render = function() {
     if(this.html == null) {
         this.html = Util.clone_template('#element_modal_template');
 
-        this.hitarea = this.html.children('.hitarea')
-            .mousedown(function(e) { return Editor.mousedown_element(this, e); }.bind(this));
-
         this.apply_properties();
         this.render_child_elements();
     }
