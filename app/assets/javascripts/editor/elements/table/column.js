@@ -42,3 +42,11 @@ Elements.Table.Column.prototype.render = function() {
 
     return this.html;
 };
+
+Elements.Table.Column.prototype.render_child_elements = function() {
+    var elements_html = this.html.children('td').empty();
+
+    $.each(this.child_elements, function(i, element) {
+        elements_html.append(element.render());
+    });
+};

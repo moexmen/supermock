@@ -38,3 +38,12 @@ Elements.Table.Row.prototype.render = function() {
 
     return this.html;
 };
+
+
+Elements.Table.Row.prototype.render_child_elements = function() {
+    var elements_html = this.html.find('tr').empty();
+
+    $.each(this.child_elements, function(i, element) {
+        elements_html.append(element.render());
+    });
+};

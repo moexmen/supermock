@@ -29,16 +29,11 @@ Elements.Modal.Footer.prototype.render = function() {
         this.html = Util.clone_template('#element_modal_footer_template');
 
         this.hitarea = this.html.children('.hitarea')
-            .mousedown(function(e) { console.log("Kenna footer"); return Editor.mousedown_element(this.parent_modal, e); }.bind(this));
+            .mousedown(function(e) { return Editor.mousedown_element(this.parent_modal, e); }.bind(this));
 
         this.apply_properties();
         this.render_child_elements();
-        this.set_child_elements();
     }
 
     return this.html;
-};
-
-Elements.Modal.Footer.prototype.set_child_elements = function() {
-    // this.html.children('.child-elements').children().css('position', 'initial');
 };

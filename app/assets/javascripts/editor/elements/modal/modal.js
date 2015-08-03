@@ -14,7 +14,6 @@ Elements.Modal.prototype.constructor = Elements.Modal;
 Elements.Modal.TYPE = 'modal';
 
 Elements.Modal.PROPERTIES = [
-    { type: Elements.Properties.Size, target: function(element) { return element.modal_content; } },
 ];
 
 Elements.Modal.map_from_code = function(parent_element, element_type, properties) {
@@ -38,7 +37,6 @@ Elements.Modal.prototype.render = function() {
         this.html.find('.modal-backdrop').click(function(e) {
             Selector.unselect_all();
             Console.read_element(PageList.curr_page());
-            console.log('WHAT IS GOING ON?');
         });
 
         this.apply_properties();

@@ -39,3 +39,11 @@ Elements.Table.Header.Column.prototype.render = function() {
 
     return this.html;
 };
+
+Elements.Table.Header.Column.prototype.render_child_elements = function() {
+    var elements_html = this.html.children('th').empty();
+
+    $.each(this.child_elements, function(i, element) {
+        elements_html.append(element.render());
+    });
+};

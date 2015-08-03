@@ -12,7 +12,6 @@ Elements.Table.Footer.prototype.constructor = Elements.Table.Footer;
 Elements.Table.Footer.TYPE = 'footer';
 
 Elements.Table.Footer.PROPERTIES = [
-    { type: Elements.Properties.Border, target: function(element) { return element.html; } },
 ];
 
 Elements.Table.Footer.map_from_code = function(parent_element, element_type, properties) {
@@ -40,3 +39,10 @@ Elements.Table.Footer.prototype.render = function() {
 };
 
 
+Elements.Table.Footer.prototype.render_child_elements = function() {
+    var elements_html = this.html.children('tfoot').empty();
+
+    $.each(this.child_elements, function(i, element) {
+        elements_html.append(element.render());
+    });
+};

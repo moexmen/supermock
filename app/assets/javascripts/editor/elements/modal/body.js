@@ -13,6 +13,7 @@ Elements.Modal.Body.prototype.constructor = Elements.Modal.Body;
 Elements.Modal.Body.TYPE = 'body';
 
 Elements.Modal.Body.PROPERTIES = [
+    { type: Elements.Properties.Size, target: function(element) { return element.html; } },
 ];
 
 Elements.Modal.Body.map_from_code = function(parent_element, element_type, properties) {
@@ -29,16 +30,11 @@ Elements.Modal.Body.prototype.render = function() {
         this.html = Util.clone_template('#element_modal_body_template');
 
         this.hitarea = this.html.children('.hitarea')
-            .mousedown(function(e) { console.log("Kenna body"); return Editor.mousedown_element(this.parent_modal, e); }.bind(this));
+            .mousedown(function(e) { return Editor.mousedown_element(this.parent_modal, e); }.bind(this));
 
         this.apply_properties();
         this.render_child_elements();
-        this.set_child_elements();
     }
 
     return this.html;
-};
-
-Elements.Modal.Body.prototype.set_child_elements = function() {
-    // this.html.children('.child-elements').children().css('position', 'initial');
 };

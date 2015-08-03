@@ -189,9 +189,11 @@ Elements.Element.prototype.properties_to_code = function() {
     var code = '';
 
     $.each(this.constructor.PROPERTIES, function(i, property) {
-        property_code = property.type.to_code(property.target(this));
-        if(property_code != '') {
-            code += ' ' + property_code;
+        if(this.html != null) {
+            property_code = property.type.to_code(property.target(this));
+            if(property_code != '') {
+                code += ' ' + property_code;
+            }
         }
     }.bind(this));
 

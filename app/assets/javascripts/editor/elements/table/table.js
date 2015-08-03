@@ -42,3 +42,10 @@ Elements.Table.prototype.render = function() {
 };
 
 
+Elements.Table.prototype.render_child_elements = function() {
+    var elements_html = this.html.children('table').empty();
+
+    $.each(this.child_elements, function(i, element) {
+        elements_html.append(element.render());
+    });
+};

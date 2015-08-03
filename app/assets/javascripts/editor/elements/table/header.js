@@ -12,7 +12,6 @@ Elements.Table.Header.prototype.constructor = Elements.Table.Header;
 Elements.Table.Header.TYPE = 'header';
 
 Elements.Table.Header.PROPERTIES = [
-    { type: Elements.Properties.Border, target: function(element) { return element.html; } },
     { type: Elements.Properties.Table.Column.TextAlign, target: function(element) { return element.html; } },
 ];
 
@@ -37,4 +36,10 @@ Elements.Table.Header.prototype.render = function() {
     return this.html;
 };
 
+Elements.Table.Header.prototype.render_child_elements = function() {
+    var elements_html = this.html.children('tr').empty();
 
+    $.each(this.child_elements, function(i, element) {
+        elements_html.append(element.render());
+    });
+};

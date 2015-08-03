@@ -15,5 +15,8 @@ Elements.Properties.Table.Column.TextAlign.apply = function(html, properties) {
 
 Elements.Properties.Table.Column.TextAlign.to_code = function(html) {
     var span = html.css('text-align');
-    return span != 'start' ? 'text-align=' + span : '';
+    if(span == 'start' || span == '') {
+        return '';
+    }
+    return 'text-align=' + span;
 };
