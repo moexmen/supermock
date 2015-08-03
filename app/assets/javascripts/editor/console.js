@@ -2,7 +2,6 @@ var Console = Console || {};
 
 Console.init = function() {
     Console.target_element = null;
-    Console.auto_save_counter = 0;
     Console.render().keydown(Console.keydown).keyup(Console.keyup);
 };
 
@@ -70,15 +69,6 @@ Console.keyup = function(e) {
     }
     Console.update_line_count();
     Console.compile();
-    Console.increment_counter();
-};
-
-Console.increment_counter = function() {
-    Console.auto_save_counter += 1;
-};
-
-Console.clear_counter = function() {
-    Console.auto_save_counter = 0;
 };
 
 Console.compile = function() {
@@ -104,7 +94,6 @@ Console.refresh = function() {
     else {
         Console.render().val(Console.target_element.to_code()).prop('disabled', false);
         Console.update_line_count();
-        Console.increment_counter();
     }
 };
 

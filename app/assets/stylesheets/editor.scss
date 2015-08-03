@@ -297,7 +297,7 @@
   .element-image {
     width: 160px; 
     height: 140px;
-    
+
     > img {
       left: inherit;
       top: inherit;
@@ -426,6 +426,12 @@
       margin-right: auto;
       height: auto;
     }
+
+    .modal-content {
+      height: auto;
+      width: 100%;
+    }
+
   }
 
   .element-modal-body {

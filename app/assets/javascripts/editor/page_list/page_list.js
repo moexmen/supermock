@@ -80,6 +80,12 @@ PageList.delete_item = function(item) {
     }
 };
 
+PageList.rename_item = function(item) {
+    var new_name = prompt("Name?", item.page.id);
+    item.page.id = new_name;
+    item.render().children('div:eq(0)').text(new_name);
+};
+
 PageList.top_level_items = function() {
     return PageList.root_item.child_items;
 };

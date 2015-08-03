@@ -33,8 +33,13 @@ Elements.Modal.prototype.render = function() {
         this.modal_content = this.html.find('.modal-content');
 
         this.render_child_elements();
-        this.hitarea = this.html.children('.modal-dialog').children('.hitarea:eq(0)')
-            .mousedown(function(e) { console.log("Kenna main"); return Editor.mousedown_element(this, e); }.bind(this));
+        this.hitarea = this.html.children('.modal-dialog').children('.hitarea:eq(0)');
+
+        this.html.find('.modal-backdrop').click(function(e) {
+            Selector.unselect_all();
+            Console.read_element(PageList.curr_page());
+            console.log('WHAT IS GOING ON?');
+        });
 
         this.apply_properties();
     }
@@ -66,6 +71,7 @@ Elements.Modal.prototype.set_width_height = function(width, height) {
     var body_height =  height - (header_height + footer_height);
 
     this.render().find('.modal-body:eq(0)').outerHeight(body_height);
+    this.render().find('.modal-content:eq(0)').outerHeight(height);
 
-    this.set_property('h', body_height);
+    this.set_property('h', height);
 };

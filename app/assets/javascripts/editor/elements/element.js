@@ -47,15 +47,7 @@ Elements.Element.prototype.add_element = function(element) {
 };
 
 Elements.Element.prototype.get_size = function() {
-    //var original_parent = this.render().parent();
-    //
-    //this.render().detach();
-    //$('#invisible_dom').append(this.render());
-
     var size = { width: this.render().outerWidth(), height: this.render().outerHeight() };
-
-    //this.render().detach();
-    //original_parent.append(this.render());
 
     return size;
 };

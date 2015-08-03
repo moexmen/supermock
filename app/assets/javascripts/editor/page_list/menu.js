@@ -15,6 +15,7 @@ PageList.Menu.enable_menu_for = function(page_item) {
             var page_item = context.parent().data('page_item');
 
             if(menu_item === 'New Child Page') PageList.add_item(null, page_item);
+            else if(menu_item === 'Rename') PageList.rename_item(page_item);
             else if(menu_item === 'Delete') PageList.delete_item(page_item);
         }
     })
@@ -42,5 +43,5 @@ PageList.Menu.new_child_page_menu_item = function() {
 }
 
 PageList.Menu.delete_menu_item = function() {
-    return this.render().find('li:eq(1)');
+    return this.render().find('li:eq(2)');
 }
