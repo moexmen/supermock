@@ -160,7 +160,7 @@ Selector.resize.resize_elements = function(new_size, new_position) {
         var width = Math.round(element_ratio.width * new_size.width);
         var height = Math.round(element_ratio.height * new_size.height);
 
-        element.set_position(left, top);
+        element.set_position_relative_to_canvas(left, top);
         element.set_size(width, height);
     });
 }

@@ -101,18 +101,7 @@ Elements.Element.prototype.on_decrease_size = function() {
 };
 
 Elements.Element.prototype.get_position = function() {
-    //var original_parent = this.render().parent();
-    //
-    //this.render().detach();
-    //$('#invisible_dom').append(this.render());
-
-    var position = this.render().position();
-    var offset = this.render().offset();
-
-    //this.render().detach();
-    //original_parent.append(this.render());
-
-    return position;
+    return this.render().position();
 };
 
 Elements.Element.prototype.set_position = function(left, top) {
@@ -124,20 +113,21 @@ Elements.Element.prototype.set_position = function(left, top) {
     Console.refresh();
 };
 
-Elements.Element.prototype.get_position_relative_to_canvas = function() {
-    //var original_parent = this.render().parent();
-    //
-    //this.render().detach();
-    //$('#invisible_dom').append(this.render());
+Elements.Element.prototype.set_position_relative_to_canvas = function(left, top) {
+    var canvas_position = Editor.canvas().offset();
 
+    this.render().offset({ 
+            top: top + canvas_position.top, 
+            left: left + canvas_position.left
+        });
+};
+
+Elements.Element.prototype.get_position_relative_to_canvas = function() {
     var position = this.render().offset();
     var canvas_position = Editor.canvas().offset();
 
     position.left -= canvas_position.left;
     position.top -= canvas_position.top;
-
-    //this.render().detach();
-    //original_parent.append(this.render());
 
     return position;
 };
