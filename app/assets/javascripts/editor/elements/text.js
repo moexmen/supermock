@@ -5,6 +5,7 @@ Elements.Text = function(properties) {
 
     this.properties = properties;
     this.text_html = null;
+    this.prev_text = '';
 };
 
 Elements.Text.prototype = Object.create(Elements.Element.prototype);
@@ -16,6 +17,7 @@ Elements.Text.PROPERTIES = [
     { type: Elements.Properties.Position, target: function(element) { return element.html; } },
     { type: Elements.Properties.Size, target: function(element) { return element.html; } },
     { type: Elements.Properties.Border, target: function(element) { return element.html; } },
+    { type: Elements.Properties.FontSize, target: function(element) { return element.html.find('span'); } },
     { type: Elements.Properties.Text, target: function(element) { return element.html.find('span'); } },
 ];
 
@@ -41,6 +43,7 @@ Elements.Text.prototype.render = function() {
     if(this.html == null) {
         this.html = Util.clone_template('#element_text_template');
         this.text_html = this.html.find('span');
+        this.text_html.text(this.prev_text);
 
         this.hitarea = this.html.children('.hitarea')
             .mousedown(function(e) { return Editor.mousedown_element(this, e); }.bind(this))
@@ -49,6 +52,7 @@ Elements.Text.prototype.render = function() {
 
         if(this.text_html.text().length == 0) {
             this.generate_text();
+            this.set_property('hidden-text', this.text_html.text());
         }
     }
 
@@ -79,12 +83,14 @@ Elements.Text.prototype.on_increase_size = function() {
 
     // Remove last word to prevent clipping
     this.text_html.text(this.text_html.text().split(' ').slice(0, -1).join(' '));
+    this.set_property('hidden-text', this.text_html.text());
 };
 
 Elements.Text.prototype.on_decrease_size = function() {
     if(this.check_edited_text()) {
         return;
     }
+
     while(this.text_html.outerHeight() > this.html.outerHeight()) {
         this.text_html.text(this.text_html.text().split(' ').slice(0, -1).join(' '));
         
@@ -93,6 +99,7 @@ Elements.Text.prototype.on_decrease_size = function() {
             break;
         }
     }
+    this.set_property('hidden-text', this.text_html.text());
 };
 
 Elements.Text.prototype.check_edited_text = function() {

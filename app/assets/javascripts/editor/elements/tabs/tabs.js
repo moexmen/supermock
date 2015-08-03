@@ -6,7 +6,6 @@ Elements.Tabs = function(properties) {
     this.properties = properties;
     this.tab_list_html = null;
     this.tab_content_html = null;
-    this.selected_tab_id = null;
 };
 
 Elements.Tabs.prototype = Object.create(Elements.Element.prototype);
@@ -43,4 +42,15 @@ Elements.Tabs.prototype.render = function() {
     }
 
     return this.html;
+};
+
+Elements.Tabs.prototype.render_child_elements = function() {
+    var elements_html = this.html.children('.child-elements:eq(0)').empty();
+
+    $.each(this.child_elements, function(i, element) {
+        if(i == this.child_elements.length - 1) {
+            element.set_property('selected', 'true');
+        }
+        elements_html.append(element.render());
+    });
 };

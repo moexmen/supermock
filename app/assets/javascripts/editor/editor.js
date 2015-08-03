@@ -31,6 +31,10 @@ Editor.init = function() {
 Editor.load_project = function() {
     var project_model = $('#editor').data('project');
     this.project = new Project(project_model);
+    Editor.auto_save_timer = setInterval(Editor.auto_save, 10000);
+    $(window).bind('beforeunload', function() {
+        return "Save your work!";
+    });
 };
 
 Editor.init_mode = function() {
@@ -76,13 +80,20 @@ Editor.view_mode = function() {
     Editor.mode = Editor.modes.VIEW;
 };
 
+Editor.auto_save = function() {
+    if(Console.auto_save_counter > 0) {
+        Editor.save();
+        Console.clear_counter();
+    }
+};
+
 Editor.save = function() {
     var project_url = location.href.split('/').reverse()[0]; //to obtain the page id
     var data_save = $.ajax({
         method: "PUT",
         url: project_url,
         data: {'project[pages]': Editor.save_pages() },
-        success: Console.render_status().text("Data saved successfully"),
+        success: Console.render_status().text("Data saved successfully").css('color', 'green'),
     });
 };
 
