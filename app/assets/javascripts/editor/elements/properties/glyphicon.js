@@ -14,6 +14,6 @@ Elements.Properties.Glyphicon.apply = function(html, properties) {
 };
 
 Elements.Properties.Glyphicon.to_code = function(html) {
-    var glyphicon = html.prop('class').split(' ')[1]
+    var glyphicon = html.prop('class').split(' ')[1];
     return glyphicon != null ? glyphicon.slice('glyphicon-'.length) : '';
 };
