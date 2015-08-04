@@ -17,7 +17,7 @@ Console.update_line_count = function() {
 };
 
 Console.keydown = function(e) {
-    if(e.keyCode === 71 && e.metaKey) { // command-A pressed
+    if(e.keyCode === 71 && e.metaKey) { // command-G pressed
         Editor.snap_to_grid();
         
         e.preventDefault();

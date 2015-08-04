@@ -175,6 +175,7 @@ Editor.snap_to_grid = function() {
         element.set_position(left, top);
         element.set_size(width, height);
     });
+    Console.refresh();
 };
 
 Editor.mouseup_element = function(element, event) {

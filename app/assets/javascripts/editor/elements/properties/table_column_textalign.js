@@ -6,7 +6,7 @@ Elements.Properties.Table.Column.TextAlign = {};
 
 Elements.Properties.Table.Column.TextAlign.apply = function(html, properties) {
     $.each(properties, function(index, property) {
-        if (property.name == 'text-align') {
+        if (property.name == 'align') {
             html.css('text-align', property.value);
             return false;
         }
@@ -18,5 +18,5 @@ Elements.Properties.Table.Column.TextAlign.to_code = function(html) {
     if(span == 'start' || span == '') {
         return '';
     }
-    return 'text-align=' + span;
+    return 'align=' + span;
 };

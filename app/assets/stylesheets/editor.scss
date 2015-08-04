@@ -374,6 +374,46 @@
     }
   }
 
+  .element-checkboxes {
+    width: 400px;
+    height: 100px;
+
+    > div {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      // flex-direction: column;
+      justify-content: space-between;
+    }
+  }
+
+  .element-checkbox-item {
+    left: auto;
+    top: auto;
+    display: flex;
+    position: inherit;
+  }
+
+  .element-radiobuttons {
+    width: 400px;
+    height: 100px;
+
+    > div {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      // flex-direction: column;
+      justify-content: space-between;
+    }
+  }
+
+  .element-radiobutton-item {
+    left: auto;
+    top: auto;
+    display: flex;
+    position: inherit;
+  }
+
   .element-table {
     width: 400px;
     height: 200px;

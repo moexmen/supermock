@@ -9,7 +9,7 @@ Elements.Table.Column = function(properties) {
 Elements.Table.Column.prototype = Object.create(Elements.Element.prototype);
 Elements.Table.Column.prototype.constructor = Elements.Table.Column;
 
-Elements.Table.Column.TYPE = 'data';
+Elements.Table.Column.TYPE = 'column';
 
 Elements.Table.Column.PROPERTIES = [
     { type: Elements.Properties.Table.Column.Merge, target: function(element) { return element.html; } },
@@ -44,7 +44,7 @@ Elements.Table.Column.prototype.render = function() {
 };
 
 Elements.Table.Column.prototype.render_child_elements = function() {
-    var elements_html = this.html.children('td').empty();
+    var elements_html = this.html.find('td').empty();
 
     $.each(this.child_elements, function(i, element) {
         elements_html.append(element.render());
