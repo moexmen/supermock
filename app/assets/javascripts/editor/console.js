@@ -18,9 +18,12 @@ Console.update_line_count = function() {
 
 Console.keydown = function(e) {
     if(e.keyCode === 71 && e.metaKey) { // command-G pressed
-        Editor.snap_to_grid();
-        
         e.preventDefault();
+        
+        console.log('Whuuuut?');
+        Selector.unselect_all();
+        Editor.snap_to_grid([Console.target_element]);
+        
         Console.refresh();
     }
     else if(e.keyCode === 9) { // tab was pressed

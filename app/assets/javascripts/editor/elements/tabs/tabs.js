@@ -48,9 +48,6 @@ Elements.Tabs.prototype.render_child_elements = function() {
     var elements_html = this.html.children('.child-elements:eq(0)').empty();
 
     $.each(this.child_elements, function(i, element) {
-        if(i == this.child_elements.length - 1) {
-            element.set_property('selected', 'true');
-        }
         elements_html.append(element.render());
     });
 };

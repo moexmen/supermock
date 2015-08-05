@@ -1,4 +1,4 @@
-//= require ./property
+//= require ../property
 // var Elements = Elements || {};
 // Elements.Properties = Elements.Properties || {};
 Elements.Properties.Tabs = Elements.Properties.Tabs || {};

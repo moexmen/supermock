@@ -82,7 +82,10 @@ PageList.delete_item = function(item) {
 
 PageList.rename_item = function(item) {
     var new_name = prompt("Name?", item.page.id);
-    while(Editor.project.find_page(new_name) != null) {
+    while(Editor.project.find_page(new_name) != null || new_name == '') {
+        if(new_name == item.page.id) {
+            break;
+        }
         new_name = prompt("Name in use for another page. Please try again", item.page.id);
     }
 

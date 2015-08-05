@@ -32,11 +32,15 @@ Editor.load_project = function() {
     Editor.prev_save = $('#editor').data('project');
     this.project = new Project(Editor.prev_save);
 
-    Editor.auto_save_timer = setInterval(Editor.save, 10000);
+    Editor.set_saving_criterion();
+};
 
-    $(window).bind('beforeunload', function() {
-        return "Save your work!";
-    });
+Editor.set_saving_criterion = function() {
+    Editor.auto_save_timer = setInterval(Editor.auto_save, 10000);
+
+    window.onbeforeunload = function (e) {
+        return Editor.save_updated() ? null : "Don't forget to save";
+    };
 };
 
 Editor.init_mode = function() {
@@ -74,7 +78,7 @@ Editor.exit = function() {
 
 Editor.view_mode = function() {
     $('.editor_row').hide();
-    Editor.stage().css('background-image', 'none'); // empty string doesn't work
+    Editor.stage().css('background-image', 'none');
 
     PageList.curr_page().view_mode();
     Selector.unselect_all();
@@ -82,22 +86,30 @@ Editor.view_mode = function() {
     Editor.mode = Editor.modes.VIEW;
 };
 
-Editor.save = function() {
+Editor.auto_save = function() {
     var project_data = Editor.save_pages();
 
-    if(project_data != Editor.prev_save){
-        var project_url = location.href.split('/').reverse()[0]; //to obtain the page id
-
-        $.ajax({
-            method: "PUT",
-            url: project_url,
-            data: {'project[pages]': project_data },
-            success: Console.render_status().text("Data saved successfully").css('color', 'green'),
-        });
-
+    if(!Editor.save_updated()) {
+        Editor.save();
         Editor.prev_save = project_data;
     }
+};
 
+Editor.save_updated = function() {
+    return Editor.save_pages() == Editor.prev_save;
+};
+
+Editor.save = function() {
+    var project_url = location.href.split('/').reverse()[0]; //to obtain the page id
+    var project_data = Editor.save_pages();
+
+    $.ajax({
+        method: "PUT",
+        url: project_url,
+        data: {'project[pages]': project_data },
+        dataType: 'json', 
+        success: Console.render_status().text("Data saved successfully").css('color', 'green'),
+    });
 };
 
 Editor.save_pages = function() {
@@ -157,13 +169,11 @@ Editor.mousedown_element = function(element, event) {
     }
 }
 
-Editor.snap_to_grid = function() {
-    Selector.unselect_all();
-
-    var position_delta = 20;
+Editor.snap_to_grid = function(elements) {
+    var position_delta = 10;
     var size_delta = 5;
 
-    $.each(PageList.curr_page().child_elements, function(idx, element){
+    $.each(elements, function(idx, element){
         var position = element.get_position();
         var size = element.get_size();
 
@@ -174,8 +184,10 @@ Editor.snap_to_grid = function() {
         
         element.set_position(left, top);
         element.set_size(width, height);
-    });
-    Console.refresh();
+        if(element.child_elements.length != 0) {
+            Editor.snap_to_grid(elements.child_elements);
+        }
+    }.bind(this));
 };
 
 Editor.mouseup_element = function(element, event) {

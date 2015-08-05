@@ -1,3 +1,4 @@
+//= require ../property
 // var Elements = Elements || {};
 // Elements.Properties = Elements.Properties || {};
 Elements.Properties.Table = Elements.Properties.Table || {};
