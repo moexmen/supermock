@@ -69,3 +69,11 @@ Elements.Tabs.Tab.prototype.render_child_elements = function() {
         this.content_html.append(element.render());
     }.bind(this));
 };
+
+Elements.Tabs.Tab.prototype.set_width_height =function(width, height) {
+    //over-riding because it does not have width and height attributes
+};
+
+Elements.Tabs.Tab.prototype.set_position = function(left, top) {
+    //over-riding because it does not have left and top attributes
+};

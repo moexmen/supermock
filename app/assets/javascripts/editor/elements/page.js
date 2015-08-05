@@ -77,6 +77,14 @@ Elements.Page.prototype.render = function() {
     return this.html;
 };
 
+Elements.Page.prototype.set_width_height =function(width, height) {
+    //over-riding because it does not have width and height attributes
+};
+
+Elements.Page.prototype.set_position = function(left, top) {
+    //over-riding because it does not have left and top attributes
+};
+
 Elements.Page.prototype.to_json = function() {
     var save_object = {     type: Elements.Page.TYPE,
                             id: this.id,

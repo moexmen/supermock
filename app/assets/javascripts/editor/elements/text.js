@@ -52,7 +52,6 @@ Elements.Text.prototype.render = function() {
 
         if(this.text_html.text().length == 0) {
             this.generate_text();
-            this.set_property('hidden-text', this.text_html.text());
         }
     }
 
@@ -83,7 +82,6 @@ Elements.Text.prototype.on_increase_size = function() {
 
     // Remove last word to prevent clipping
     this.text_html.text(this.text_html.text().split(' ').slice(0, -1).join(' '));
-    this.set_property('hidden-text', this.text_html.text());
 };
 
 Elements.Text.prototype.on_decrease_size = function() {
@@ -99,7 +97,6 @@ Elements.Text.prototype.on_decrease_size = function() {
             break;
         }
     }
-    this.set_property('hidden-text', this.text_html.text());
 };
 
 Elements.Text.prototype.check_edited_text = function() {

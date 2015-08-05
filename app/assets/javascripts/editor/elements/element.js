@@ -112,6 +112,10 @@ Elements.Element.prototype.set_position_relative_to_canvas = function(left, top)
             top: top + canvas_position.top, 
             left: left + canvas_position.left
         });
+
+    this.set_property('x', left); 
+    this.set_property('y', top);
+    Console.refresh();
 };
 
 Elements.Element.prototype.get_position_relative_to_canvas = function() {
@@ -188,15 +192,13 @@ Elements.Element.prototype.to_code = function(indent) {
 Elements.Element.prototype.properties_to_code = function() {
     var code = '';
 
-    $.each(this.constructor.PROPERTIES, function(i, property) {
-        if(this.html != null) {
-            property_code = property.type.to_code(property.target(this));
-            if(property_code != '') {
-                code += ' ' + property_code;
-            }
+    $.each(this.properties, function(i, property) {
+        code += ' ';
+        if(property.name != ''){
+            code += property.name + '=';
         }
-    }.bind(this));
-
+        code += property.value;
+    });
     return code;
 };
 

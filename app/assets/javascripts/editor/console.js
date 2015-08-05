@@ -19,8 +19,7 @@ Console.update_line_count = function() {
 Console.keydown = function(e) {
     if(e.keyCode === 71 && e.metaKey) { // command-G pressed
         e.preventDefault();
-        
-        console.log('Whuuuut?');
+
         Selector.unselect_all();
         Editor.snap_to_grid([Console.target_element]);
         
@@ -44,9 +43,10 @@ Console.keydown = function(e) {
         e.preventDefault();
     }
     else if(e.keyCode === 13) { // enter pressed
+        e.preventDefault();
+
         this.selectionStart = Console.shift_to_previous_indent(this.selectionStart);
         this.selectionEnd = this.selectionStart;
-        e.preventDefault();
     }
 };
 

@@ -181,12 +181,10 @@ Editor.snap_to_grid = function(elements) {
         var top = Math.round(position.top/position_delta) * position_delta;
         var width = Math.round(size.width/size_delta) * size_delta;
         var height = Math.round(size.height/size_delta) * size_delta;
-        
+
         element.set_position(left, top);
         element.set_size(width, height);
-        if(element.child_elements.length != 0) {
-            Editor.snap_to_grid(elements.child_elements);
-        }
+        Editor.snap_to_grid(element.child_elements);
     }.bind(this));
 };
 
