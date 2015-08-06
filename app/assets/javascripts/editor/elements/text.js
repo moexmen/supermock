@@ -70,6 +70,7 @@ Elements.Text.prototype.on_increase_size = function() {
     if(this.text_edited()) {
         return;
     }
+    this.remove_last_word();
 
     while(this.text_html.outerHeight() < this.html.outerHeight()) {
         this.text_html.text(this.text_html.text() + ' ' + Elements.Text.random_word());
@@ -79,7 +80,7 @@ Elements.Text.prototype.on_increase_size = function() {
             break;
         }
     }
-
+    this.remove_last_word();
     this.clean_up_and_capitalize();
 };
 
@@ -87,9 +88,12 @@ Elements.Text.prototype.clean_up_and_capitalize = function() {
     var words = this.text_html.text().split(' ');
     var final_text = '';
 
+    if (words.length <= 1) {
+        return;
+    }
     $.each(words, function(index, word) {
+        var last_character = final_text.substring(final_text.length - 1);
 
-        last_character = final_text.substring(final_text.length - 1);
         if (last_character == '.' || last_character == '?') {
             if(index == words.length - 1) {
                 return false;
@@ -98,7 +102,12 @@ Elements.Text.prototype.clean_up_and_capitalize = function() {
         }
         else {
             if(index == words.length - 1) {
-                final_text += '!';
+                if (last_character != ',') {
+                    final_text += '!'; //ending punctuation 
+                }
+                else {
+                    final_text.split(' ').slice(0, -1).join(' '); // to remove the word with comma
+                }
                 return false;
             }
             final_text += ' ' + word;
@@ -108,26 +117,33 @@ Elements.Text.prototype.clean_up_and_capitalize = function() {
     this.text_html.text(final_text);
 };
 
+Elements.Text.prototype.remove_last_word = function() {
+    this.text_html.text(this.text_html.text().split(' ').slice(0, -1).join(' '));
+};
+
 Elements.Text.prototype.on_decrease_size = function() {
     if(this.text_edited()) {
         return;
     }
 
     while(this.text_html.outerHeight() > this.html.outerHeight()) {
-        this.text_html.text(this.text_html.text().split(' ').slice(0, -1).join(' '));
-        
+        this.remove_last_word();
         // In case of infinite loop 
         if(this.text_html.outerHeight() == 0) {
             break;
         }
     }
+    this.clean_up_and_capitalize();
 };
 
 Elements.Text.prototype.text_edited = function() {
     var edited = false;
-
     var text = this.text_html.text();
-    var text_array = text.substring(0, text.length - 1).split(' ');
+    var text_array = text.split(' ');
+
+    if (text_array.length > 1) {
+        text_array.pop(); // to remove the last word which contains punctuation
+    }
 
     $.each(text_array, function(i, word){
         if ($.inArray(word.toLowerCase(), Elements.Text.LOREM_IPSUM) == -1){
