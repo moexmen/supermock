@@ -52,18 +52,25 @@ Elements.Element.prototype.get_size = function() {
     return size;
 };
 
-Elements.Element.prototype.set_property = function(name, value) {
-    var property_exists = false;
+Elements.Element.prototype.get_property = function(name) {
+    var desired_property = null;
 
     $.each(this.properties, function(idx, property){
         if(property.name == name){
-            property.value = value;
-            property_exists = true;
+            desired_property = property;
             return false;
         }
     });
-    if(!property_exists) {
+    return desired_property;
+};
+
+Elements.Element.prototype.set_property = function(name, value) {
+    var property = this.get_property(name);
+    if(property == null) {
         this.properties.push({name: name, value: value});
+    }
+    else {
+        property.value = value;
     }
 };
 

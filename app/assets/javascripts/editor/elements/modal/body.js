@@ -40,8 +40,23 @@ Elements.Modal.Body.prototype.render = function() {
 };
 
 
+Elements.Modal.Body.prototype.fit_child_elements = function() {
+    var minimum = this.child_elements_max_offset();
+    var height_property = this.get_property('h');
+    if(height_property != null && height_property.value > minimum) {
+        return;
+    }
+    this.set_width_height(null, minimum);
+};
+
+Elements.Modal.Body.prototype.set_width_height = function(width, height) {
+    this.render().outerHeight(height);
+    // width is set by default and cannot change
+    this.set_property('h', height);
+};
+
 Elements.Modal.Body.prototype.child_elements_max_offset = function() {
-    // to find the furthest distance from the body top to the bottom of all the elements
+    // to find the minimum depth that the body has to be to accommodate all elements
     var max_offset = 0;
     $.each(this.child_elements, function(i, child_element){
         var offset = child_element.get_position().top + child_element.get_size().height;

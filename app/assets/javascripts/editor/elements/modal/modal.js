@@ -38,8 +38,6 @@ Elements.Modal.prototype.render = function() {
             Selector.unselect_all();
             Console.read_element(PageList.curr_page());
         });
-
-        this.apply_properties();
     }
 
     return this.html;
@@ -87,6 +85,5 @@ Elements.Modal.prototype.set_width_height = function(width, height) {
         return;
     }
 
-    body_element.set_property('h', body_height);
     body_element.set_width_height(width, body_height);
 };
