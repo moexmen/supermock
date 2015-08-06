@@ -14,7 +14,7 @@ Elements.Properties.Dropdown.Selected.apply = function(html, properties) {
     });
 };
 
-Elements.Properties.Dropdown.Selected.to_code = function(html) {
-    var data = html.prop('selected');
-    return data ? 'selected=' + data : '';
-};
+// Elements.Properties.Dropdown.Selected.to_code = function(html) {
+//     var data = html.prop('selected');
+//     return data ? 'selected=' + data : '';
+// };

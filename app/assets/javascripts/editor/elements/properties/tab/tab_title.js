@@ -14,6 +14,6 @@ Elements.Properties.Tabs.Title.apply = function(html, properties) {
     });
 };
 
-Elements.Properties.Tabs.Title.to_code = function(html) {
-    return html.text();
-};
+// Elements.Properties.Tabs.Title.to_code = function(html) {
+//     return html.text();
+// };

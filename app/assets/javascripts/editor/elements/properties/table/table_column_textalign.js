@@ -14,10 +14,10 @@ Elements.Properties.Table.Column.TextAlign.apply = function(html, properties) {
     });
 };
 
-Elements.Properties.Table.Column.TextAlign.to_code = function(html) {
-    var span = html.css('text-align');
-    if(span == 'start' || span == '') {
-        return '';
-    }
-    return 'align=' + span;
-};
+// Elements.Properties.Table.Column.TextAlign.to_code = function(html) {
+//     var span = html.css('text-align');
+//     if(span == 'start' || span == '') {
+//         return '';
+//     }
+//     return 'align=' + span;
+// };

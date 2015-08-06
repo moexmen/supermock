@@ -15,7 +15,7 @@ Elements.Properties.Table.Column.Width.apply = function(html, properties) {
     });
 };
 
-Elements.Properties.Table.Column.Width.to_code = function(html) {
-    var width = html.data('width');
-    return width ? 'width=' + width : '';
-};
+// Elements.Properties.Table.Column.Width.to_code = function(html) {
+//     var width = html.data('width');
+//     return width ? 'width=' + width : '';
+// };

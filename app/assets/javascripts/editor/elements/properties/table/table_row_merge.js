@@ -15,7 +15,7 @@ Elements.Properties.Table.Row.Merge.apply = function(html, properties) {
     });
 };
 
-Elements.Properties.Table.Row.Merge.to_code = function(html) {
-    var span = html.attr('rowspan');
-    return span ? 'merge=' + span : '';
-};
+// Elements.Properties.Table.Row.Merge.to_code = function(html) {
+//     var span = html.attr('rowspan');
+//     return span ? 'merge=' + span : '';
+// };

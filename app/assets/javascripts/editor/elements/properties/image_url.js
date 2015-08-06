@@ -13,6 +13,6 @@ Elements.Properties.ImageUrl.apply = function(html, properties) {
     });
 };
 
-Elements.Properties.ImageUrl.to_code = function(html) {
-    return html.prop('src');
-};
+// Elements.Properties.ImageUrl.to_code = function(html) {
+//     return html.prop('src');
+// };

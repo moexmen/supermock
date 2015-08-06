@@ -11,11 +11,11 @@ Elements.Properties.FontSize.apply = function(html, properties) {
     });
 };
 
-Elements.Properties.FontSize.to_code = function(html) {
-    var font_size = html.css('font-size');
-    if(parseInt(font_size) == 14) {
-        return '';
-    }
+// Elements.Properties.FontSize.to_code = function(html) {
+//     var font_size = html.css('font-size');
+//     if(parseInt(font_size) == 14) {
+//         return '';
+//     }
 
-    return 'font-size=' + font_size;
-};
+//     return 'font-size=' + font_size;
+// };

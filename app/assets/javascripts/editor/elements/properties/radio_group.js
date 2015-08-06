@@ -13,10 +13,10 @@ Elements.Properties.RadioGroup.apply = function(html, properties) {
     });
 };
 
-Elements.Properties.RadioGroup.to_code = function(html) {
-    group = html.prop('name');
-    if(group){
-        return 'group=' + group;
-    }
-    return '';
-};
+// Elements.Properties.RadioGroup.to_code = function(html) {
+//     group = html.prop('name');
+//     if(group){
+//         return 'group=' + group;
+//     }
+//     return '';
+// };

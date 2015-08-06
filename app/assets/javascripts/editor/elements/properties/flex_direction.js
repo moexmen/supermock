@@ -18,13 +18,13 @@ Elements.Properties.FlexDirection.apply = function(html, properties) {
     });
 };
 
-Elements.Properties.FlexDirection.to_code = function(html) {
-    group = html.css('flex-direction');
-    if(group == 'row'){
-        return 'direction=horizontal';
-    }
-    else if(group == 'column'){
-        return 'direction=vertical';
-    }
-    return '';
-};
+// Elements.Properties.FlexDirection.to_code = function(html) {
+//     group = html.css('flex-direction');
+//     if(group == 'row'){
+//         return 'direction=horizontal';
+//     }
+//     else if(group == 'column'){
+//         return 'direction=vertical';
+//     }
+//     return '';
+// };

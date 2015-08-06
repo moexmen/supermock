@@ -13,6 +13,6 @@ Elements.Properties.TextPlaceholder.apply = function(html, properties) {
     });
 };
 
-Elements.Properties.TextPlaceholder.to_code = function(html) {
-    return html.prop('placeholder');
-};
+// Elements.Properties.TextPlaceholder.to_code = function(html) {
+//     return html.prop('placeholder');
+// };

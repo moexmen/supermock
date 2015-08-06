@@ -13,6 +13,6 @@ Elements.Properties.Table.Bordered.apply = function(html, properties) {
     });
 };
 
-Elements.Properties.Table.Bordered.to_code = function(html) {
-    return html.hasClass('table-bordered') ? 'bordered=true' : '';
-};
+// Elements.Properties.Table.Bordered.to_code = function(html) {
+//     return html.hasClass('table-bordered') ? 'bordered=true' : '';
+// };

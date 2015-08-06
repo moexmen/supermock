@@ -64,12 +64,29 @@ Elements.Modal.prototype.get_size = function() {
 };
 
 Elements.Modal.prototype.set_width_height = function(width, height) {
+    // and the default height of header and footer
+    var body_element = null;
+    $.each(this.child_elements, function(i, child_element){
+        if(child_element.constructor.TYPE == 'body') {
+            body_element = child_element;
+        }
+    });
+
+    if(body_element == null) {
+        return;
+    }
     var header_height = this.render().find('.modal-header:eq(0)').outerHeight();
     var footer_height = this.render().find('.modal-footer:eq(0)').outerHeight();
-    var body_height =  height - (header_height + footer_height);
+    var body_height = height - (header_height + footer_height);
 
-    this.render().find('.modal-body:eq(0)').outerHeight(body_height);
-    this.render().find('.modal-content:eq(0)').outerHeight(height);
+    // height must take into account the elements nested under the body
+    var body_minimum = 30;
+    var elements_limit = body_element.child_elements_max_offset();
 
-    this.set_property('h', height);
+    if(body_height < Math.max(body_minimum, elements_limit)) {
+        return;
+    }
+
+    body_element.set_property('h', body_height);
+    body_element.set_width_height(width, body_height);
 };

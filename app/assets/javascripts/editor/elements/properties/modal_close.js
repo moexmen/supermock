@@ -14,10 +14,10 @@ Elements.Properties.ModalClose.apply = function(html, properties) {
     });
 };
 
-Elements.Properties.ModalClose.to_code = function(html) {
-    var data = html.data('close');
-    if(data) {
-        return 'close=' + data;
-    }
-    return '';
-};
+// Elements.Properties.ModalClose.to_code = function(html) {
+//     var data = html.data('close');
+//     if(data) {
+//         return 'close=' + data;
+//     }
+//     return '';
+// };

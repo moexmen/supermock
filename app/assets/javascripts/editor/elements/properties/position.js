@@ -15,8 +15,8 @@ Elements.Properties.Position.apply = function(html, properties) {
     });
 };
 
-Elements.Properties.Position.to_code = function(html) {
-    var position = html.position();
+// Elements.Properties.Position.to_code = function(html) {
+//     var position = html.position();
 
-    return 'x=' + position.left + ' y=' + position.top;
-};
+//     return 'x=' + position.left + ' y=' + position.top;
+// };

@@ -15,7 +15,7 @@ Elements.Properties.Size.apply = function(html, properties) {
     });
 };
 
-Elements.Properties.Size.to_code = function(html) {
-    return 'w=' + html.outerWidth() + ' h=' + html.outerHeight();
-};
+// Elements.Properties.Size.to_code = function(html) {
+//     return 'w=' + html.outerWidth() + ' h=' + html.outerHeight();
+// };
 

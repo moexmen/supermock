@@ -13,9 +13,9 @@ Elements.Properties.Tabs.Selected.apply = function(html, properties) {
     });
 };
 
-Elements.Properties.Tabs.Selected.to_code = function(html) {
-    if(html.hasClass('active')) {
-        return 'selected=true';
-    }
-    return '';
-};
+// Elements.Properties.Tabs.Selected.to_code = function(html) {
+//     if(html.hasClass('active')) {
+//         return 'selected=true';
+//     }
+//     return '';
+// };

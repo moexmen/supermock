@@ -51,8 +51,8 @@ Elements.Icon.prototype.on_decrease_size = function() {
 
 Elements.Icon.prototype.on_resize = function() {
     outer_dimensions = this.get_size();
-    min_size = Math.min(outer_dimensions.width,outer_dimensions.height);
+    min_size = Math.min(outer_dimensions.width, outer_dimensions.height);
 
-    this.set_property('font-size', min_size);
-    this.render().find('span').css('font-size', min_size);
+    this.set_property('font-size', min_size + 'px');
+    this.apply_properties();
 };

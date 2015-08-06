@@ -14,10 +14,10 @@ Elements.Properties.Click.apply = function(html, properties) {
     });
 };
 
-Elements.Properties.Click.to_code = function(html) {
-    var data = html.data('click');
-    return data ? 'click=' + data : '';
-};
+// Elements.Properties.Click.to_code = function(html) {
+//     var data = html.data('click');
+//     return data ? 'click=' + data : '';
+// };
 
 
 Elements.Properties.Click.parse_value = function(html, value) {

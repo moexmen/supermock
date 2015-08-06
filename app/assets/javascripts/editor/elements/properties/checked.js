@@ -13,9 +13,9 @@ Elements.Properties.Checked.apply = function(html, properties) {
     });
 };
 
-Elements.Properties.Checked.to_code = function(html) {
-    checked_property = html.prop('checked');
+// Elements.Properties.Checked.to_code = function(html) {
+//     checked_property = html.prop('checked');
     
-    return checked_property ? 'checked=true' : '';
-};
+//     return checked_property ? 'checked=true' : '';
+// };
 

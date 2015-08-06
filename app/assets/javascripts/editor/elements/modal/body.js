@@ -38,3 +38,16 @@ Elements.Modal.Body.prototype.render = function() {
 
     return this.html;
 };
+
+
+Elements.Modal.Body.prototype.child_elements_max_offset = function() {
+    // to find the furthest distance from the body top to the bottom of all the elements
+    var max_offset = 0;
+    $.each(this.child_elements, function(i, child_element){
+        var offset = child_element.get_position().top + child_element.get_size().height;
+        if (offset > max_offset) {
+            max_offset = offset;
+        }
+    });
+    return max_offset;
+};

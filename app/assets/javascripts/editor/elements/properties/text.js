@@ -11,10 +11,10 @@ Elements.Properties.Text.apply = function(html, properties) {
     });
 };
 
-Elements.Properties.Text.to_code = function(html) {
-    var text = html.text().trim();
-    if ($.inArray(text.split(' ')[0], Elements.Text.LOREM_IPSUM) != -1) {
-        return '';
-    }
-    return text;
-};
+// Elements.Properties.Text.to_code = function(html) {
+//     var text = html.text().trim();
+//     if ($.inArray(text.split(' ')[0], Elements.Text.LOREM_IPSUM) != -1) {
+//         return '';
+//     }
+//     return text;
+// };
