@@ -77,7 +77,7 @@ Elements.Page.prototype.render = function() {
     return this.html;
 };
 
-Elements.Page.prototype.set_width_height = function(width, height) {
+Elements.Page.prototype.set_size = function(width, height) {
     //over-riding because it does not have width and height attributes
 };
 

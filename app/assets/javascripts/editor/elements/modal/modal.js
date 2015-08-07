@@ -61,7 +61,7 @@ Elements.Modal.prototype.get_size = function() {
     return { width: this.modal_content.outerWidth(), height: this.modal_content.outerHeight() };
 };
 
-Elements.Modal.prototype.set_width_height = function(width, height) {
+Elements.Modal.prototype.set_size = function(width, height) {
     // and the default height of header and footer
     var body_element = null;
     $.each(this.child_elements, function(i, child_element){
@@ -85,5 +85,5 @@ Elements.Modal.prototype.set_width_height = function(width, height) {
         return;
     }
 
-    body_element.set_width_height(width, body_height);
+    body_element.set_size(width, body_height);
 };

@@ -46,12 +46,16 @@ Elements.Image.prototype.set_size = function(width, height) {
     }
     else {
         var height_based_on_width = Math.round(width / this.width_to_height_ratio);
+        var width_based_on_height = height * this.width_to_height_ratio;
         if (height > height_based_on_width) {
-            this.set_width_height(width, height_based_on_width);
+            this.render().outerWidth(width).outerHeight(height_based_on_width);
+            this.set_property('w', width); 
+            this.set_property('h', height_based_on_width);
         }
         else {
-            var width_based_on_height = height * this.width_to_height_ratio;
-            this.set_width_height(width_based_on_height, height);
+            this.render().outerWidth(width_based_on_height).outerHeight(height);
+            this.set_property('w', width_based_on_height); 
+            this.set_property('h', height);
         }
     }
 };

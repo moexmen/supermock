@@ -70,7 +70,7 @@ Elements.Tabs.Tab.prototype.render_child_elements = function() {
     }.bind(this));
 };
 
-Elements.Tabs.Tab.prototype.set_width_height =function(width, height) {
+Elements.Tabs.Tab.prototype.set_size =function(width, height) {
     //over-riding because it does not have width and height attributes
 };
 

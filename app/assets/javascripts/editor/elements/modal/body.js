@@ -46,12 +46,12 @@ Elements.Modal.Body.prototype.fit_child_elements = function() {
     if(height_property != null && height_property.value > minimum) {
         return;
     }
-    this.set_width_height(null, minimum);
+    this.set_size(null, minimum);
 };
 
-Elements.Modal.Body.prototype.set_width_height = function(width, height) {
+Elements.Modal.Body.prototype.set_size = function(width, height) {
     this.render().outerHeight(height);
-    // width is set by default and cannot change
+    // width cannot be modified
     this.set_property('h', height);
 };
 

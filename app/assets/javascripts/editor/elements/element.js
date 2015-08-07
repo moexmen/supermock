@@ -74,13 +74,6 @@ Elements.Element.prototype.set_property = function(name, value) {
     }
 };
 
-Elements.Element.prototype.set_width_height = function(width, height) {
-    this.render().outerWidth(width).outerHeight(height);
-
-    this.set_property('w', width); 
-    this.set_property('h', height);
-};
-
 Elements.Element.prototype.set_size = function(width, height) {
     prev_dimensions = this.get_size();
 
@@ -88,7 +81,9 @@ Elements.Element.prototype.set_size = function(width, height) {
     var new_area = width * height;
     var difference = new_area - prev_area;
 
-    this.set_width_height(width, height);
+    this.render().outerWidth(width).outerHeight(height);
+    this.set_property('w', width); 
+    this.set_property('h', height);
 
     difference > 0 ? this.on_increase_size() : this.on_decrease_size();
 };
