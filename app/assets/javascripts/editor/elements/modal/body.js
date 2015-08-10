@@ -34,19 +34,23 @@ Elements.Modal.Body.prototype.render = function() {
 
         this.apply_properties();
         this.render_child_elements();
+        this.fit_child_elements();
     }
 
     return this.html;
 };
 
-
 Elements.Modal.Body.prototype.fit_child_elements = function() {
+    $('body').append(this.html); //Temporarily attaching to DOM to read properties
+    console.log("Being called!");
     var minimum = this.child_elements_max_offset();
     var height_property = this.get_property('h');
     if(height_property != null && height_property.value > minimum) {
         return;
     }
     this.set_size(null, minimum);
+
+    this.html.detach(); //removing from DOM for proper rendering later
 };
 
 Elements.Modal.Body.prototype.set_size = function(width, height) {
