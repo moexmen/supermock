@@ -31,7 +31,6 @@ Elements.Table.Footer.prototype.render = function() {
         this.html = this.html.find('tfoot');
 
         this.apply_properties();
-        this.render_child_elements();
 
     }
 

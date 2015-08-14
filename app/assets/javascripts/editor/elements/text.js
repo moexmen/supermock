@@ -110,7 +110,9 @@ Elements.Text.prototype.clean_up_and_capitalize = function() {
                 }
                 return false;
             }
-            final_text += ' ' + word;
+            else {
+                final_text += ' ' + word;
+            }
         }
     });
 
