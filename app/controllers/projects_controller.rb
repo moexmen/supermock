@@ -31,7 +31,6 @@ class ProjectsController < ApplicationController
 
   # PATCH/PUT /projects/1
   def update
-    pp project_params
     if @project.update(project_params)
       flash[:notice] = 'Project was successfully updated.'
     else
