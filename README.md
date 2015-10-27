@@ -22,3 +22,11 @@ These values are specified in the database seed file.
 
 1. Create a new project
 2. In the blank canvas, press spacebar to add elements.
+
+## Contributing
+
+We love contributors! For new features, please create an issue, fork the repository, and submit a pull request when done! 
+
+## License
+
+Copyright (c) 2015 Supermock. This software is licensed under the GNU General Public License (Version 3).
